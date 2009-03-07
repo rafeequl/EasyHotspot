@@ -1,0 +1,68 @@
+#billing {
+	width:90%; /* 100% causes IE to caluculate borders wrong and give it strange clearing and floating */
+	padding: 0;
+	border-collapse: collapse;
+	margin: 0 auto 15px auto;
+}
+
+#hotspot_info {
+	float: right;
+	margin :0px;
+	padding: 0px;
+}
+
+#hotspot_info p {
+	line-height : 13pt;
+}
+
+#hotspot_info h3{
+	margin :0px;
+	padding: 0px;
+}
+
+#personal_info{
+	float: left;
+	width : 300px;
+}
+
+#personal_info span {
+	margin-left : -50px;
+}
+
+
+
+#billing .billing_detail {
+	width : 100%;
+	clear:both;
+	font-family : Courier;
+	
+}
+
+#billing_detail_container {
+	position: relative;
+	width: 586px; /* width + border for IE 5.x */
+	margin: auto;
+	padding-top : 100px;
+}
+
+.billing_detail th, .billing_detail td{
+	text-align : left;
+}
+
+.billing_detail .number {
+	text-align : right;
+}
+
+.billing_detail .total {
+	border-bottom : 1px solid;
+	text-align : right;
+	font-weight : bold;
+}
+.billing_detail .total_qty {
+	text-align : right;
+}
+.billing_detail .subtotal {
+	text-align : right;
+	padding-right : 15px;
+	font-weight : bold;
+}

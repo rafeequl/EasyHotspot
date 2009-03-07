@@ -1,0 +1,44 @@
+EasyHotspot Hotspot Manager
+EasyHotspot is an alternative solution for hotspot billing system. It contains some particular open source software bundled into a single package. We DO NOT try to make a replacement to similar existing open source projects. Our aim is to deliver a system that simple, easy to install, use and modify.
+
+This hotspot manager using CodeIgniter framework, its a fantastic PHP framework since it easy to understand and it has good documentation. http://www.codeigniter.com .
+
+INSTALL :
+- extract to /var/www (or your web root folder).
+- import the sql file to your mysql database using root account.
+- edit system/application/config/ files :
+	- database.php
+	- config.php
+	- easyhotspot.php
+- Fireup your web browser and go to http://localhost
+- To login as administrator :
+	- username	: admin
+	- pass	 	: admin123
+- To login as cashier :
+	- username	: vcool
+	- pass		: vcool123
+NOTE :
+This is not a complete release, it only contains hotspot manager while the full version provides full solution (let's say Hotspot specific distro). We will make  progress when our development machine is ready :p she is down right now!We give up on keyboard error and some other hardware issue ... We recomend you to use Ubuntu based distro but it should work with other distros.
+
+To build a a complete hotspot you need to install :
+- LAMP
+- OpenSSL (https)
+- Chillispot
+- FreeRadius
+- FreeRadius Mysql
+- 2 Network interface
+
+IMPORTANT :
+edit database.php, config.php, easyhotspot.php files in system/application/config folder
+
+TO DO :
+- Complete the distro with minimal configuration for hotspot system
+- Add Tax
+- Add user remote disconnect
+- Documentation. This is the important thing.
+- Add new ideas ?
+
+CONTACT :
+lets discuss about it, learn and share together ...
+rafeequl@gmail.com
+do we need groups ?

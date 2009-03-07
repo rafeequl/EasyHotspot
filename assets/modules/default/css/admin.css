@@ -1,0 +1,148 @@
+/* =FORMS
+-----------------------------------------------------------------------------*/
+form {
+ margin: 0;
+ padding: 0;
+}
+
+ul {
+	list-style-type:none;
+}
+
+.input {
+ font-family: Lucida Grande, Verdana, Geneva, Sans-serif;
+ font-size: 11px;
+ color: #333;
+ border: 1px solid #B3B4BD;
+ width: 100%;
+ font-size: 11px;
+ height: 1.5em;
+ padding: 0;
+ margin: 0;
+}
+
+.textarea {
+ font-family: Lucida Grande, Verdana, Geneva, Sans-serif;
+ font-size: 14px;
+ color: #143270;
+ background-color: #f9f9f9;
+ border: 1px solid #B3B4BD;
+ width: 100%;
+ padding: 0;
+ margin: 0;
+}
+
+.select {
+ background-color: #fff;
+ font-size:  11px;
+ font-weight: normal;
+ color: #333;
+ padding: 0;
+ margin: 0 0 3px 0;
+}
+
+.checkbox {
+ background-color: transparent;
+ padding: 0;
+ border: 0;
+}
+
+.submit {
+ background-color: #333333;
+ color: #fff;
+ font-weight: normal;
+ font-size: 10px;
+ border: 1px solid #CCC;
+ margin: 10px 0 5px 0;
+ padding: 1px 5px 2px 5px;
+}
+
+button {
+ background-color: #333333;
+ color: #fff;
+ font-weight: normal;
+ font-size: 10px;
+ border: 1px solid #CCC;
+ margin: 10px 0 5px 20px;
+ padding: 1px 5px 2px 5px;
+}
+
+fieldset
+{ 
+	margin:1em 0;
+	padding: 1em;
+	border: 1px solid #ccc;
+}
+.details fieldset, .userprofile fieldset
+{
+border: 1px solid #ccc;
+padding-top: 1em;
+margin-top: 0em;}
+
+legend
+{
+	font-weight:bold;
+}
+.userprofile label
+{
+	float: none;
+	display: block;
+}
+
+label 
+{
+float: left;
+width: 150px;
+}
+.nota
+{
+display: block;
+margin-left: 100px;
+font-size: 10px;}
+
+.error, li.error  {
+	color:#760000;
+	padding-left: 18px;
+	background: url(../../shared/images/error.png) no-repeat left top;
+}
+
+
+/* :KLUDGE: Explicitly set the width for IE6- */
+* html .error{
+  width: 10em;
+}
+
+/*FORM
+-----------------------------------------------------------------------------*/
+ul.from{
+	
+}
+
+ul.form li{
+	list-style: none;
+	
+}
+
+ul.form input{
+	color: #666666;
+	text-align: left;
+	font-size: 18px;
+	margin-bottom: 5px;
+	width: 150px;
+	border: 1px solid;
+}
+
+ul.form label{
+	color: #666666;
+	text-align: left;
+	font-size: 15px;
+	margin-bottom: 5px;
+	width: 150px;
+}
+
+li.submit label{
+	text-align: center;
+	display:block;
+	width: 100%;
+	margin-top: 5px;
+}

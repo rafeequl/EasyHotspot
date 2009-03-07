@@ -1,0 +1,531 @@
+/*Design by Rafeequl Rahman Awan
+EasyHotspot default Style Sheet
+Licensed under GNU Public License
+November 2007 */
+
+/* Basic Tag */
+body  {
+	margin: 0;
+	padding: 0 0 0 0;
+/*	background: #FFFFFF url(../image/stripe.png);*/
+	background: #040404;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #FFFFFF;
+	height: 100%;
+}
+
+
+h1, h2, h3 {
+	margin-top: 0;
+}
+
+h1 {
+	color: #D4D4D4;
+	font-size: 200%;
+}
+
+h2 {
+	font-size: 107%;
+}
+
+h3 {
+	font-size: 100%;
+}
+
+p, ul, ol {
+	margin-bottom: 1.6em;
+	line-height: 170%;
+}
+
+p {
+}
+
+blockquote {
+	font-style: italic;
+}
+
+a {
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+
+
+small {
+}
+
+hr {
+	display: none;
+}
+
+img {
+	border: 1px solid #B2B2B2;
+}
+
+img.left {
+	float: left;
+	margin: 5px 15px 0 0;
+}
+
+img.right {
+	float: right;
+	margin: 0 0 0 15px;
+}
+
+acronym {
+	cursor: help;
+	text-decoration: none;
+	border: 0px;
+}
+
+/* Search box */
+#search_box {
+    width: 236px;
+    height: 41px;
+    background: url(../image/search.png) left no-repeat;
+    margin-bottom: 10px;
+}
+#search_box .search {
+    float: left;
+    margin: 10px 0 0 40px;
+    border: 0;
+    width: 170px;
+    height: 17px;
+    background: gray;
+}
+
+
+
+/* Header */
+
+#header {
+	width: 100%;
+	height: 115px;
+	margin: 0 auto;
+	padding: 0 0 0 0;
+	background: url("../image/header_background.png") repeat-x;
+}
+
+/* Logo */
+
+#logo {
+	width: 800px;
+	height: 80px;
+	margin-top: 20px;
+	background: url("../image/logo.png") no-repeat;
+	position: absolute;
+}
+
+#logo span {
+	display: none;
+}
+
+/* version */
+#version {
+	font-size: 135px;
+	font-family: sans;
+	color: #1C1B1B;
+	margin-top: 0px; 
+	width: 100%;
+	text-align: right;
+}
+
+/* Date */
+#date {
+	color:#A3A3A3;
+	margin:0 0 10px 16px ;
+}
+
+
+
+/* Contaioner */
+#container {
+	min-height:100%;
+	position:relative;
+}
+
+/* Page */
+
+#page {
+	margin: 0 auto;
+	height: 100%;
+	min-height:100%;
+	display: block;
+	position: relative;
+}
+
+/* Content */
+
+#content {
+	padding-left: 15px;
+	padding-right: 20px;
+	margin-bottom:50px;
+}
+
+#content p {
+	margin: 0;
+}
+
+
+
+/* Menu */
+
+#menu {
+	height: 50px;
+	/*width: 800px;*/
+	padding-top: 6px;
+	/*background: url("../image/background_menu.png") no-repeat;*/
+}
+
+#menu ul {
+	float: right;
+	display: block;
+	margin-right: 5px;
+	margin-top:-1px;	
+}
+
+#menu a {
+	display: block;
+}
+
+#menu a:hover {
+	display: block;
+	border-bottom: 4px solid #1d1b1b;
+}
+
+#div_box p{
+
+	line-height : 12pt;
+	font-size : 14px;
+}
+
+#menu li {
+	display: inline;
+	float: left;
+	list-style: none;
+	margin-left: 1px;
+	
+
+}
+
+#menu li.home, #menu li.home a {
+	display: block;
+	width: 50px;
+	height: 50px;
+	margin:0px auto;
+	background: url("../image/home.png") no-repeat;
+
+}
+
+#menu li.account, #menu li.account a {
+	display: block;
+	width: 50px;
+	height: 50px;
+	background: url("../image/account.png") no-repeat;
+}
+
+#menu li.voucher, #menu li.voucher a {
+	display: block;
+	width: 50px;
+	height: 50px;
+	background: url("../image/voucher.png") no-repeat;
+}
+
+#menu li.cashier, #menu li.cashier a {
+	display: block;
+	width: 50px;
+	height: 50px;
+	background: url("../image/cashier.png") no-repeat;
+}
+
+#menu li.postplan, #menu li.postplan a {
+	display: block;
+	width: 50px;
+	height: 50px;
+	background: url("../image/post_plan.png") no-repeat;
+}
+
+#menu li.billingplan, #menu li.billingplan a {
+	display: block;
+	width: 50px;
+	height: 50px;
+	background: url("../image/billing_plan.png") no-repeat;
+}
+
+#menu li.changepassword, #menu li.changepassword a {
+	display: block;
+	width: 50px;
+	height: 50px;
+	background: url("../image/password.png") no-repeat;
+}
+
+#menu li.admin, #menu li.admin a {
+	display: block;
+	width: 50px;
+	height: 50px;
+	background: url("../image/admin.png") no-repeat;
+}
+
+#menu li.statistic, #menu li.statistic a {
+	display: block;
+	width: 50px;
+	height: 50px;
+	background: url("../image/statistic.png") no-repeat;
+}
+
+#menu li.onlineuser, #menu li.onlineuser a {
+	display: block;
+	width: 50px;
+	height: 50px;
+	background: url("../image/onlineuser.png") no-repeat;
+}
+
+#menu li.setting, #menu li.setting a {
+	display: block;
+	width: 50px;
+	height: 50px;
+	background: url("../image/setting.png") no-repeat;
+}
+
+#menu li.radius, #menu li.radius a {
+	display: block;
+	width: 50px;
+	height: 50px;
+	background: url("../image/radius.png") no-repeat;
+}
+
+#menu li.chillspot, #menu li.chillispot a {
+	display: block;
+	width: 50px;
+	height: 50px;
+	background: url("../image/chillispot.png") no-repeat;
+}
+
+#menu li.invoice, #menu li.invoice a {
+	display: block;
+	width: 50px;
+	height: 50px;
+	background: url("../image/invoice.png") no-repeat;
+}
+
+#menu li.logout, #menu li.logout a {
+	display: block;
+	width: 50px;
+	height: 50px;
+	background: url("../image/logout.png") no-repeat;
+	
+}
+
+
+#menu li span{
+	display: none;
+}
+
+
+/* Action Menu */
+#action_menu {
+	display: block;
+	width: 800px;
+}
+
+#action_menu ul {
+	float: right;
+	width: 800px;
+	display: block;
+	
+}
+
+#action_menu li {
+	float: left;
+	display: block;
+	margin-left: 20px;
+	list-style-type:none;
+	padding-left: 25px;
+}
+
+#action_menu li.generate_voucher {
+	background: url("../image/voucher_add.png") no-repeat;
+	
+}
+
+#action_menu li.new_account {
+	background: url("../image/member_add.png") no-repeat;
+	
+}
+
+/* Table */
+.data_grid{
+	background: #FFFFFF;
+}
+.data_grid tr.even td{
+	background: #F6F6F6;
+}
+
+/* Footer */
+
+#footer {
+	clear: both;
+	height: 50px;
+	width: 100%;
+	padding-top: 20px;
+	background: #2c2c2c;
+	border-top: 5px solid #1d1b1b;
+	bottom: 0;
+}
+
+#footer p {
+	margin: 0;
+	text-align: center;
+	font-size: 77%;
+}
+
+/* Stripe Table */
+.stripe {
+	width:99%; /* 100% causes IE to caluculate borders wrong and give it strange clearing and floating */
+	padding: 0;
+	border-collapse: collapse;
+	margin: 0 auto 15px auto;
+	background: #FFFFFF;
+	color : #4b4643;
+}
+.stripe th, .close {
+	color: #FFFFFF!important;
+	background: url(../image/stripe.png);
+	padding: 0;
+	text-align: center;
+	font-weight: bold;
+}
+.stripe th, .stripe td {
+	border-bottom: 1px solid #333;
+	text-align: left;
+	padding: 0 5px;
+}
+.stripe th.center {
+	text-align: center;
+}
+.stripe .action {
+	width: 22px;
+	padding-left : 10px;
+	padding-right : 10px;
+}
+.stripe tr:hover td{
+	background:pink;
+}
+.stripe tr.even td{
+	background: #F6F6F6;
+}
+.stripe tr.ruled td{
+	background: #E6EAFB; 
+}
+
+.stripe a {
+	display: block;
+	margin: 0;
+	color: #000;
+	text-decoration: none;
+	width: 100%;
+}
+.stripe a:hover {
+	text-decoration: none;
+}
+
+.delete {
+	background: url('../image/delete_user.png') no-repeat;
+	background-position: center;
+	width: 22px;
+	height: 22px;
+	display: block;
+	text-decoration: none;
+}
+
+.delete span {
+	visibility: hidden;
+}
+
+.edit {
+	background: url('../image/edit_user.png') no-repeat;
+	background-position: center;
+	width: 22px;
+	height: 22px;
+	display: block;
+	text-decoration: none;
+}
+
+.edit span {
+	visibility: hidden;
+}
+
+.disconnect {
+	background: url('../image/delete_user.png') no-repeat;
+	background-position: left;
+	width: 22px;
+	height: 22px;
+	display: block;
+	text-decoration: none;
+}
+.disconnect span {
+	visibility: hidden;
+}
+
+.print {
+	background: url('../image/print.png') no-repeat;
+	background-position: center;
+	width: 22px;
+	height: 22px;
+	display: block;
+	text-decoration: none;
+}
+
+.print span {
+	visibility: hidden;
+}
+
+.bill {
+	background: url('../image/bill.png') no-repeat;
+	background-position: center;
+	width: 22px;
+	height: 22px;
+	display: block;
+	text-decoration: none;
+}
+
+.bill span {
+	visibility: hidden;
+}
+
+.detail {
+	background: url('../image/viewmag.png') no-repeat;
+	background-position: center;
+	width: 22px;
+	height: 22px;
+	display: block;
+	text-decoration: none;
+}
+
+.detail span {
+	visibility: hidden;
+}
+
+/*Statistics Page*/
+#voucher_info {
+	width : 100%;
+	margin-right : 80px;
+	margin-bottom : 20px;
+	border-bottom : dashed 1px #1d1b1b;
+}
+
+#graph {
+	position: absolute;
+	top: 220px;;
+	left: 470px;
+	
+}
+
+#postpaid_info {
+	clear : both;
+	}

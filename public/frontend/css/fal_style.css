@@ -1,0 +1,363 @@
+/*-----------------------------------------------------------------------------
+version:   1.0.1-Beta
+author:    daniel vecchiato
+email:     info@4webby.com
+website:   http://www.4webby.com/
+
+modified for Easyhotspot
+-----------------------------------------------------------------------------*/
+
+/* =General
+-----------------------------------------------------------------------------*/
+
+/* Remove padding and margin 
+* {
+  margin: 0;
+	padding: 0;
+}*/
+
+/* Put it back on certain elements */
+
+h1, h2, h3, h4, h5, h6, p, pre, blockquote,  ul {margin: 1em 0;}
+
+/* Class for clearing floats */
+
+.clear {clear:both;}
+
+/* Remove border around linked images */
+
+img {border: 0;}
+
+/* =Typography
+-----------------------------------------------------------------------------*/
+
+body {
+text-align: center;
+font: 90%/1.6  Verdana, sans-serif #FFFFFF;
+margin: 0;
+padding-top: 50px;
+background-image: url(../images/stripe.png);
+background-repeat: repeat;
+font-family: Arial, Helvetica, sans-serif;
+color: #7F7772}
+
+/* =Wrapper
+-----------------------------------------------------------------------------*/
+
+#wrapper {
+margin: 0px auto;
+border: 5px solid #7F7772;
+background-color: #040404;
+width: 400px;
+}
+
+/* Centering Technique
+================================== */
+
+
+/* =Headings
+-----------------------------------------------------------------------------*/
+
+#header {
+width: 100%;
+margin-top: 10px;
+height: 60px;
+background-image: url(../images/logo.png);
+background-repeat:no-repeat;
+background-position: center;
+}
+
+#header h1 {
+padding-top: 80px;
+font-size: 10px;
+}
+
+#browse_crag {
+margin: 0;
+}
+
+.login {color: #666;
+font-size:11px;
+padding: 5px;}
+
+.login a:link, .login a:visited {text-decoration: none;
+font-weight: bold;
+color: #666;}
+
+.login a:hover {text-decoration:none;
+color: #FF0000;}
+
+/* =Links
+-----------------------------------------------------------------------------*/
+
+a:link, a:visited {text-decoration: none;
+font-weight: bold;
+color: #666;}
+
+a:hover, a:active {text-decoration:none;
+color: #FF0000;}
+
+/* =Branding
+-----------------------------------------------------------------------------*/
+
+/* =Main Nav
+-----------------------------------------------------------------------------*/
+
+#navlist {width: 602px;
+margin: 0;}
+
+ul#navlist {font: bold 11px verdana, arial, sans-serif;
+list-style-type: none;
+padding-bottom: 24px;
+margin: 0;
+margin-left: 190px;}
+
+ul#navlist li {float: left;
+height: 20px;
+background-color: #99FF00;
+margin: 6px 2px 0px 2px;
+border: 1px solid #99FF00;
+border-bottom: none;}
+
+li#active a {background-color: #fff;}
+
+li#active a {color: #000;}
+
+#navlist a {float: left;
+display: block;
+color: #666;
+text-decoration: none;
+padding: 4px;}
+
+#navlist a:hover {background: #fff;}
+
+/* =Sub Nav
+-----------------------------------------------------------------------------*/
+
+/* =Main Content
+-----------------------------------------------------------------------------*/
+
+#mainContent {width: 100%;
+padding: 0px;}
+
+#mainContent a {color: #003399;
+background-color: transparent;
+text-decoration: none;
+font-weight: normal;}
+
+#mainContent a:visited {color: #003399;
+background-color: transparent;
+text-decoration: none;}
+
+#mainContent a:hover {color: #000;
+text-decoration: none;
+background-color: transparent;}
+
+#mainContent ul {list-style-image: url(../../shared/images/arrow.gif);
+padding: 0 0 0 18px;
+margin: 8px 0 12px 0;}
+
+#mainContent li {padding: 0;
+margin: 0 0 6px 0;}
+
+#mainContent li p {margin-left: 0;
+margin-right: 0;}
+
+#mainContent .rss {float: right;
+width: 200px;
+margin: 0 0 10px 10px;
+border: 1px #D0D0D0 solid;
+padding: 10px;
+font-size: 10px;}
+
+#mainContent .rss h2 {border: none;
+margin: 0;
+font-size: 16px;}
+
+.important {background-color: #FBE6F2;
+border: 1px solid #D893A1;
+color: #333;
+margin: 10px 0 5px 0;
+padding: 10px;
+font-weight: bold;
+width: 400px;}
+
+.important p {margin: 6px 0 8px 0;
+padding: 0;}
+
+/* =Footer
+-----------------------------------------------------------------------------*/
+
+#footer {width: 100%;
+height: 40px;
+text-align:center;
+color: #000;
+background: #7F7772;
+}
+
+#footer p {
+	font-size: 10px;
+}
+#footer a {text-decoration: none;}
+
+.footer_menu {font-size:14px;
+color: #FFFFFF;}
+
+.footer_menu a {padding-left: 10px;
+padding-right: 10px;
+color: white;
+text-decoration: none;
+border-right: 1px solid #99FF33;}
+
+.footer_menu a:hover {background-color: #99FF33;
+color: #000000;}
+
+.webdesign {font-size:12px;
+padding: 10px;
+text-align:right;}
+
+.webdesign a {text-decoration: none;
+color: black;}
+
+.webdesign a:hover {padding: 3px 10px 3px 10px;
+color: #666;
+background-color: #FFF;
+font-weight:bold;
+border: 1px solid #666;}
+
+/* =Forms
+-----------------------------------------------------------------------------*/
+
+.error {font-weight: bold;
+color:#FF3300;
+padding-left: 18px;
+background: url(../../shared/images/error.png) no-repeat left top;
+text-align: left;
+border: 1px dashed red;
+}
+
+/* :KLUDGE: Explicitly set the width for IE6- */
+
+* html .error {width: 10em;text-align: center;}
+
+fieldset {
+margin:1em 0;
+padding: 1em;
+border: none;
+}
+
+legend {
+display: none;
+font-weight:bold;}
+
+label {float: left;
+width: 100px;}
+
+#register {margin: 0;}
+
+#register label, #changePassword label  {width: 150px;}
+
+#register .error span{
+margin-left: 150px;
+padding-left: 150px;}
+
+.note {
+display: block;
+text-align: center;
+margin-bottom: 3px;
+}
+
+#register.note  {
+display: block;
+width: 100%;
+}
+
+.button {
+text-align:center;
+font-weight:bold;
+cursor: pointer;}
+
+.button a {text-align: center;
+text-decoration: none;
+background: url(../images/fade-butt.png);
+border: 3px double #999;
+border-left-color: #ccc;
+border-top-color: #ccc;
+color: #333;
+padding: 0.25em;}
+
+.button a:active {background: #f4f4f4;
+border: 3px double #ccc;
+border-left-color: #999;
+border-top-color: #999;}
+
+/* =FLASH MESSAGE
+-----------------------------------------------------------------------------*/
+
+#flashMessage {width:400px;
+color:#FF0000;
+border-bottom: 2px solid #FF0000;
+border-top: 1px solid #FF0000;
+font-size: 16px;
+margin: 8px 0px;
+font-weight: bold;
+padding: 10px;}
+
+/* =CODE BOX
+-----------------------------------------------------------------------------*/
+#mainContent code, #mainContent pre {
+ font-family: Courier,monospace;
+ font-size: 12px;
+ background-color: #f9f9f9;
+ border: 1px solid #D0D0D0;
+ color: #002166;
+ display: block;
+ margin: 14px 0 14px 0;
+ padding: 12px 10px 12px 10px;
+}
+
+/*FORM
+-----------------------------------------------------------------------------*/
+ul.from{
+	
+}
+
+ul.form li{
+	list-style: none;
+	
+}
+
+ul.form input{
+	color: #666666;
+	text-align: left;
+	font-size: 18px;
+	margin-bottom: 5px;
+	width: 150px;
+	border: 1px solid;
+}
+
+ul.form label{
+	color: #666666;
+	text-align: left;
+	font-size: 15px;
+	margin-bottom: 5px;
+	width: 150px;
+}
+
+li.submit label{
+	text-align: center;
+	display:block;
+	width: 100%;
+	margin-top: 5px;
+}
+#login{
+	text-align: center;
+	font-size: 15px;
+	font-weight: bold;
+	width: 60%;
+	color: black;
+	align: right;
+	border: 3px solid #666;
+
+	}
+	
