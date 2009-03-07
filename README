@@ -1,4 +1,5 @@
 EasyHotspot Hotspot Manager
+
 EasyHotspot is an alternative solution for hotspot billing system. It contains some particular open source software bundled into a single package. We DO NOT try to make a replacement to similar existing open source projects. Our aim is to deliver a system that simple, easy to install, use and modify.
 
 This hotspot manager using CodeIgniter framework, its a fantastic PHP framework since it easy to understand and it has good documentation. http://www.codeigniter.com .
