@@ -14,6 +14,7 @@
 </head>
 
 <body>
+<div id="container">
 <div id="header">
 	<div id="logo"><span>EasyHotspot</span></div>
 	<div id="version"><?=$this->config->item('EASYHOTSPOT_VERSION');?></div>

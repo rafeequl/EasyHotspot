@@ -3,6 +3,9 @@
 <h1><?=$h1?></h1>
 
 <div id='voucher_info'>
+	<div id='graph'>
+		<?=$this->graph->render()?>
+	</div>
 <h3><?=$this->lang->line('voucher_info')?></h3>
 <ul>
 	<li><label><?=$this->lang->line('voucher_created')?></label><?=$voucher['created']?></li>
@@ -15,9 +18,7 @@
 	<li><label><?=$row->billingplan?></label><?=$row->qty?></li>
 	<?php endforeach; ?>
 </ul>
-		<div id='graph'>
-			<?=$this->graph->render()?>
-		</div>
+		
 </div>
 
 

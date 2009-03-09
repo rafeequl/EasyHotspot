@@ -7,8 +7,7 @@ November 2007 */
 body  {
 	margin: 0;
 	padding: 0 0 0 0;
-/*	background: #FFFFFF url(../image/stripe.png);*/
-	background: #040404;
+	background: #040404 url(../image/header_background.png) repeat-x;
 	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 	font-size: 14px;
 	color: #FFFFFF;
@@ -125,6 +124,7 @@ acronym {
 	display: none;
 }
 
+
 /* version */
 #version {
 	font-size: 135px;
@@ -143,10 +143,12 @@ acronym {
 
 
 
-/* Contaioner */
+/* Container */
 #container {
 	min-height:100%;
 	position:relative;
+	margin: auto;
+	width: 800px;
 }
 
 /* Page */
@@ -520,10 +522,7 @@ acronym {
 }
 
 #graph {
-	position: absolute;
-	top: 220px;;
-	left: 470px;
-	
+	float:right;
 }
 
 #postpaid_info {
