@@ -1,2 +1,9 @@
 user_guide/*
 .DS_Store
+.tmp
+.log
+.project/
+.project
+.tmp_index.php.47477~
+system/application/models/.tmp_postpaidmodel.php.38862~
+system/application/models/.tmp_vouchermodel.php.73799~

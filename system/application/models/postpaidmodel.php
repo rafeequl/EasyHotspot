@@ -84,7 +84,7 @@ class Postpaidmodel extends model {
 		$radcheck_value = array();
 		$radcheck_value['username'] = $_POST['username'];
 		$radcheck_value['value'] = $_POST['password'];
-		$radcheck_value['attribute'] = 'User-Password';
+		$radcheck_value['attribute'] = 'Cleartext-Password';
 		$radcheck_value['op'] = ':=';
 		
 		

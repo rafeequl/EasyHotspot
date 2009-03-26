@@ -124,7 +124,7 @@ Class Vouchermodel extends model {
 				$this->db->insert($this->_table_usergroup,$usergroup);
 				
 				//radcheck table
-				$radcheck = array('username'=>$user['username'],'attribute'=>'User-Password','op'=>':=','value'=>$user['password']);
+				$radcheck = array('username'=>$user['username'],'attribute'=>'Cleartext-Password','op'=>':=','value'=>$user['password']);
 				$this->db->insert($this->_table_radcheck,$radcheck);
 				
 				//OK stops here
