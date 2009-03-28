@@ -11,13 +11,13 @@ INSTALL :
 	- database.php
 	- config.php
 	- easyhotspot.php
-- Fireup your web browser and go to http://localhost
+- Fireup your web browser and go to http://localhost (or your easyhotspot doc root)
 - To login as administrator :
 	- username	: admin
 	- pass	 	: admin123
 - To login as cashier :
-	- username	: vcool
-	- pass		: vcool123
+	- username	: cashier
+	- pass		: cashier123
 NOTE :
 This is not a complete release, it only contains hotspot manager while the full version provides full solution (let's say Hotspot specific distro). We will make  progress when our development machine is ready :p she is down right now!We give up on keyboard error and some other hardware issue ... We recomend you to use Ubuntu based distro but it should work with other distros.
 
@@ -26,7 +26,7 @@ To build a a complete hotspot you need to install :
 - OpenSSL (https)
 - Chillispot
 - FreeRadius
-- FreeRadius Mysql
+- FreeRadius-Mysql
 - 2 Network interface
 
 IMPORTANT :
@@ -41,5 +41,4 @@ TO DO :
 
 CONTACT :
 lets discuss about it, learn and share together ...
-rafeequl@gmail.com
-do we need groups ?
+rafeequl@users.sourceforge.net
