@@ -120,12 +120,12 @@ class Billingplanmodel extends model {
 	 */
 	function deleteBillingPlan(){
 		
-		$this->db->query('delete billingplan,usergroup,voucher,radcheck,radgroupreply,radgroupcheck from billingplan left join usergroup on billingplan.name=usergroup.groupname left join voucher on billingplan.name = voucher.billingplan left join radcheck on voucher.username = radcheck.username left join radgroupreply on radgroupreply.groupname = billingplan.name left join radgroupcheck on radgroupcheck.groupname = billingplan.name where billingplan.name =\''.$this->uri->segment(5).'\'');		
+		$this->db->query('delete billingplan,radusergroup,voucher,radcheck,radgroupreply,radgroupcheck from billingplan left join radusergroup on billingplan.name=radusergroup.groupname left join voucher on billingplan.name = voucher.billingplan left join radcheck on voucher.username = radcheck.username left join radgroupreply on radgroupreply.groupname = billingplan.name left join radgroupcheck on radgroupcheck.groupname = billingplan.name where billingplan.name =\''.$this->uri->segment(5).'\'');		
 
 	}
 	
 	function getBillingPlanStat(){
 	
-		return $this->db->query('select b.name as billingplan, if(count(u.groupname) is not null, count(u.groupname),0)as qty from billingplan b left join usergroup u on b.name=u.groupname group by b.name;');
+		return $this->db->query('select b.name as billingplan, if(count(u.groupname) is not null, count(u.groupname),0)as qty from billingplan b left join radusergroup u on b.name=u.groupname group by b.name;');
 	}
 }

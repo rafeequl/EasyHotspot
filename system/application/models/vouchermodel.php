@@ -22,7 +22,7 @@ Class Vouchermodel extends model {
 	$this->_table='voucher_list';
 	$this->_table_voucher = 'voucher';
 	$this->_table_radcheck = 'radcheck';
-	$this->_table_usergroup = 'usergroup';
+	$this->_table_usergroup = 'radusergroup';
 	
 	$this->load->model('billingplanmodel');
 	$this->load->helper('randomuser');

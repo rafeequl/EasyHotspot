@@ -744,10 +744,10 @@ CREATE TABLE `radreply` (
 -- --------------------------------------------------------
 
 -- 
--- Table structure for table `usergroup`
+-- Table structure for table `radusergroup`
 -- 
 
-CREATE TABLE `usergroup` (
+CREATE TABLE `radusergroup` (
   `username` varchar(64) NOT NULL default '',
   `groupname` varchar(64) NOT NULL default '',
   `priority` int(11) NOT NULL default '1',
@@ -755,10 +755,10 @@ CREATE TABLE `usergroup` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- 
--- Dumping data for table `usergroup`
+-- Dumping data for table `radusergroup`
 -- 
 
-INSERT INTO `usergroup` (`username`, `groupname`, `priority`) VALUES 
+INSERT INTO `radusergroup` (`username`, `groupname`, `priority`) VALUES 
 ('petpom9', '1 jam', 1),
 ('kakkag8', '1 jam', 1),
 ('kalcoc5', '1 jam', 1),
