@@ -116,6 +116,19 @@ class Postpaidmodel extends model {
 			$this->db->insert($this->_table_radreply,$data); // insert into radreply account table		
 		}
 		
+		//Simultaneous-Use
+		$data['attribute'] = 'Simultaneous-Use';
+		$data['op'] = ':=';
+		$data['value'] = '1';
+		$this->db->insert($this->_table_radcheck,$data);
+		
+		//Accounting status update inteval
+		//FreeRadius will update the accounts usage information within the given time (in sec)
+		$data['attribute'] = 'Acct-Interim-Interval';
+		$data['op'] = ':=';
+		$data['value'] = '120';
+		$this->db->insert($this->_table_radreply,$data);
+		
 		
 		$this->db->insert($this->_table,$_POST); //insert into postpaid account table
 		$this->db->insert($this->_table_radcheck,$radcheck_value);		//insert into radcheck account table

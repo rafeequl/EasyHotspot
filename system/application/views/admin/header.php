@@ -7,17 +7,21 @@
 	<link rel="shortcut icon" href="<?=other_asset_url('favicon.ico','default','image')?>" />
 	<?= css_asset('easyhotspot.css',$this->config->item('EASYHOTSPOT_THEME')); ?>
 	<?= css_asset('admin.css',$this->config->item('EASYHOTSPOT_THEME')); ?>
+	<?= css_asset('jquery.datepick.css',$this->config->item('EASYHOTSPOT_THEME')); ?>
 	<?= js_asset('jquery.js'); ?>
+	<?= js_asset('jquery.datepick.min.js'); ?>
 	<?= js_asset('flash.js'); ?>
 	<title>EasyHotspot : <?=$action?></title>
+	
 </head>
 
 <body>
+	<div id="container">
 <div id="headerback"></div>
 <div id="header">
 	<div id="logo"><span>EasyHotspot</span></div>
 	<div id="version"><?=$this->config->item('EASYHOTSPOT_VERSION');?></div>
-	<div id="date"><?=standard_date('DATE_RFC850',time())?></div>
+	
 </div>
 
 <div id="page">
@@ -32,11 +36,12 @@
 			<!-- <li class="radius"><?=anchor('admin/freeradius','FreeRadius')?></li> -->
 			<li class="postplan"><?=anchor('admin/postplan','Account Plan')?></li>
 			<li class="billingplan"><?=anchor('admin/billingplan','Billing Plan')?></li>
+			<li class="expirationplan"><?=anchor('admin/expirationplan','Expiration Plan')?></li>
 			<li class="admin"><?=anchor('admin/admins','Admins')?></li>
 			<li class="logout"><?=anchor('auth/logout','Logout')?></li>
 		</ul>
 	</div>
-	
+	<div id="date"><?=standard_date('DATE_RFC850',time())?></div>
 	<div id="content">
 		<!--STAR FLASH MESSAGE-->
 		<?php 

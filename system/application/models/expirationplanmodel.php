@@ -14,8 +14,8 @@
  * @version 	1.0
  */
 
-Class Postplanmodel extends model{
-	function Postplanmodel(){
+Class Expirationmodel extends model{
+	function Expirationmodel(){
 		parent::Model();
 		
 		//table name

@@ -259,6 +259,13 @@ acronym {
 	background: url("../image/billing_plan.png") no-repeat;
 }
 
+#menu li.expirationplan, #menu li.expirationplan a {
+	display: block;
+	width: 50px;
+	height: 50px;
+	background: url("../image/billing_plan.png") no-repeat;
+}
+
 #menu li.changepassword, #menu li.changepassword a {
 	display: block;
 	width: 50px;
@@ -528,3 +535,7 @@ acronym {
 #postpaid_info {
 	clear : both;
 	}
+
+.hidden {
+	display:none;
+}

@@ -112,6 +112,13 @@ class Billingplanmodel extends model {
 		$data['value'] = '1';
 		$this->db->insert($this->_table_radgroupcheck,$data);
 		
+		//Accounting status update inteval
+		//FreeRadius will update the accounts usage information within the given time (in sec)
+		$data['attribute'] = 'Acct-Interim-Interval';
+		$data['op'] = ':=';
+		$data['value'] = '120';
+		$this->db->insert($this->_table_radgroupreply,$data);
+		
 	}
 	
 	/**
