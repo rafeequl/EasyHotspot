@@ -11,7 +11,7 @@
  * @copyright   Copyright (c) 2009, easyhotspot.sf.net
  * @license		http://www.gnu.org/licenses/gpl.html
  * @link 		http://easyhotspot.sourceforge.net
- * @version 	1.0
+ * @version 	0.2
  */
 
 Class Expirationmodel extends model{
@@ -19,7 +19,9 @@ Class Expirationmodel extends model{
 		parent::Model();
 		
 		//table name
-		$this->_table='postplan';
+		$this->_table='expirationplan';
+		$this->_table_radgroupreply = 'radgroupreply';
+		$this->_table_radgroupcheck = 'radgroupcheck';
 	}
 	
 	/**
@@ -30,7 +32,7 @@ Class Expirationmodel extends model{
 	 * @param string $where
 	 * @return array
 	 */
-	function getPostPlan($fields = null, $limit = null, $where = null){ 
+	function getExpirationPlan($fields = null, $limit = null, $where = null){ 
 		($fields != null) ? $this->db->select($fields): '';
 		($limit != null) ? $this->db->limit($limit): '';
 		($where != null) ? $this->db->where($where): '';
@@ -38,58 +40,6 @@ Class Expirationmodel extends model{
 		return $this->db->get($this->_table);
 	}
 	
-	/**
-	 * Retrive price /byte 
-	 *
-	 * @return array
-	 */
-	
-	function getPerByte(){
-		$this->db->select('price');
-		$this->db->where('name=\'packet\'');
-		
-		return $this->db->get($this->_table);
-
-		
-	}	
-	
-	/**
-	 * Retrive price /minute 
-	 *
-	 * @return array
-	 */
-	function getPerMinute(){
-		$this->db->select('price');
-		$this->db->where('name=\'time\'');
-		
-		return $this->db->get($this->_table);
-
-		
-	}
-	
-	function getIdleTimeout(){
-		$this->db->select('price');
-		$this->db->where('name=\'idletimeout\'');
-		
-		return $this->db->get($this->_table);
-		
-	}
-	
-	function getDownloadRate(){
-		$this->db->select('price');
-		$this->db->where('name=\'bw_download\'');
-		
-		return $this->db->get($this->_table);
-		
-	}
-	
-	function getUploadRate(){
-		$this->db->select('price');
-		$this->db->where('name=\'bw_upload\'');
-		
-		return $this->db->get($this->_table);
-		
-	}
 	
 	/**
 	 * Save changes the prices
@@ -97,32 +47,70 @@ Class Expirationmodel extends model{
 	 */
 	
 	function save(){
-		//update price perminute
-		$time=array('price'=>$_POST['time']);
-		$this->db->where('name','time');
-		$this->db->update($this->_table,$time);
+		//insert into Expiration Plan table
+		$this->db->insert($this->_table,$_POST);
 		
+		//properties
+		$data['groupname'] = $_POST['name'];
 		
-		//update price perbyte
-		$packet=array('price'=>$_POST['packet']);
-		$this->db->where('name','packet');
-		$this->db->update($this->_table,$packet);
+		//insert into radgroupreply table
+		//max download speed
+		if($_POST['bw_download'] != '') {
+			$data['attribute']='WISPr-Bandwidth-Max-Down';
+			$data['op']=':=';
+			$data['value'] = $_POST['bw_download']*1000;
+			
+			$this->db->insert($this->_table_radgroupreply,$data);
+		}
 		
-		//update idle timeout
-		$packet=array('price'=>$_POST['idletimeout']);
-		$this->db->where('name','idletimeout');
-		$this->db->update($this->_table,$packet);
+		//max upload speed
+		if($_POST['bw_upload'] != '') {
+			$data['attribute']='WISPr-Bandwidth-Max-Up';
+			$data['op']=':=';
+			$data['value'] = $_POST['bw_upload']*1000;
+			
+			$this->db->insert($this->_table_radgroupreply,$data);
+		}
 		
-		//update download rate
-		$packet=array('price'=>$_POST['bw_download']);
-		$this->db->where('name','bw_download');
-		$this->db->update($this->_table,$packet);
+		//account expiration
+		if($_POST['type']=='valid_untill'){
+			$data['attribute']='Expiration';
+			$data['op']=':=';
+			$data['value'] = $_POST['bw_upload']*1000;
+			
+			$this->db->insert($this->_table_radgroupreply,$data);
+		}
 		
-		//update upload rate
-		$packet=array('price'=>$_POST['bw_upload']);
-		$this->db->where('name','bw_upload');
-		$this->db->update($this->_table,$packet);
+		//maximum packets being transfered
+		if($_POST['type']=='packet'){
+			$data['attribute']='Max-All-MB';
+			$data['op']=':=';
+			$data['value'] = $_POST['amount']*1024*1024;
+			
+			$this->db->insert($this->_table_radgroupcheck,$data);
+		}
 		
+		//Idle-Timeout
+		if($_POST['IdleTimeout']){
+			$data['attribute'] = 'Idle-Timeout';
+			$data['op'] = ':=';
+			$data['value'] = $_POST['IdleTimeout']*60;
+			
+			$this->db->insert($this->_table_radgroupreply,$data);
+		}
+		
+		//Simultaneous-Use
+		$data['attribute'] = 'Simultaneous-Use';
+		$data['op'] = ':=';
+		$data['value'] = '1';
+		$this->db->insert($this->_table_radgroupcheck,$data);
+		
+		//Accounting status update inteval
+		//FreeRadius will update the accounts usage information within the given time (in sec)
+		$data['attribute'] = 'Acct-Interim-Interval';
+		$data['op'] = ':=';
+		$data['value'] = '120';
+		$this->db->insert($this->_table_radgroupreply,$data);
 	}
 	
 }

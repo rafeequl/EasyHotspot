@@ -25,19 +25,29 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){
-		$('#popupDatepicker').datepick();
+		
+		
+		//set initial type
+		var duration_form = '<label>Duration</label> \
+							<?= form_input(array('size'=>'5','name'=>'amount'))?><acronym title="in Days">?</acronym>';
+		
+		var valid_until_form = '<label>Valid untill</label> \
+								<?= form_input(array('id'=>'popupDatepicker','name'=>'amount'))?><acronym title="Valid Untill">?</acronym>';
+								
+		$('#type').val('valid_untill');
+		$('.amount').html(valid_until_form);
+		
+		//datepicker init
+		$('#popupDatepicker').datepick({ showOn: 'both', dateFormat: 'd M yy', buttonImageOnly: true, buttonImage: '<?= image_asset_url('calendar.gif', 'default') ?>'}); 
 		$('#inlineDatepicker').datepick({onSelect: showDate});
 		
 		//Toggle form between valid_untill/due_date and 
 		$('#type').change(function(){
 			var type = $(this).val();
-			
 			if(type == 'valid_untill'){
-				$('.valid_untill').show();
-				$('.duration').hide();
+				$('.amount').html(valid_until_form);
 			}else if(type == 'duration'){
-				$('.valid_untill').hide();
-				$('.duration').show();
+				$('.amount').html(duration_form);
 			}
 		});
 
@@ -52,17 +62,14 @@
 </script>
 
 
-<?=form_open('admin/billingplan')?>
+<?=form_open('admin/expirationplan')?>
 <ul>
 	
 	<li><label>Name</label>
 	<?= form_input('name')?> <acronym title="The name of billing plan">?</acronym></li>
 	<li><label>Type</label>
 	<?= form_dropdown('type',array('valid_untill'=>'Due Date','duration'=>'Duration'),'valid_untill', 'id="type"')?> <acronym title="Type of the hotspot billing">?</acronym></li>
-	<li class="duration hidden"><label>Duration</label>
-	<?= form_input(array('size'=>'5','name'=>'amount'))?><acronym title="Time : in Minutes, Packet : in MegaByte">?</acronym></li>
-	<li class="valid_untill"><label>Valid untill</label>
-	<?= form_input(array('id'=>'popupDatepicker','name'=>'amount'))?><acronym title="Valid Untill">?</acronym></li>
+	<li class="amount"></li>
 	<li><label>Price</label>
 	<?= form_input(array('size'=>'5','name'=>'price'))?> <acronym title="The price of billing plan">?</acronym></li>
 	<li><label>Download Rate</label>

@@ -44,15 +44,27 @@ class ExpirationPlan extends Controller
 		$data['title']='Expiration Plan';
 		$data['h1']='Expiration Plan';
 		
+		#$data['query'] = $this->expirationplanmoddel->getExpirationPlan();		
+
+				
+		$rules['name']	= 'required|check_duplicate_billingplan';
+		$rules['type']	= 'required';
+		$rules['amount']= 'required';
+		$rules['price']	= 'required';
+		$rules['IdleTimeout'] = 'required';
 		
-		$data['os'] = exec('uname -o');
-		$data['hostname'] = exec('uname -n');
-		$this->load->view('home/home_view',$data);
-						 
-		$this->load->vars($data);
-	        
-	    $this->load->view('admin/expirationplan/expirationplan_view');
-        
+		$this->easyhotspot_validation->set_rules($rules);
+		
+		if($this->easyhotspot_validation->run()==FALSE)
+		{	
+			$this->load->view('admin/expirationplan/expirationplan_view',$data);
+		}
+		else 
+		{
+			//$this->billingplanmodel->addBillingPlan();
+			redirect('admin/expirationplan');
+		}
+        $this->output->enable_profiler(TRUE);
     }
     
 
