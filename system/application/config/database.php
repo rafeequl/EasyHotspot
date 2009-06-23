@@ -34,8 +34,8 @@
 $active_group = "default";
 
 $db['default']['hostname'] = "localhost";
-$db['default']['username'] = "root";
-$db['default']['password'] = "";
+$db['default']['username'] = "easyhotspot";
+$db['default']['password'] = "easyhotspot";
 $db['default']['database'] = "easyhotspot";
 $db['default']['dbdriver'] = "mysql";
 $db['default']['dbprefix'] = "";

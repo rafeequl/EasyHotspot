@@ -11,7 +11,7 @@
 |	http://www.your-site.com/
 |
 */
-$config['base_url']	= "http://localhost/~rafeequl/easyhotspot-lastest/";
+$config['base_url']	= "http://localhost/easyhotspot/";
 
 /*
 |--------------------------------------------------------------------------
