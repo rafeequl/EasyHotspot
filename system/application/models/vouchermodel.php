@@ -105,10 +105,12 @@ Class Vouchermodel extends model {
 			$user = generate_random_user();
 			$groupname = $billingplan->name;
 			$value = $billingplan->amount;
+			$valid_for = $billingplan->valid_for;
 			
 			
 
-			if($this->vouchermodel->VoucherExist($user['username'])){			//check username for duplication
+			if($this->vouchermodel->VoucherExist($user['username'])){			//check username for duplication 
+			
 				$i--; //repeat the step
 				continue;
 			}else {
@@ -125,6 +127,18 @@ Class Vouchermodel extends model {
 				
 				//radcheck table
 				$radcheck = array('username'=>$user['username'],'attribute'=>'Cleartext-Password','op'=>':=','value'=>$user['password']);
+				$this->db->insert($this->_table_radcheck,$radcheck);
+				
+				//Expiration with format = November 28 2007 20:26:43
+				$month = date('F');
+				$day = date('j');
+				$year = date('Y');
+				$time = '24:00:00';
+				
+				$date = mktime(0,0,0, date('m'), $day+$valid_for, $year);
+				
+				$date = date("F j Y", $date)." ".$time;
+				$radcheck = array('username'=>$user['username'],'attribute'=>'Expiration','op'=>':=','value'=>$date);
 				$this->db->insert($this->_table_radcheck,$radcheck);
 				
 				//OK stops here

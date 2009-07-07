@@ -21,6 +21,7 @@
 			<tr><td><?=$this->lang->line('password')?></td><td>: <?=$voucher->password?></td></tr>	
 			<tr><td><?=$this->lang->line('billing_plan')?></td><td>: <?=$voucher->billingplan?></td></tr>
 			<tr><td><?=$this->lang->line('valid')?></td><td>: <?=$voucher->amount?> <?=($voucher->type == 'time') ? 'Minutes' : 'MB';?></td></tr>
+			<tr><td><?=$this->lang->line('valid_until')?></td><td>: <?=preg_replace('/24:00:00/', '', $voucher->valid_until)?> </td></tr>
 			<tr><td><?=$this->lang->line('price')?></td><td>: <?=$this->config->item('currency_symbol')?><?=$voucher->price?></td></tr>
 			</table>
 		</td>

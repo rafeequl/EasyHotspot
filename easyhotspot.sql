@@ -548,7 +548,9 @@ CREATE TABLE `postplan` (
 INSERT INTO `postplan` (`id`, `name`, `price`) VALUES 
 (1, 'packet', 100),
 (2, 'time', 200);
-
+(3, 'bw_download', 64);
+(4, 'bw_upload', 64);
+(5, 'idletimeout', 200);
 -- --------------------------------------------------------
 
 -- 
@@ -824,4 +826,29 @@ CREATE  VIEW `easyhotspot`.`postpaid_account_list` AS select `easyhotspot`.`post
 -- Table structure for table `voucher_list`
 -- 
 
-CREATE  VIEW `easyhotspot`.`voucher_list` AS select `v`.`id` AS `id`,`v`.`username` AS `username`,`v`.`password` AS `password`,`v`.`billingplan` AS `billingplan`,`b`.`type` AS `type`,`b`.`amount` AS `amount`,`b`.`price` AS `price`,(sum(`ra`.`acctsessiontime`) / 60) AS `time_used`,if((`b`.`type` = _latin1'time'),(`b`.`amount` - (sum(`ra`.`acctsessiontime`) / 60)),_latin1'null') AS `time_remain`,((sum(`ra`.`acctoutputoctets`) + sum(`ra`.`acctinputoctets`)) / 1048576) AS `packet_used`,if((`b`.`type` = _latin1'packet'),(`b`.`amount` - (sum((`ra`.`acctoutputoctets` + `ra`.`acctinputoctets`)) / 1048576)),_latin1'null') AS `packet_remain`,`v`.`isprinted` AS `isprinted`,if((`b`.`type` = _latin1'time'),if(((sum(`ra`.`acctsessiontime`) / 60) >= `b`.`amount`),_latin1'exp',_latin1'valid'),if((((sum(`ra`.`acctoutputoctets`) + sum(`ra`.`acctinputoctets`)) / 1048576) >= `b`.`amount`),_latin1'exp',_latin1'valid')) AS `valid` from ((`easyhotspot`.`voucher` `v` left join `easyhotspot`.`radacct` `ra` on((`v`.`username` = `ra`.`username`))) join `easyhotspot`.`billingplan` `b` on((`b`.`name` = `v`.`billingplan`))) group by `v`.`username`;
+CREATE  VIEW `easyhotspot`.`voucher_list2` AS 
+select 	`v`.`id` AS `id`,
+		`v`.`username` AS `username`,
+		`v`.`password` AS `password`,
+		`v`.`billingplan` AS `billingplan`,
+		`b`.`type` AS `type`,
+		`b`.`amount` AS `amount`,
+		`b`.`valid_for` AS `valid_for`,
+		`b`.`price` AS `price`,
+		`rc`.`value` AS `valid_until`,
+		(sum(`ra`.`acctsessiontime`) / 60) AS `time_used`,
+			if(	(`b`.`type` = _latin1'time'),
+				(`b`.`amount` - (sum(`ra`.`acctsessiontime`) / 60)),_latin1'null') AS `time_remain`,
+				((sum(`ra`.`acctoutputoctets`) + sum(`ra`.`acctinputoctets`)) / 1048576) AS `packet_used`,
+			if((`b`.`type` = _latin1'packet'),
+				(`b`.`amount` - (sum((`ra`.`acctoutputoctets` + `ra`.`acctinputoctets`)) / 1048576)),_latin1'null') AS `packet_remain`,
+		`v`.`isprinted` AS `isprinted`,if((`b`.`type` = _latin1'time'),
+		if(((sum(`ra`.`acctsessiontime`) / 60) >= `b`.`amount`),_latin1'exp',_latin1'valid'),
+		if((((sum(`ra`.`acctoutputoctets`) + sum(`ra`.`acctinputoctets`)) / 1048576) >= `b`.`amount`),_latin1'exp',_latin1'valid')) AS `valid` 
+
+from `easyhotspot`.`voucher` `v` left join `easyhotspot`.`radacct` `ra` on `v`.`username` = `ra`.`username`  
+	join `easyhotspot`.`billingplan` `b` on `b`.`name` = `v`.`billingplan`
+join `easyhotspot`.`radcheck` `rc` on `rc`.`username` = `v`.`username`
+
+where `rc`.`attribute` = 'Expiration'
+group by `v`.`username`;

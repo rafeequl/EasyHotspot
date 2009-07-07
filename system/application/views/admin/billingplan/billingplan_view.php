@@ -10,6 +10,7 @@
 		<th>Name</th>
 		<th>Type</th>
 		<th>Amount</th>
+		<th>Valid for</th>
 		<th>Price</th>
 		<th>DL rate</th>
 		<th>Up rate</th>
@@ -23,6 +24,7 @@
 		<td><?=$row->name?></td>
 		<td><?=$row->type?></td>
 		<td><?=$row->amount?></td>
+		<td><?=$row->valid_for?></td>
 		<td><?=$this->config->item('currency_symbol')?><?=number_format($row->price,2)?></td>
 		<td><?=$row->bw_download?></td>
 		<td><?=$row->bw_upload?></td>
@@ -44,6 +46,8 @@
 	<?= form_dropdown('type',array('time'=>'Time Bassed','packet'=>'Packet Bassed'))?> <acronym title="Type of the hotspot billing">?</acronym></li>
 	<li><label>Amount</label>
 	<?= form_input(array('size'=>'5','name'=>'amount'))?><acronym title="Time : in Minutes, Packet : in MegaByte">?</acronym></li>
+	<li><label>Valid for</label></li>
+	<?= form_input(array('size'=>'5','name'=>'valid_for'))?><acronym title="Voucher's active time since voucher created for X days">?</acronym></li>
 	<li><label>Price</label>
 	<?= form_input(array('size'=>'5','name'=>'price'))?> <acronym title="The price of billing plan">?</acronym></li>
 	<li><label>Download Rate</label>

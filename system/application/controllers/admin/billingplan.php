@@ -28,6 +28,7 @@ Class Billingplan extends Controller {
 		$rules['name']	= 'required|check_duplicate_billingplan';
 		$rules['type']	= 'required';
 		$rules['amount']= 'required';
+		$rules['valid_for']= 'required';
 		$rules['price']	= 'required';
 		$rules['IdleTimeout'] = 'required';
 		
@@ -46,15 +47,16 @@ Class Billingplan extends Controller {
 		
 	}
 	
+	/**
+	 * Delete billing plan, defined by id on $this->uri->segment()
+	 *
+	 */
 	function delete(){
-		$this->freakauth_light->check('admin');
 		
-		$this->load->model('billingplanmodel');
+		$this->db->query('delete billingplan,radusergroup,voucher,radcheck,radgroupreply,radgroupcheck from billingplan left join radusergroup on billingplan.name=radusergroup.groupname left join voucher on billingplan.name = voucher.billingplan left join radcheck on voucher.username = radcheck.username left join radgroupreply on radgroupreply.groupname = billingplan.name left join radgroupcheck on radgroupcheck.groupname = billingplan.name where billingplan.name =\''.$this->uri->segment(5).'\'');	
 		
-		$this->billingplanmodel->deleteBillingPlan();
-		
-		redirect('admin/billingplan','location');
-		
+		redirect('admin/billingplan');
+
 	}
 }
 

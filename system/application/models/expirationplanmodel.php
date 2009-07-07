@@ -1,6 +1,6 @@
 <?php
 /**
- * Class Postplanmodel
+ * Class Expiration
  * handles controller Class Postpaid Plan requests dealing with user table in DB
  * 
  *
@@ -14,8 +14,8 @@
  * @version 	0.2
  */
 
-Class Expirationmodel extends model{
-	function Expirationmodel(){
+Class Expirationplanmodel extends model{
+	function Expirationplanmodel(){
 		parent::Model();
 		
 		//table name
@@ -111,6 +111,16 @@ Class Expirationmodel extends model{
 		$data['op'] = ':=';
 		$data['value'] = '120';
 		$this->db->insert($this->_table_radgroupreply,$data);
+	}
+	
+	/**
+	 * Delete expiration plan, defined by id on $this->uri->segment()
+	 *
+	 */
+	function deleteExpirationPlan(){
+		
+		$this->db->query('delete expirationplan,radusergroup,voucher,radcheck,radgroupreply,radgroupcheck from expirationplan left join radusergroup on expirationplan.name=radusergroup.groupname left join voucher on expirationplan.name = voucher.billingplan left join radcheck on voucher.username = radcheck.username left join radgroupreply on radgroupreply.groupname = expirationplan.name left join radgroupcheck on radgroupcheck.groupname = expirationplan.name where expirationplan.name =\''.$this->uri->segment(5).'\'');		
+
 	}
 	
 }

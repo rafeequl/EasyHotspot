@@ -16,7 +16,19 @@
 		<th>Created by</th>
 		<th></th>
 	</tr>
-
+	<?php foreach ($query->result() as $row): ?>
+		<tr>
+			<td><?=$row->id?></td>
+			<td><?=$row->name?></td>
+			<td><?=$row->type?></td>
+			<td><?=$row->amount?></td>
+			<td><?=$this->config->item('currency_symbol')?><?=number_format($row->price,2)?></td>
+			<td><?=$row->bw_download?></td>
+			<td><?=$row->bw_upload?></td>
+			<td><?=$row->created_by?></td>
+			<td><?=anchor('admin/expirationplan/delete/'.$row->id.'/'.$row->name,'del','class="delete" onClick="return confirm(\'Delete Billing Plan'.' '.$row->name.'? CAUTION IT WILL DELETE ALL '.$row->name.' VOUCHERS\')"')?></td>
+		</tr>
+	<?php endforeach;?>
 
 </tbody>
 </table>
@@ -46,6 +58,8 @@
 			var type = $(this).val();
 			if(type == 'valid_untill'){
 				$('.amount').html(valid_until_form);
+					$('#popupDatepicker').datepick({ showOn: 'both', dateFormat: 'd M yy', buttonImageOnly: true, buttonImage: '<?= image_asset_url('calendar.gif', 'default') ?>'}); 
+					$('#inlineDatepicker').datepick({onSelect: showDate});
 			}else if(type == 'duration'){
 				$('.amount').html(duration_form);
 			}

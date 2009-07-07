@@ -23,6 +23,8 @@ $lang['billing_plan'] = 'Billing plan';
 $lang['billing_plans'] = 'Billing plans';
 $lang['valid'] = "Valid";
 $lang['price'] = "Price";
+$lang['valid_until'] = 'Valid until';
+$lang['expire_on'] = 'Expire on';
 
 //invoice
 $lang['invoice_management'] = "Invoice Management";

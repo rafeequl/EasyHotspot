@@ -20,6 +20,7 @@ class ExpirationPlan extends Controller
         $this->freakauth_light->check('admin');
 		$this->load->library('validation');
 		$this->load->library('Easyhotspot_validation');
+		$this->load->model('expirationplanmodel');
         
         //-------------------------------------------------
         //END CHECKING FOR PERMISSION
@@ -44,7 +45,7 @@ class ExpirationPlan extends Controller
 		$data['title']='Expiration Plan';
 		$data['h1']='Expiration Plan';
 		
-		#$data['query'] = $this->expirationplanmoddel->getExpirationPlan();		
+		$data['query'] = $this->expirationplanmodel->getExpirationPlan();		
 
 				
 		$rules['name']	= 'required|check_duplicate_billingplan';
@@ -61,11 +62,18 @@ class ExpirationPlan extends Controller
 		}
 		else 
 		{
-			//$this->billingplanmodel->addBillingPlan();
+			$this->expirationplanmodel->save();
 			redirect('admin/expirationplan');
 		}
         $this->output->enable_profiler(TRUE);
     }
+
+	function delete(){
+		$this->expirationplanmodel->deleteExpirationPlan();
+		
+		redirect('admin/expirationplan','location');
+		
+	}
     
 
 }

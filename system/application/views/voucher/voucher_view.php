@@ -16,7 +16,7 @@
 		<th><?=$this->lang->line('username')?></th>
 		<th><?=$this->lang->line('password')?></th>
 		<th><?=$this->lang->line('billing_plan')?></th>
-		
+		<th><?=$this->lang->line('valid_until')?></th>
 		<th><?=$this->lang->line('time_used')?></th>
 		<th><?=$this->lang->line('time_remain')?></th>
 		<th><?=$this->lang->line('packet_used')?></th>
@@ -30,7 +30,7 @@
 		<td><?=$row->username;?></td>
 		<td><?=$row->password;?></td>
 		<td><?=$row->billingplan;?></td>
-		
+		<td><?=preg_replace('/24:00:00/', '', $row->valid_until);?></td>
 		<td><?=($row->time_used == '' || $row->time_used == 'null') ? '---' : $row->time_used ;?></td>
 		<td><?=($row->time_remain == '' || $row->time_remain == 'null') ? '---' : $row->time_remain ;?></td>
 		<td><?=($row->packet_used == '' || $row->packet_used == 'null') ? '---' : $row->packet_used ;?></td>
