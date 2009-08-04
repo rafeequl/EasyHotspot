@@ -20,6 +20,6 @@
  
  function freeradius_disconnectuser($username){
  
- 	system('echo \"User-Name=\''.$username.'" | radclient -x 127.0.0.1:3779 disconnect easyhotspot');
+ 	exec('echo "User-Name=\''.$username.'\'" | radclient -x 127.0.0.1:3779 disconnect easyhotspot');
  	
  }
