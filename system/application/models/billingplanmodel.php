@@ -98,13 +98,13 @@ class Billingplanmodel extends model {
 		}
 		
 		//voucher lifetme
-		if($_POST['valid_for'] != ''){
-			$data['attribute']='Expiration';
-			$data['op']=':=';
-			$data['value'] = $_POST['valid_for'];
-			
-			$this->db->insert($this->_table_radgroupcheck,$data);
-		}
+		#if($_POST['valid_for'] != ''){
+		#	$data['attribute']='Expiration';
+		#	$data['op']=':=';
+		#	$data['value'] = $_POST['valid_for'];
+		#	
+		#	$this->db->insert($this->_table_radgroupcheck,$data);
+		#}
 		
 		//Idle-Timeout
 		if($_POST['IdleTimeout']){
