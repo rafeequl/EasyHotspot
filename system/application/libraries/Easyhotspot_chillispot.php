@@ -15,6 +15,8 @@ class Easyhotspot_chillispot {
 				$value = substr($line,$pos+1);
 				//echo $value.'<br>';
 				switch ($conf){
+					case 'net':
+						$data['net']=$value;
 					case 'radiusserver1':
 						$data['radiusserver1']=$value;
 						break;
@@ -34,8 +36,6 @@ class Easyhotspot_chillispot {
 						$data['uamsecret']=$value;
 					case 'uamallowed':
 						$data['uamallowed']=$value;
-					case 'net':
-						$data['net']=$value;
 					
 				}
 			}

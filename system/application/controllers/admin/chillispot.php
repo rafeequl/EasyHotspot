@@ -27,6 +27,7 @@ Class Chillispot extends Controller {
 		$rules['uamhomepage'] = 'required';
 		$rules['uamsecret'] = 'required';
 		$rules['uamallowed'] = 'required';
+		$rules['net'] = 'required';
 		
 		$this->validation->set_rules($rules);
 		
