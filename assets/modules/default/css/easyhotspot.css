@@ -58,6 +58,10 @@ a:hover {
 small {
 }
 
+.fade {
+	color: gray;
+}
+
 hr {
 	display: none;
 }

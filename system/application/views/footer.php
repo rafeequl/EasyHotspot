@@ -1,7 +1,7 @@
 </div>
 </div>
+<center><small><p class="fade">EasyHotspot - OpenSource Hotspot Management System</p></small></center>
 </div>
-<div id="footer"><p>EasyHotspot - Hotspot Management System</p><p>GNU Public License</p></div>
 </body>
 
 </html>
