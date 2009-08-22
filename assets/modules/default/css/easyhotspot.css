@@ -131,8 +131,8 @@ acronym {
 
 /* version */
 #version {
-	font-size: 135px;
-	font-family: sans;
+	font-size: 100px;
+	font-family: Garamond;
 	color: #1C1B1B;
 	margin-top: 0px; 
 	width: 100%;

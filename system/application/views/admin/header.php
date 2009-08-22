@@ -31,12 +31,11 @@
 	<div id="menu">
 		<ul>
 			<li class="home"><?=anchor('admin/','Home')?></li>
-			<li class="cashier"><?=anchor('admin/cashier','Cashier Management')?></li>
 			<li class="chillispot"><?=anchor('admin/chillispot','Chillispot')?></li>
 			<!-- <li class="radius"><?=anchor('admin/freeradius','FreeRadius')?></li> -->
 			<li class="postplan"><?=anchor('admin/postplan','Account Plan')?></li>
 			<li class="billingplan"><?=anchor('admin/billingplan','Billing Plan')?></li>
-			<!-- <li class="expirationplan"><?=anchor('admin/expirationplan','Expiration Plan')?></li> -->
+			<li class="cashier"><?=anchor('admin/cashier','Cashier Management')?></li>
 			<li class="admin"><?=anchor('admin/admins','Admins')?></li>
 			<li class="logout"><?=anchor('auth/logout','Logout')?></li>
 		</ul>
