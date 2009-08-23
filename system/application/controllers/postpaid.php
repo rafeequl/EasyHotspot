@@ -37,6 +37,7 @@ Class Postpaid extends Controller {
 		$rules['password']='required';
 		$rules['bill_by']='required';
 		$rules['created_by']='required';
+		$rules['valid_until']='required|numeric';
 		$this->easyhotspot_validation->set_rules($rules);
 		
 		//get accouts
