@@ -112,7 +112,7 @@ class Postpaidmodel extends model {
 		    $data['username'] = $_POST['username'];
 			$data['attribute'] = 'Idle-Timeout';
 			$data['op'] = ':=';
-			$data['value'] = $idletimeout;	
+			$data['value'] = $idletimeout*60;	
 			$this->db->insert($this->_table_radreply,$data); // insert into radreply account table		
 		}
 		
