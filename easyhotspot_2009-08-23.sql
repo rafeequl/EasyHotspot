@@ -4,7 +4,7 @@
 #
 # Host: localhost (MySQL 5.1.34)
 # Database: easyhotspot
-# Generation Time: 2009-08-23 22:22:45 +0700
+# Generation Time: 2009-08-24 00:26:22 +0700
 # ************************************************************
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -67,8 +67,7 @@ LOCK TABLES `ci_sessions` WRITE;
 /*!40000 ALTER TABLE `ci_sessions` DISABLE KEYS */;
 INSERT INTO `ci_sessions` (`session_id`,`ip_address`,`user_agent`,`last_activity`,`session_data`)
 VALUES
-	('5fac3a2f028105fcbd3e9886caf92b3c','0.0.0.0','Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en',1251040699,'a:8:{s:2:\"id\";s:1:\"1\";s:9:\"user_name\";s:5:\"admin\";s:10:\"country_id\";s:1:\"0\";s:5:\"email\";s:18:\"root@localhost.com\";s:4:\"role\";s:10:\"superadmin\";s:10:\"last_visit\";s:19:\"2009-08-23 21:34:35\";s:7:\"created\";s:19:\"2009-08-23 21:34:35\";s:8:\"modified\";s:19:\"0000-00-00 00:00:00\";}'),
-	('c1cd06246182871def25a2ceb59d2336','0.0.0.0','Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_5_7; ',1251038656,'a:8:{s:2:\"id\";s:1:\"1\";s:9:\"user_name\";s:5:\"admin\";s:10:\"country_id\";s:1:\"0\";s:5:\"email\";s:18:\"root@localhost.com\";s:4:\"role\";s:10:\"superadmin\";s:10:\"last_visit\";s:19:\"2009-08-22 10:55:13\";s:7:\"created\";s:19:\"2009-08-22 17:55:13\";s:8:\"modified\";s:19:\"0000-00-00 00:00:00\";}');
+	('5fac3a2f028105fcbd3e9886caf92b3c','0.0.0.0','Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en',1251047106,'a:8:{s:2:\"id\";s:1:\"1\";s:9:\"user_name\";s:5:\"admin\";s:10:\"country_id\";s:1:\"0\";s:5:\"email\";s:18:\"root@localhost.com\";s:4:\"role\";s:10:\"superadmin\";s:10:\"last_visit\";s:19:\"2009-08-23 21:34:35\";s:7:\"created\";s:19:\"2009-08-23 21:34:35\";s:8:\"modified\";s:19:\"0000-00-00 00:00:00\";}');
 
 /*!40000 ALTER TABLE `ci_sessions` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -528,21 +527,20 @@ CREATE TABLE `postpaid_account` (
   `password` varchar(255) NOT NULL,
   `bill_by` varchar(255) NOT NULL,
   `created_by` varchar(255) NOT NULL,
-  `IdleTimeout` int(255) NOT NULL,
+  `IdleTimeout` int(10) NOT NULL,
+  `valid_until` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
 
 LOCK TABLES `postpaid_account` WRITE;
 /*!40000 ALTER TABLE `postpaid_account` DISABLE KEYS */;
-INSERT INTO `postpaid_account` (`id`,`realname`,`username`,`password`,`bill_by`,`created_by`,`IdleTimeout`)
+INSERT INTO `postpaid_account` (`id`,`realname`,`username`,`password`,`bill_by`,`created_by`,`IdleTimeout`,`valid_until`)
 VALUES
-	(31,'easy','easy','easy','time','admin',5);
+	(35,'easy','easy','easy','time','admin',5,'August 25 2009 24:00:00');
 
 /*!40000 ALTER TABLE `postpaid_account` ENABLE KEYS */;
 UNLOCK TABLES;
-
-
 
 
 
@@ -613,7 +611,7 @@ CREATE TABLE `radacct` (
   KEY `acctstarttime` (`acctstarttime`),
   KEY `acctstoptime` (`acctstoptime`),
   KEY `nasipaddress` (`nasipaddress`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
 
@@ -630,7 +628,7 @@ CREATE TABLE `radcheck` (
   `value` varchar(253) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `username` (`username`(32))
-) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=latin1;
 
 LOCK TABLES `radcheck` WRITE;
 /*!40000 ALTER TABLE `radcheck` DISABLE KEYS */;
@@ -638,8 +636,9 @@ INSERT INTO `radcheck` (`id`,`username`,`attribute`,`op`,`value`)
 VALUES
 	(120,'wirwes8','Cleartext-Password',':=','cugdetoc'),
 	(121,'wirwes8','Expiration',':=','August 24 2009 24:00:00'),
-	(122,'easy','Simultaneous-Use',':=','1'),
-	(123,'easy','Cleartext-Password',':=','easy');
+	(134,'easy','Expiration',':=','August 25 2009 24:00:00'),
+	(135,'easy','Simultaneous-Use',':=','1'),
+	(136,'easy','Cleartext-Password',':=','easy');
 
 /*!40000 ALTER TABLE `radcheck` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -726,16 +725,16 @@ CREATE TABLE `radreply` (
   `value` varchar(253) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `username` (`username`(32))
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=latin1;
 
 LOCK TABLES `radreply` WRITE;
 /*!40000 ALTER TABLE `radreply` DISABLE KEYS */;
 INSERT INTO `radreply` (`id`,`username`,`attribute`,`op`,`value`)
 VALUES
-	(21,'easy','WISPr-Bandwidth-Max-Down',':=','64000'),
-	(22,'easy','WISPr-Bandwidth-Max-Up',':=','128000'),
-	(23,'easy','Idle-Timeout',':=','300'),
-	(24,'easy','Acct-Interim-Interval',':=','120');
+	(44,'easy','WISPr-Bandwidth-Max-Down',':=','64000'),
+	(45,'easy','WISPr-Bandwidth-Max-Up',':=','128000'),
+	(46,'easy','Idle-Timeout',':=','300'),
+	(47,'easy','Acct-Interim-Interval',':=','120');
 
 /*!40000 ALTER TABLE `radreply` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -795,6 +794,7 @@ DROP VIEW IF EXISTS `voucher_list`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`easyhotspot`@`localhost` SQL SECURITY DEFINER VIEW `voucher_list` AS select `v`.`id` AS `id`,`v`.`username` AS `username`,`v`.`password` AS `password`,`v`.`billingplan` AS `billingplan`,`b`.`type` AS `type`,`b`.`amount` AS `amount`,`b`.`valid_for` AS `valid_for`,`b`.`price` AS `price`,`rc`.`value` AS `valid_until`,(sum(`ra`.`acctsessiontime`) / 60) AS `time_used`,if((`b`.`type` = _latin1'time'),(`b`.`amount` - (sum(`ra`.`acctsessiontime`) / 60)),_latin1'null') AS `time_remain`,((sum(`ra`.`acctoutputoctets`) + sum(`ra`.`acctinputoctets`)) / 1048576) AS `packet_used`,if((`b`.`type` = _latin1'packet'),(`b`.`amount` - (sum((`ra`.`acctoutputoctets` + `ra`.`acctinputoctets`)) / 1048576)),_latin1'null') AS `packet_remain`,`v`.`isprinted` AS `isprinted`,if((`b`.`type` = _latin1'time'),if(((sum(`ra`.`acctsessiontime`) / 60) >= `b`.`amount`),_latin1'exp',_latin1'valid'),if((((sum(`ra`.`acctoutputoctets`) + sum(`ra`.`acctinputoctets`)) / 1048576) >= `b`.`amount`),_latin1'exp',_latin1'valid')) AS `valid` from (((`voucher` `v` left join `radacct` `ra` on((`v`.`username` = `ra`.`username`))) join `billingplan` `b` on((`b`.`name` = `v`.`billingplan`))) join `radcheck` `rc` on((`rc`.`username` = `v`.`username`))) where (`rc`.`attribute` = 'Expiration') group by `v`.`username`;
 
+
 # Dump of table postpaid_account_bill
 # ------------------------------------------------------------
 
@@ -803,13 +803,12 @@ DROP VIEW IF EXISTS `postpaid_account_bill`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`easyhotspot`@`localhost` SQL SECURITY DEFINER VIEW `postpaid_account_bill` AS select `postpaid_account`.`realname` AS `realname`,`postpaid_account`.`username` AS `username`,`postpaid_account`.`password` AS `password`,`radacct`.`acctstarttime` AS `start`,`radacct`.`acctstoptime` AS `stop`,(`radacct`.`acctsessiontime` / 60) AS `time_used`,((`radacct`.`acctoutputoctets` + `radacct`.`acctinputoctets`) / 1048576) AS `packet_used`,`postpaid_account`.`bill_by` AS `bill_by`,(`postplan`.`price` * (`radacct`.`acctsessiontime` / 60)) AS `time_price`,(`postplan`.`price` * ((`radacct`.`acctoutputoctets` + `radacct`.`acctinputoctets`) / 1048576)) AS `packet_price` from ((`postpaid_account` left join `radacct` on((`postpaid_account`.`username` = `radacct`.`username`))) join `postplan` on((`postplan`.`name` = `postpaid_account`.`bill_by`)));
 
 
-
 # Dump of table postpaid_account_list
 # ------------------------------------------------------------
 
 DROP VIEW IF EXISTS `postpaid_account_list`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`easyhotspot`@`localhost` SQL SECURITY DEFINER VIEW `postpaid_account_list` AS select `postpaid_account`.`id` AS `id`,`postpaid_account`.`realname` AS `realname`,`postpaid_account`.`username` AS `username`,`postpaid_account`.`password` AS `password`,(sum(`radacct`.`acctsessiontime`) / 60) AS `time_used`,(sum((`radacct`.`acctoutputoctets` + `radacct`.`acctinputoctets`)) / 1048576) AS `packet_used`,`postpaid_account`.`bill_by` AS `bill_by`,(`postplan`.`price` * (sum(`radacct`.`acctsessiontime`) / 60)) AS `time_price`,(`postplan`.`price` * (sum((`radacct`.`acctoutputoctets` + `radacct`.`acctinputoctets`)) / 1048576)) AS `packet_price`, `valid_until` AS `valid_until` from ((`postpaid_account` left join `radacct` on((`postpaid_account`.`username` = `radacct`.`username`))) join `postplan` on((`postplan`.`name` = `postpaid_account`.`bill_by`))) group by `postpaid_account`.`username`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`easyhotspot`@`localhost` SQL SECURITY DEFINER VIEW `postpaid_account_list` AS select `postpaid_account`.`id` AS `id`,`postpaid_account`.`realname` AS `realname`,`postpaid_account`.`username` AS `username`,`postpaid_account`.`password` AS `password`,(sum(`radacct`.`acctsessiontime`) / 60) AS `time_used`,(sum((`radacct`.`acctoutputoctets` + `radacct`.`acctinputoctets`)) / 1048576) AS `packet_used`,`postpaid_account`.`bill_by` AS `bill_by`,(`postplan`.`price` * (sum(`radacct`.`acctsessiontime`) / 60)) AS `time_price`,(`postplan`.`price` * (sum((`radacct`.`acctoutputoctets` + `radacct`.`acctinputoctets`)) / 1048576)) AS `packet_price`,`postpaid_account`.`valid_until` AS `valid_until` from ((`postpaid_account` left join `radacct` on((`postpaid_account`.`username` = `radacct`.`username`))) join `postplan` on((`postplan`.`name` = `postpaid_account`.`bill_by`))) group by `postpaid_account`.`username`;
 
 
 
