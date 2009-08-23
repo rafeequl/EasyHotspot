@@ -14,7 +14,8 @@ $lang['close_and_print_invoice_for'] = "Close and print invoice for :";
 $lang['postpaid_account_search_result'] = "Search result";
 $lang['download_rate'] = "Download Rate";
 $lang['upload_rate'] = "Upload Rate";
-
+$lang['valid_for'] = "Valid for";
+$lang['valid_until'] = "Valid until";
 //Voucher
 $lang['voucher_management'] = "Voucher Management";
 $lang['voucher_search_result'] = "Voucher search result";

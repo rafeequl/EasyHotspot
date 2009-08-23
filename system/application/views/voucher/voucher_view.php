@@ -31,10 +31,10 @@
 		<td><?=$row->password;?></td>
 		<td><?=$row->billingplan;?></td>
 		<td><?=preg_replace('/24:00:00/', '', $row->valid_until);?></td>
-		<td><?=($row->time_used == '' || $row->time_used == 'null') ? '---' : $row->time_used ;?></td>
-		<td><?=($row->time_remain == '' || $row->time_remain == 'null') ? '---' : $row->time_remain ;?></td>
-		<td><?=($row->packet_used == '' || $row->packet_used == 'null') ? '---' : $row->packet_used ;?></td>
-		<td><?=($row->packet_remain == '' || $row->packet_remain == 'null') ? '---' : $row->packet_remain ;?></td>
+		<td><?=($row->time_used == '' || $row->time_used == 'null') ? '---' : intval($row->time_used) ;?></td>
+		<td><?=($row->time_remain == '' || $row->time_remain == 'null') ? '---' : intval($row->time_remain) ;?></td>
+		<td><?=($row->packet_used == '' || $row->packet_used == 'null') ? '---' : intval($row->packet_used) ;?></td>
+		<td><?=($row->packet_remain == '' || $row->packet_remain == 'null') ? '---' : intval($row->packet_remain) ;?></td>
 		<td><?= ($row->isprinted == false ) ? 'no' : 'yes';?></td>
 		<td><?=anchor('voucher/delete/'.$row->username,'del','class="delete" onClick="return confirm(\''.$this->lang->line('delete').' User'.' '.$row->username.'?\')"')?></td>
 		<td><?=anchor('voucher/edit/'.$row->username,'edit','class="edit" ')?></td>

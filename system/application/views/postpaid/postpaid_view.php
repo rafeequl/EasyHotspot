@@ -17,6 +17,7 @@
 		<th><?=$this->lang->line('used')?></th>
 		<th><?=$this->lang->line('bill_by')?></th>
 		<th><?=$this->lang->line('current_total')?></th>
+		<th><?=$this->lang->line('valid_until')?></th>
 		<th colspan="4" class="center">Action</th>
 	</tr>
 	
@@ -28,6 +29,7 @@
 		<td><?=($row->bill_by=='time') ? number_format($row->time_used,0) : number_format($row->packet_used,0);?></td>
 		<td><?=$row->bill_by;?></td>
 		<td><?=($row->bill_by=='time') ? number_format($row->time_price,0):number_format($row->packet_price,0);?></td>
+		<td><?=str_replace('24:00:00','',($row->valid_until))?></td>
 		<td class="action"><?=anchor('postpaid/delete/'.$row->username,'del','class="delete" onClick="return confirm(\'Delete User'.' '.$row->username.'?\')"')?></td>
 		<td class="action"><?=anchor('postpaid/edit/'.$row->username,'edit','class="edit"')?></td>
 		<td class="action"><?=anchor('postpaid/bill/'.$row->username,'bill','class="bill"')?></td>
@@ -61,6 +63,10 @@
 		<label><?=$this->lang->line('bill_by')?></label>
 		<?php $options=array('time'=>'Time','packet'=>'Packet');?>
 		<?=form_dropdown('bill_by',$options)?>
+	</li>
+	<li>
+		<label><?=$this->lang->line('valid_until')?></label>
+		<?=form_input('valid_until')?> days
 	</li>
 
 </ul>

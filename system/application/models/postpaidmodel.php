@@ -116,6 +116,25 @@ class Postpaidmodel extends model {
 			$this->db->insert($this->_table_radreply,$data); // insert into radreply account table		
 		}
 		
+		if($_POST['valid_until']){
+			$data['username'] = $_POST['username'];
+			
+			//Expiration with format = November 28 2007 20:26:43
+			$month = date('F');
+			$day = date('j');
+			$year = date('Y');
+			$time = '24:00:00';
+			$date = mktime(0,0,0, date('m'), $day+$_POST['valid_until'], $year);
+			$date = date("F j Y", $date)." ".$time;
+			
+			$data['attribute'] = 'Expiration';
+			$data['op'] = ':=';
+			$data['value'] = $date;
+			
+			$_POST['valid_until'] = $date;
+			$this->db->insert($this->_table_radcheck,$data);
+		}
+		
 		//Simultaneous-Use
 		$data['attribute'] = 'Simultaneous-Use';
 		$data['op'] = ':=';
