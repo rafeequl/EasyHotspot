@@ -10,7 +10,7 @@
 <body>
 <div id="wrapper">
    <div id="header">
-    	<h1>Easyhotpsot <?=$this->config->item('EASYHOTSPOT_VERSION');?> </h1>
+    	<h1>EasyHotspot <?=$this->config->item('EASYHOTSPOT_VERSION');?> </h1>
     	<?
     	//$this->load->view($this->config->item('FAL_template_dir').'template/menu');
     	?>  
