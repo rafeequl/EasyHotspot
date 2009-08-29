@@ -22,8 +22,9 @@ Class Onlineuser extends Controller {
 	function disconnect(){
 		//Security check please		
 		$this->freakauth_light->check('user');
-		
-		freeradius_disconnectuser($this->uri->segment(3));
+ 
+		freeradius_disconnectuser($this->uri->segment(3) , $this->config->item('radiuscommand'),
+				$this->config->item('radiusserver'), $this->config->item('radiussecret'));
 		sleep(2);
 		redirect('onlineuser');
 		

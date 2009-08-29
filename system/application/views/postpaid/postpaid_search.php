@@ -26,9 +26,9 @@
 		<td><?=$row->realname;?></td>
 		<td><?=$row->username;?></td>
 		<td><?=$row->password;?></td>
-		<td><?=($row->bill_by=='time') ? number_format($row->time_used,0) : number_format($row->packet_used,0);?></td>
+		<td><?=($row->bill_by=='time') ? number_format($row->time_used,$this->config->item('decimal_places'),$this->config->item('decimal_separator'),$this->config->item('thousands_separator')) : number_format($row->packet_used,$this->config->item('decimal_places'),$this->config->item('decimal_separator'),$this->config->item('thousands_separator'));?></td>
 		<td><?=$row->bill_by;?></td>
-		<td><?=($row->bill_by=='time') ? number_format($row->time_price,0):number_format($row->packet_price,0);?></td>
+		<td><?=($row->bill_by=='time') ? number_format($row->time_price,$this->config->item('decimal_places'),$this->config->item('decimal_separator'),$this->config->item('thousands_separator')):number_format($row->packet_price,$this->config->item('decimal_places'),$this->config->item('decimal_separator'),$this->config->item('thousands_separator'));?></td>
 		<td class="action"><?=anchor('postpaid/delete/'.$row->username,'del','class="delete" onClick="return confirm(\'Delete User'.' '.$row->username.'?\')"')?></td>
 		<td class="action"><?=anchor('postpaid/edit/'.$row->username,'edit','class="edit"')?></td>
 		<td class="action"><?=anchor('postpaid/bill/'.$row->username,'bill','class="bill"')?></td>

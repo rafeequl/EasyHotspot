@@ -28,11 +28,11 @@
 	</li>
 	<li>
 		<label>Download Rate</label>
-		<?= form_dropdown('bw_download',array(''=>'default','32'=>'32 kbps','64'=>'64 kbps', '128' => '128 kbps', '256'=>'256 kbps', '512'=>'512 kbps','1024'=>'1 MBps','2048'=>'2 MBps'),$bw_download->price)?> <acronym title="The maximum of download rate">?</acronym>
+		<?= form_dropdown('bw_download',array(''=>'default','16000' => '16 kbps','32000'=>'32 kbps','48000'=>'48 kbps','64000'=>'64 kbps', '96000' => '96 kbps', '128000' => '128 kbps',  '192000' => '192 kbps','256000'=>'256 kbps', '512000'=>'512 kbps','1024000'=>'1 MBps','2048000'=>'2 MBps'),$bw_download->price)?> <acronym title="The maximum of download rate">?</acronym>
 	</li>
 	<li>
 		<label>Upload Rate</label>
-		<?= form_dropdown('bw_upload',array(''=>'default','32'=>'32 kbps','640'=>'64 kbps', '128' => '128 kbps', '256'=>'256 kbps', '512'=>'512 kbps','1024'=>'1 MBps','2048'=>'2 MBps'),$bw_upload->price)?> <acronym title="The maximum of upload rate">?</acronym>
+		<?= form_dropdown('bw_upload',array(''=>'default','16000' => '16 kbps','32000'=>'32 kbps','48000'=>'48 kbps','64000'=>'64 kbps', '96000' => '96 kbps', '128000' => '128 kbps',  '192000' => '192 kbps','256000'=>'256 kbps', '512000'=>'512 kbps','1024000'=>'1 MBps','2048000'=>'2 MBps'),$bw_upload->price)?> <acronym title="The maximum of upload rate">?</acronym>
 	</li>
 </ul>
 <input type="submit" value="Save changes" class="submit"  />

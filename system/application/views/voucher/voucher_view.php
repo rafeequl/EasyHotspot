@@ -51,6 +51,7 @@
 		<label><?=$this->lang->line('number_of_voucher')?></label>
 		<?=form_input(array('name'=>'numberofvoucher','maxlength'=>'4','size'=>'4'))?>
 	</li>
+<li>&nbsp;</li>
 	<li>
 		<label><?=$this->lang->line('billing_plan')?></label>
 		<select name="billingplan">

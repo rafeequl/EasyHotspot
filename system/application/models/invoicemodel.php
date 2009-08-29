@@ -65,7 +65,8 @@ Class Invoicemodel extends model {
 			$acc_usage['bill_by'] = $row->bill_by;
 			($row->bill_by == 'time') ? $acc_usage['used'] = $row->time_used : $acc_usage['used'] = $row->packet_used;
 			($row->bill_by == 'time') ? $acc_usage['total'] = $row->time_price : $acc_usage['total'] = $row->packet_price;
-			
+//TODO Need to check this logic in next step -lincoln
+			if ($acc_usage['stop'] == null) { $acc_usage['stop'] = $acc_usage['start']; }
 			$this->db->insert($this->_table_invoice_detail,$acc_usage);
 		}
 		

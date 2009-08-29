@@ -30,7 +30,7 @@
 		<td><?=$row->used;?></td>
 		<td><?=$row->bill_by;?></td>
 		<td><?=$row->date;?></td>
-		<td><?=number_format($row->current_total)?></td>
+		<td><?=number_format($row->current_total,$this->config->item('decimal_places'),$this->config->item('decimal_separator'),$this->config->item('thousands_separator'))?></td>
 		<td class="action"><?=anchor('invoice/detail/'.$row->username,'detail','class="detail"')?></td>
 		<?php if(isAdmin()): ?>
 		<td class="action"><?=anchor('invoice/delete/'.$row->username,'detail','class="delete"')?></td>

@@ -4,7 +4,7 @@ class Easyhotspot_chillispot {
 	
 	function get_configuration(){
 		$CI = &get_instance();
-		$file = $CI->config->item('CHILLISPOT_COFIG_FILE');
+		$file = $CI->config->item('CHILLISPOT_CONFIG_FILE');
 		$lines = file($file);
 		
 		foreach ($lines as $line){
@@ -15,8 +15,6 @@ class Easyhotspot_chillispot {
 				$value = substr($line,$pos+1);
 				//echo $value.'<br>';
 				switch ($conf){
-					case 'net':
-						$data['net']=$value;
 					case 'radiusserver1':
 						$data['radiusserver1']=$value;
 						break;
@@ -28,15 +26,25 @@ class Easyhotspot_chillispot {
 						break;
 					case 'dhcpif':
 						$data['dhcpif']=$value;
+						break;
 					case 'uamserver':
 						$data['uamserver']=$value;
+						break;
 					case 'uamhomepage':
 						$data['uamhomepage']=$value;
+						break;
 					case 'uamsecret':
 						$data['uamsecret']=$value;
+						break;
 					case 'uamallowed':
 						$data['uamallowed']=$value;
-					
+						break;
+					case 'net':
+						$data['net']=$value;
+						break;
+					case 'coaport':
+						$data['coaport']=$value;
+						break;
 				}
 			}
 		}
@@ -89,6 +97,9 @@ class Easyhotspot_chillispot {
 						break;
 					case 'net':
 						fwrite($handle_temp,"$conf ".$data['net']."\n");
+						break;
+					case 'coaport':
+						fwrite($handle_temp,"$conf ".$data['coaport']."\n");
 						break;
 					}
 			}else{

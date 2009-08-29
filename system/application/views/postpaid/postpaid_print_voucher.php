@@ -10,7 +10,9 @@
 	<?=$this->config->item('company_name')?><br />
 	<?=$this->config->item('company_address_line1')?><br />
 	<?=$this->config->item('company_address_line2')?><br />
-	<?=$this->config->item('company_address_line3')?>
+	<?=$this->config->item('company_address_line3')?><br />
+	<?=$this->config->item('company_phone')?><br />
+	<?=$this->config->item('company_tax_code')?><br />
 	<hr />
 	</td></tr>
 	<tr>

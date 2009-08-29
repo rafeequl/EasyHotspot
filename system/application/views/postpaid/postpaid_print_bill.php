@@ -20,6 +20,8 @@
 			<tr><td><?=$this->config->item('company_address_line1')?></td></tr>
 			<tr><td><?=$this->config->item('company_address_line2')?></td></tr>
 			<tr><td><?=$this->config->item('company_address_line3')?></td></tr>
+			<tr><td><?=$this->config->item('company_phone')?></td></tr>
+			<tr><td><?=$this->config->item('company_tax_code')?></td></tr>
 			</table>
 		</td>
 	</tr>
@@ -30,7 +32,7 @@
 		<tr>
 			<th><?=$this->lang->line('no')?></th>
 			<th><?=$this->lang->line('access_time')?></th>
-			<th><?=$this->lang->line('duration_ammount')?></th>
+			<th><?=$this->lang->line('duration_amount')?></th>
 			<th><?=$this->lang->line('total')?></th>
 		</tr>
 		
@@ -38,15 +40,15 @@
 		<tr>
 			<td><?=$i?></td>
 			<td><?=$row->start?></td>
-			<td><?=($row->bill_by == 'time') ? number_format($row->time_used,0) : number_format($row->packet_used,0) ?></td>
-			<td class="total_qty"><?=($row->bill_by == 'time') ? number_format($row->time_price,0) : number_format($row->packet_price,0) ?></td>
+			<td><?=($row->bill_by == 'time') ? number_format($row->time_used,$this->config->item('decimal_places'),$this->config->item('decimal_separator'),$this->config->item('thousands_separator')) : number_format($row->packet_used,$this->config->item('decimal_places'),$this->config->item('decimal_separator'),$this->config->item('thousands_separator')) ?></td>
+			<td class="total_qty"><?=($row->bill_by == 'time') ? number_format($row->time_price,$this->config->item('decimal_places'),$this->config->item('decimal_separator'),$this->config->item('thousands_separator')) : number_format($row->packet_price,$this->config->item('decimal_places'),$this->config->item('decimal_separator'),$this->config->item('thousands_separator')) ?></td>
 			<?php $i++ ?>
 		</tr>
 		<?php endforeach; ?>
 		
 		<tr>
 			<td colspan="3" class="subtotal" align='right'><strong><?=$this->lang->line('subtotal')?> </strong></td>
-			<td class="total"><strong><?=($account->bill_by == 'time') ? number_format($account->time_price,0) : number_format($account->packet_price,0)?></strong></td>
+			<td class="total"><strong><?=($account->bill_by == 'time') ? number_format($account->time_price,$this->config->item('decimal_places'),$this->config->item('decimal_separator'),$this->config->item('thousands_separator')) : number_format($account->packet_price,$this->config->item('decimal_places'),$this->config->item('decimal_separator'),$this->config->item('thousands_separator'))?></strong></td>
 		</tr>
 	</tbody>
 	</table>

@@ -21,6 +21,8 @@
 			<tr><td align="right"><?=$this->config->item('company_address_line1')?></td></tr>
 			<tr><td align="right"><?=$this->config->item('company_address_line2')?></td></tr>
 			<tr><td align="right"><?=$this->config->item('company_address_line3')?></td></tr>
+			<tr><td align="right"><?=$this->config->item('company_phone')?></td></tr>
+			<tr><td align="right"><?=$this->config->item('company_tax_code')?></td></tr>
 			</table>
 		</td>
 	</tr>
@@ -31,7 +33,7 @@
 			<td><?=$this->lang->line('no')?></td>
 			<td><?=$this->lang->line('access_start')?></td>
 			<td><?=$this->lang->line('access_stop')?></td>
-			<td><?=$this->lang->line('duration_ammount')?></td>
+			<td><?=$this->lang->line('duration_amount')?></td>
 			<td><?=$this->lang->line('total')?></td>
 		</tr>
 		
@@ -41,14 +43,14 @@
 			<td align="center"><?=$row->start?></td>
 			<td align="center"><?=$row->stop?></td>
 			<td align="center"><?=$row->used ?></td>
-			<td align="right" class="total_qty"><?=number_format($row->total,0)?></td>
+			<td align="right" class="total_qty"><?=number_format($row->total,$this->config->item('decimal_places'),$this->config->item('decimal_separator'),$this->config->item('thousands_separator'))?></td>
 			<?php $i++ ?>
 		</tr>
 		<?php endforeach; ?>
 		
 		<tr>
 			<td colspan="4" class="subtotal" align="right">Subtotal</td>
-			<td class="total" align="right"><?=$this->config->item('currency_symbol')?><?=number_format($invoice->current_total,0)?></td>
+			<td class="total" align="right"><?=$this->config->item('currency_symbol_pdf')?><?=number_format($invoice->current_total,$this->config->item('decimal_places'),$this->config->item('decimal_separator'),$this->config->item('thousands_separator'))?></td>
 		</tr>
 </table>
 </body>

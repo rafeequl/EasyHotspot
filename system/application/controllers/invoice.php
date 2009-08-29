@@ -1,4 +1,4 @@
-<?php if(!defined('BASEPATH')) exit('No direct scrpit access allowed');
+<?php if(!defined('BASEPATH')) exit('No direct script access allowed');
 
 Class Invoice extends Controller {
 
@@ -74,8 +74,8 @@ Class Invoice extends Controller {
 		$data['invoice']=$this->invoicemodel->search($limit);
 		
 		
-		$data['title']= $this->lang->line('invoice_searh_result');
-		$data['action']= $this->lang->line('invoice_searh_result');
+		$data['title']= $this->lang->line('invoice_search_result');
+		$data['action']= $this->lang->line('invoice_search_result');
 
 		$this->load->view('invoice/invoice_view.php',$data);
 	}

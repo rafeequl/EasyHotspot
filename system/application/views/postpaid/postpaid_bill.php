@@ -11,6 +11,7 @@
 		<p class="info"><?=$this->config->item('company_address_line2')?></p>
 		<p class="info"><?=$this->config->item('company_address_line3')?></p>
 		<p class="info"><?=$this->config->item('company_phone')?></p>
+		<p class="info"><?=$this->config->item('company_tax_code')?></p>
 	</div>
 	<div id="personal_info">
 		<p><label><?=$this->lang->line('date')?></label><span><?=date("M d Y")?></span></p>
@@ -26,7 +27,7 @@
 			<th><?=$this->lang->line('no')?></th>
 			<th><?=$this->lang->line('access_start')?></th>
 			<th><?=$this->lang->line('access_stop')?></th>
-			<th><?=$this->lang->line('duration_ammount')?></th>
+			<th><?=$this->lang->line('duration_amount')?></th>
 			<th><?=$this->lang->line('total')?></th>
 		</tr>
 		
@@ -36,14 +37,14 @@
 			<td><?=$row->start?></td>
 			<td><?=$row->stop?></td>
 			<td><?=($row->bill_by == 'time') ? $row->time_used : $row->packet_used ?></td>
-			<td class="total_qty"><?=($row->bill_by == 'time') ? number_format($row->time_price,0) : number_format($row->packet_price,0) ?></td>
+			<td class="total_qty"><?=($row->bill_by == 'time') ? number_format($row->time_price,$this->config->item('decimal_places'),$this->config->item('decimal_separator'),$this->config->item('thousands_separator')) : number_format($row->packet_price,$this->config->item('decimal_places'),$this->config->item('decimal_separator'),$this->config->item('thousands_separator')) ?></td>
 			<?php $i++ ?>
 		</tr>
 		<?php endforeach; ?>
 		
 		<tr>
 			<td colspan="4" class="subtotal">Subtotal</td>
-			<td class="total"><?=$this->config->item('currency_symbol')?><?=($account->bill_by == 'time') ? number_format($account->time_price,0) : number_format($account->packet_price,0)?></td>
+			<td class="total"><?=$this->config->item('currency_symbol')?><?=($account->bill_by == 'time') ? number_format($account->time_price,$this->config->item('decimal_places'),$this->config->item('decimal_separator'),$this->config->item('thousands_separator')) : number_format($account->packet_price,$this->config->item('decimal_places'),$this->config->item('decimal_separator'),$this->config->item('thousands_separator'))?></td>
 		</tr>
 	</tbody>
 	</table>

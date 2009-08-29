@@ -12,7 +12,7 @@
 	<?= js_asset('jquery.datepick.min.js'); ?>
 	<?= js_asset('flash.js'); ?>
 	<title>EasyHotspot : <?=$action?></title>
-	
+
 </head>
 
 <body>
@@ -21,7 +21,6 @@
 <div id="header">
 	<div id="logo"><span>EasyHotspot</span></div>
 	<div id="version"><?=$this->config->item('EASYHOTSPOT_VERSION');?></div>
-	
 </div>
 
 <div id="page">

@@ -11,7 +11,9 @@
 	<?=$this->config->item('company_name')?><br />
 	<?=$this->config->item('company_address_line1')?><br />
 	<?=$this->config->item('company_address_line2')?><br />
-	<?=$this->config->item('company_address_line3')?>
+	<?=$this->config->item('company_address_line3')?><br />
+	<?=$this->config->item('company_phone')?><br />
+	<?=$this->config->item('company_tax_code')?>
 	<hr />
 	</td></tr>
 	<tr>
@@ -22,9 +24,12 @@
 			<tr><td><?=$this->lang->line('billing_plan')?></td><td>: <?=$voucher->billingplan?></td></tr>
 			<tr><td><?=$this->lang->line('valid')?></td><td>: <?=$voucher->amount?> <?=($voucher->type == 'time') ? 'Minutes' : 'MB';?></td></tr>
 			<tr><td><?=$this->lang->line('valid_until')?></td><td>: <?=preg_replace('/24:00:00/', '', $voucher->valid_until)?> </td></tr>
-			<tr><td><?=$this->lang->line('price')?></td><td>: <?=$this->config->item('currency_symbol')?><?=$voucher->price?></td></tr>
+			<tr><td><?=$this->lang->line('price')?></td><td>: <?=$this->config->item('currency_symbol_pdf')?><?=number_format($voucher->price,$this->config->item('decimal_places'),$this->config->item('decimal_separator'),$this->config->item('thousands_separator'))?></td></tr>
 			</table>
 		</td>
+	</tr>
+	<tr>
+		<td ><hr /><?=$this->config->item('access_instructions')?></td>
 	</tr>
 	<tr>
 		<td align='center'><hr /><?=unix_to_human(time())?></td>

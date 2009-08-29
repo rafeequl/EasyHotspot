@@ -10,10 +10,9 @@ Class Onlineusermodel extends model {
 	}
 	
 	function get_onlineusers() {
-		
-		return $this->db->query('select username, acctstarttime as start, sum(acctsessiontime) as time,sum(acctoutputoctets+acctinputoctets) as packet from radacct where acctstoptime = \'0000-00-00 00:00:00\' group by username');
+ 	// this works no matter what ...I think !!!
+		return $this->db->query('select username, MAX(acctstarttime) as start, MAX(acctstoptime) as stop, sum(acctsessiontime) as time,sum(acctoutputoctets)+sum(acctinputoctets) as packet from radacct group by username having (start > stop) or (stop IS NULL)');
 	}
-	
 
 }
 

@@ -94,7 +94,7 @@ class Postpaidmodel extends model {
 		    $data['username'] = $_POST['username'];
 			$data['attribute']='WISPr-Bandwidth-Max-Down';
 			$data['op']=':=';
-			$data['value'] = $bw_download*1000;
+			$data['value'] = $bw_download;
 			$this->db->insert($this->_table_radreply,$data); // insert into radreply account table
 		}
 
@@ -103,7 +103,7 @@ class Postpaidmodel extends model {
 		    $data['username'] = $_POST['username'];
 			$data['attribute']='WISPr-Bandwidth-Max-Up';
 			$data['op']=':=';
-			$data['value'] = $bw_upload*1000;
+			$data['value'] = $bw_upload;
 			$this->db->insert($this->_table_radreply,$data); // insert into radreply account table
 		}
 		
@@ -115,7 +115,7 @@ class Postpaidmodel extends model {
 			$data['value'] = $idletimeout*60;	
 			$this->db->insert($this->_table_radreply,$data); // insert into radreply account table		
 		}
-		
+
 		if($_POST['valid_until']){
 			$data['username'] = $_POST['username'];
 			
@@ -141,14 +141,16 @@ class Postpaidmodel extends model {
 		$data['value'] = '1';
 		$this->db->insert($this->_table_radcheck,$data);
 		
-		//Accounting status update inteval
-		//FreeRadius will update the accounts usage information within the given time (in sec)
-		$data['attribute'] = 'Acct-Interim-Interval';
-		$data['op'] = ':=';
-		$data['value'] = '120';
-		$this->db->insert($this->_table_radreply,$data);
 		
-		
+		//Interim accounting
+		if($ci->config->item('postpaid_acct_interim_interval')){
+		    $data['username'] = $_POST['username'];
+			$data['attribute'] = 'Acct-Interim-Interval';
+			$data['op'] = ':=';
+			$data['value'] = $ci->config->item('postpaid_acct_interim_interval');	
+			$this->db->insert($this->_table_radreply,$data); // insert into radreply account table		
+		}
+	
 		$this->db->insert($this->_table,$_POST); //insert into postpaid account table
 		$this->db->insert($this->_table_radcheck,$radcheck_value);		//insert into radcheck account table
 		$this->db->trans_complete();
@@ -174,6 +176,8 @@ class Postpaidmodel extends model {
 	}
 	
 	function editAccount(){
+		//we need $ci to get access to codeigniter class for the config items
+	    	$ci =& get_instance();
 		
 		$this->db->trans_start();
 		
@@ -199,6 +203,12 @@ class Postpaidmodel extends model {
 		$this->db->where('attribute','WISPr-Bandwidth-Max-Up');
 		$this->db->update($this->_table_radreply,$bw_upload);
 		
+		//Accounting interval
+		if($ci->config->item('postpaid_acct_interim_interval')){
+		$this->db->where('username',$_POST['username']);
+		$this->db->where('attribute','Acct-Interim-Interval');
+		$this->db->update($this->_table_radreply,$ci->config->item('postpaid_acct_interim_interval'));
+		}
 		$this->db->trans_complete();
 	}
 	
@@ -221,7 +231,7 @@ class Postpaidmodel extends model {
 		$data['created'] = $accounts->num_rows();
 		
 		//account used
-		$account_used = $this->db->query('select*from postpaid_account_list where time_used is not NULL');
+		$account_used = $this->db->query('select * from postpaid_account_list where time_used is not NULL');
 		$data['used'] = $account_used->num_rows();
 		
 		//bill by 

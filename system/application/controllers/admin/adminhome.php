@@ -67,9 +67,17 @@ class AdminHome extends Controller
 		$data['company_address_line2'] = $this->config->item('company_address_line2');
 		$data['company_address_line3'] = $this->config->item('company_address_line3');
 		$data['company_phone'] = $this->config->item('company_phone');
+		$data['company_tax_code'] = $this->config->item('company_tax_code');
 		
 		$data['os'] = exec('uname -o');
 		$data['hostname'] = exec('uname -n');
+		// Now some check ways of checking services are running without using init statu
+		$data['chilli'] = exec('netstat -an | grep :3990 | grep tcp | grep -c LISTEN');
+		$data['mysql'] = exec('netstat -an | grep :3306 | grep tcp | grep -c LISTEN');
+		$data['radius1'] = exec('netstat -an | grep :1812 | grep -c udp');
+		$data['radius2'] = exec('netstat -an | grep :1812 | grep -c udp');
+		$data['radius3'] = exec('netstat -an | grep :1812 | grep -c udp');
+		$data['coaport'] = exec('netstat -an | grep :3799 | grep -c udp');
 		$this->load->view('home/home_view',$data);
 						 
 		$this->load->vars($data);

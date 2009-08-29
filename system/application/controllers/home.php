@@ -22,6 +22,7 @@ class Home extends Controller {
 		$data['company_address_line2'] = $this->config->item('company_address_line2');
 		$data['company_address_line3'] = $this->config->item('company_address_line3');
 		$data['company_phone'] = $this->config->item('company_phone');
+		$data['company_tax_code'] = $this->config->item('company_tax_code');
 		
 		$data['os'] = exec('uname -o');
 		$data['hostname'] = exec('uname -n');

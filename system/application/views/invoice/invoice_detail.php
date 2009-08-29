@@ -11,6 +11,7 @@
 		<p class="info"><?=$this->config->item('company_address_line2')?></p>
 		<p class="info"><?=$this->config->item('company_address_line3')?></p>
 		<p class="info"><?=$this->config->item('company_phone')?></p>
+		<p class="info"><?=$this->config->item('company_tax_code')?></p>
 	</div>
 	<div id="personal_info">
 		<p><label><?=$this->lang->line('date')?></label><span><?=$invoice->date;?></span></p>
@@ -26,7 +27,7 @@
 			<th><?=$this->lang->line('no')?></th>
 			<th><?=$this->lang->line('access_start')?></th>
 			<th><?=$this->lang->line('access_stop')?></th>
-			<th><?=$this->lang->line('duration_ammount')?></th>
+			<th><?=$this->lang->line('duration_amount')?></th>
 			<th><?=$this->lang->line('total')?></th>
 		</tr>
 		
@@ -43,7 +44,7 @@
 		
 		<tr>
 			<td colspan="4" class="subtotal"><?=$this->lang->line('subtotal')?></td>
-			<td class="total"><?=$this->config->item('currency_symbol')?><?=number_format($invoice->current_total,0)?></td>
+			<td class="total"><?=$this->config->item('currency_symbol')?><?=number_format($invoice->current_total,$this->config->item('decimal_places'),$this->config->item('decimal_separator'),$this->config->item('thousands_separator'))?></td>
 		</tr>
 	</tbody>
 	</table>

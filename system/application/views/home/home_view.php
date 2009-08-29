@@ -10,6 +10,7 @@
 			<li><label>&nbsp;</label><?=$company_address_line2?></li>
 			<li><label>&nbsp;</label><?=$company_address_line3?></li>
 			<li><label><?=$this->lang->line('phone')?></label><?=$company_phone?></li>
+			<li><label>&nbsp;</label><?=$company_tax_code?></li>
 		</fieldset>
 		<fieldset><legend><?=$this->lang->line('system_info')?></legend>
 		<ul>

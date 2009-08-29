@@ -43,7 +43,7 @@
 	<li><label>Name</label>
 	<?= form_input('name')?> <acronym title="The name of billing plan">?</acronym></li>
 	<li><label>Type</label>
-	<?= form_dropdown('type',array('time'=>'Time Bassed','packet'=>'Packet Bassed'))?> <acronym title="Type of the hotspot billing">?</acronym></li>
+	<?= form_dropdown('type',array('time'=>'Time Based','packet'=>'Packet Based'))?> <acronym title="Type of the hotspot billing">?</acronym></li>
 	<li><label>Amount</label>
 	<?= form_input(array('size'=>'5','name'=>'amount'))?><acronym title="Time : in Minutes, Packet : in MegaByte">?</acronym></li>
 	<li><label>Valid for</label></li>
@@ -51,9 +51,9 @@
 	<li><label>Price</label>
 	<?= form_input(array('size'=>'5','name'=>'price'))?> <acronym title="The price of billing plan">?</acronym></li>
 	<li><label>Download Rate</label>
-	<?= form_dropdown('bw_download',array(''=>'default','32'=>'32 kbps','64'=>'64 kbps', '128' => '128 kbps', '256'=>'256 kbps', '512'=>'512 kbps','1024'=>'1 MBps','2048'=>'2 MBps'))?> <acronym title="The maximum of download rate">?</acronym></li>
+	<?= form_dropdown('bw_download',array(''=>'default','16000' => '16 kbps','32000'=>'32 kbps','48000'=>'48 kbps','64000'=>'64 kbps', '96000' => '96 kbps', '128000' => '128 kbps',  '192000' => '192 kbps','256000'=>'256 kbps', '512000'=>'512 kbps','1024000'=>'1 MBps','2048000'=>'2 MBps'))?> <acronym title="The maximum of download rate">?</acronym></li>
 	<li><label>Upload Rate</label>
-	<?= form_dropdown('bw_upload',array(''=>'default','32'=>'32 kbps','640'=>'64 kbps', '128' => '128 kbps', '256'=>'256 kbps', '512'=>'512 kbps','1024'=>'1 MBps','2048'=>'2 MBps'))?> <acronym title="The maximum of upload rate">?</acronym></li>
+	<?= form_dropdown('bw_upload',array(''=>'default','16000' => '16 kbps','32000'=>'32 kbps','48000'=>'48 kbps','64000'=>'64 kbps', '96000' => '96 kbps', '128000' => '128 kbps',  '192000' => '192 kbps','256000'=>'256 kbps', '512000'=>'512 kbps','1024000'=>'1 MBps','2048000'=>'2 MBps'))?> <acronym title="The maximum of upload rate">?</acronym></li>
 	<li><label>Idle Timeout</label>
 	<?= form_input(array('size'=>'5','name'=>'IdleTimeout'))?><acronym title="Disconnect user when there is no activity within the given minute">?</acronym></li>
 </ul>

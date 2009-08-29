@@ -6,7 +6,7 @@ $lang['billing_invoice'] = "Tagihan";
 $lang['billing_type'] = "Tipe tagihan";
 $lang['access_start'] = "Mulai Akses";
 $lang['access_stop'] = "Berhenti Akses";
-$lang['duration_ammount'] = "Durasi/Banyaknya";
+$lang['duration_amount'] = "Durasi/Banyaknya";
 $lang['total'] = "Total";
 $lang['close_and_print_invoice'] = "Tutup dan cetak tagihan";
 $lang['close_and_print_invoice_for'] = "Tutup dan cetak tagihan untuk";
@@ -26,7 +26,7 @@ $lang['invoice_management'] = "Tagihan";
 $lang['invoice'] = "Tagihan";
 $lang['invoice_no'] = "no. tagihan";
 $lang['detail'] = "Detil";
-$lang['invoice_searh_result'] = "Hasil Pencarian Tagihan";
+$lang['invoice_search_result'] = "Hasil Pencarian Tagihan";
 $lang['print_invoice'] = "Cetak Invoice";
 
 //Statistics
@@ -41,6 +41,7 @@ $lang['welcome'] = "Selamat Datang di EasyHotspot System";
 $lang['hotspot_info'] = "Informasi Hotspot";
 $lang['company_name'] = "Nama Perusahaan";
 $lang['company_address'] = "Alamat Perusahaan";
+$lang['company_tax_code'] = "Pajak kode";
 $lang['phone'] = "Telepon";
 $lang['system_info'] = "Informasi sistem";
 $lang['hostname'] = "Hostname";

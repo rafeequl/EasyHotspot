@@ -33,7 +33,10 @@
 	<?= form_input(array('name' => 'uamallowed', 'value' => $chilli_configuration['uamallowed'], 'id' => 'uamallowed'))?> <acronym title="URL that clients could browse without login">?</acronym> Separate by comma</li>	
 	
 	<li><label>DHCP Range</label>
-	<?= form_input(array('name' => 'net', 'value' => $chilli_configuration['net'], 'id' => 'net'))?> <acronym title="DHCP IP's for clients - must be in XXX.XXX.XXX.XXX/XX format">?</acronym></li>
+	<?= form_input(array('name' => 'net', 'value' =>  (isset($chilli_configuration['net'])) ? $chilli_configuration['net']: '' , 'id' => 'net'))?> <acronym title="DHCP IP's for clients - must be in XXX.XXX.XXX.XXX/XX format">?</acronym></li>
+
+	<li><label>COAPort</label>
+	<?= form_input(array('name' => 'coaport', 'value' => (isset($chilli_configuration['coaport'])) ? $chilli_configuration['coaport'] : '3779', 'id' => 'coaport'))?> <acronym title="Disconnect message port default of 3799 is in RFC 3576">?</acronym></li>
 
 </ul>
 <?php $submit=array('name'=>'submit','value'=>'Save Configuration','class'=>'submit')?>
