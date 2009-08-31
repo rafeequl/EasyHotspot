@@ -6,8 +6,9 @@ jQuery(document).ready(function($) {
 		$("#dhcpif").val("eth1");
 		$("#uamserver").val("https://192.168.182.1/hotspotlogin.cgi");
 		$("#uamsecret").val("easyhotspot");
-		$("#uamhomepage").val("https://192.168.182.1/hotspotlogin.cgi");
+		$("#uamhomepage").val("http://192.168.182.1:3990/prelogin");
 		$("#uamallowed").val("192.168.182.1");
 		$("#net").val("192.168.182.0/24");
+		$("#coaport").val("3799");
 	});
 });
