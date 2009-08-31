@@ -25,4 +25,9 @@ $config['company_address_line3'] = 'Bali - Indonesia';
 $config['company_phone'] = '+62 231 999999';
 
 $config['currency_symbol'] = 'Rp. ';
+
+$config['CHILLISPOT_CONFIG_FILE'] = '/etc/chilli.conf';
+
+$config['postpaid_acct_interim_interval'] = '120';
+$config['voucher_acct_interim_interval'] = '120';
 ?>
