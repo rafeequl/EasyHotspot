@@ -1,0 +1,23 @@
+Install:
+
+- Extract to /opt/local for example
+- Navigate to cd /opt/local/easyhotspot
+- Create symlink to /var/www or your document root :
+	ln -s /opt/local/easyhotspot/htdocs /var/www/easyhotspot
+- Create database for easyhotspot
+- Use ehs_sample_development.sql  for db schema
+- Navigate to http://localhost/easyhotspot 
+- username : admin
+  password : admin123
+- For more info please read the PDF file
+
+Contact :
+http://sourceforge.net/projects/easyhotspot/support
+
+Updates :
+- Navigate to root dir of easyhotspot (/opt/local/easyhotspot for example)
+- issue this command :
+	git pull
+	*git-core required
+
+2009, rafeequl@gmail.com
