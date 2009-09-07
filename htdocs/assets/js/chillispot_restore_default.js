@@ -4,7 +4,7 @@ jQuery(document).ready(function($) {
 		$("#radiusserver2").val("127.0.0.1");
 		$("#radiussecret").val("easyhotspot");
 		$("#dhcpif").val("eth1");
-		$("#uamserver").val("https://192.168.182.1/hotspotlogin.cgi");
+		$("#uamserver").val("https://192.168.182.1/cgi-bin/hotspotlogin.cgi");
 		$("#uamsecret").val("easyhotspot");
 		$("#uamhomepage").val("http://192.168.182.1:3990/prelogin");
 		$("#uamallowed").val("192.168.182.1");
