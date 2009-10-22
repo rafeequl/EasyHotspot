@@ -7,3 +7,4 @@
 .tmp_*
 htdocs/system/application/config/database.php
 htdocs/system/application/config/config.php
+*.*~
