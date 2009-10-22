@@ -1,8 +1,0 @@
-*/.DS_Store
-.DS_Store
-.tmp
-.log
-.project/
-.project
-.tmp_*
-htdocs/system/application/config/database.php
