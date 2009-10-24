@@ -131,8 +131,13 @@ class Postpaidmodel extends model {
 			$data['op'] = ':=';
 			$data['value'] = $date;
 			
+			//radcheck
 			$_POST['valid_until'] = $date;
 			$this->db->insert($this->_table_radcheck,$data);
+			
+			//radreply
+			$this->db->insert($this->_table_radreply,$data);
+			
 		}
 		
 		//Simultaneous-Use

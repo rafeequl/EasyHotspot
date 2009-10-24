@@ -22,6 +22,7 @@ Class Vouchermodel extends model {
 	$this->_table='voucher_list';
 	$this->_table_voucher = 'voucher';
 	$this->_table_radcheck = 'radcheck';
+	$this->_table_radreply = 'radreply';
 	$this->_table_usergroup = 'radusergroup';
 	
 	$this->load->model('billingplanmodel');
@@ -58,6 +59,10 @@ Class Vouchermodel extends model {
 		//radcheck table
 		$this->db->where('username',$this->uri->segment(3));
 		$this->db->delete($this->_table_radcheck);
+		
+		//radreply table
+		$this->db->where('username',$this->uri->segment(3));
+		$this->db->delete($this->_table_radreply);
 				
 		//OK stops here
 		
@@ -140,6 +145,9 @@ Class Vouchermodel extends model {
 				$date = date("F j Y", $date)." ".$time;
 				$radcheck = array('username'=>$user['username'],'attribute'=>'Expiration','op'=>':=','value'=>$date);
 				$this->db->insert($this->_table_radcheck,$radcheck);
+				
+				//radreply table
+				$this->db->insert($this->_table_radreply,$radcheck);
 				
 				//OK stops here
 				$this->db->trans_complete();
