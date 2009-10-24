@@ -10,6 +10,7 @@
 			<li><label>&nbsp;</label><?=$company_address_line3?></li>
 			<li><label>Phone</label><?=$company_phone?></li>
 			<li><label>Tax Code</label><?=$company_tax_code?></li>
+		</ul>
 		</fieldset>
 		<fieldset><legend>System Info</legend>
 		<ul>
