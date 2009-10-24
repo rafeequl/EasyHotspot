@@ -81,6 +81,7 @@ Class Vouchermodel extends model {
 		//Radcheck table
 		$radcheck_change = array('value'=>$_POST['password']);
 		$this->db->where('username',$_POST['username']);
+		$this->db->where('attribute', 'Cleartext-Password');
 		$this->db->update($this->_table_radcheck,$radcheck_change);
 		
 		//Usergroup table
