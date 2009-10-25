@@ -20,6 +20,8 @@ Class Postplanmodel extends model{
 		
 		//table name
 		$this->_table='postplan';
+		$this->_table_postpaid_account = 'postpaid_account';
+		$this->_table_radreply = 'radreply';
 	}
 	
 	/**
@@ -122,6 +124,31 @@ Class Postplanmodel extends model{
 		$packet=array('price'=>$_POST['bw_upload']);
 		$this->db->where('name','bw_upload');
 		$this->db->update($this->_table,$packet);
+		
+		$postpaid_accounts = $this->db->get($this->_table_postpaid_account);
+		
+		foreach ($postpaid_accounts->result() as $account) {
+			//update radreply value
+			
+			//update bw_download
+			$where = array('username' => $account->username, 'attribute' => 'WISPr-Bandwidth-Max-Down');
+			$value = array('value' => $_POST['bw_download']);
+			$this->db->where($where);
+			$this->db->update($this->_table_radreply,$value);
+			
+			//update bw_upload
+			$where = array('username' => $account->username, 'attribute' => 'WISPr-Bandwidth-Max-Up');
+			$value = array('value' => $_POST['bw_upload']);
+			$this->db->where($where);
+			$this->db->update($this->_table_radreply,$value);
+			
+			//update IdleTimeout
+			$where = array('username' => $account->username, 'attribute' => 'Idle-Timeout');
+			$value = array('value' => $_POST['idletimeout']*60);
+			$this->db->where($where);
+			$this->db->update($this->_table_radreply,$value);
+			
+		}
 		
 	}
 	
