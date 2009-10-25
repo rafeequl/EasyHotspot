@@ -23,7 +23,11 @@
 		<label><?=$this->lang->line('billing_plan')?></label>
 		<select name="billingplan">
 		<?php foreach($billingplans->result_array() as $option):?>
-		<option value="<?=$option['name']?>"><?=$option['name']?></option>
+			<?php if($data->billingplan == $option['name']) {?>
+				<option value="<?=$option['name']?>" selected="selected"><?=$option['name']?></option>
+			<?php }else{ ?>
+				<option value="<?=$option['name']?>"><?=$option['name']?></option>
+			<?php } ?>
 		<?php endforeach;?>
 		</select>
 	</li>
