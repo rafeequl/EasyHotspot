@@ -30,4 +30,5 @@ $config['CHILLISPOT_CONFIG_FILE'] = '/etc/chilli.conf';
 
 $config['postpaid_acct_interim_interval'] = '120';
 $config['voucher_acct_interim_interval'] = '120';
+
 ?>
