@@ -58,7 +58,7 @@ if (!($ENV{HTTPS} =~ /^on$/)) {
   <meta http-equiv=\"Cache-control\" content=\"no-cache\">
   <meta http-equiv=\"Pragma\" content=\"no-cache\">
 <link href=http://192.168.182.1/public/frontend/css/fal_style.css rel=stylesheet></head>
-<body bgColor = '#c0d8f4'>
+<body bgColor = '#ffffff'>
   <h1 style=\"text-align: center;\">EasyHotspot Login Failed</h1>
   <center>
     Login must use encrypted connection.
@@ -156,7 +156,7 @@ print "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">
 	print "  <meta http-equiv=\"refresh\" content=\"0;url=http://$uamip:$uamport/logon?username=$username&response=$response&userurl=$userurl\">";
     }
 print "<link href=http://192.168.182.1/public/frontend/css/fal_style.css rel=stylesheet></head>
-<body bgColor = '#c0d8f4'>";
+<body bgColor = '#ffffff'>";
   print "<h1 style=\"text-align: center;\">Logging in to EasyHotspot</h1>";
   print "
   <center>
@@ -246,7 +246,7 @@ if ($result == 0) {
   <meta http-equiv=\"Cache-control\" content=\"no-cache\">
   <meta http-equiv=\"Pragma\" content=\"no-cache\">
 <link href=http://192.168.182.1/public/frontend/css/fal_style.css rel=stylesheet></head>
-<body bgColor = '#c0d8f4'>
+<body bgColor = '#ffffff'>
   <h1 style=\"text-align: center;\">EasyHotspot Login Failed</h1>
   <center>
     Login must be performed through EasyHotspot daemon.
@@ -354,11 +354,11 @@ print "Content-type: text/html\n\n
     }
   </script>
 <link href=http://192.168.182.1/public/frontend/css/fal_style.css rel=stylesheet></head>
-<body onLoad=\"javascript:doOnLoad($result, '$loginpath?res=popup2&uamip=$uamip&uamport=$uamport&userurl=$userurl&redirurl=$redirurl&timeleft=$timeleft','$userurldecode', '$redirurldecode', '$timeleft')\" onBlur = \"javascript:doOnBlur($result)\" bgColor = '#c0d8f4'>";
+<body onLoad=\"javascript:doOnLoad($result, '$loginpath?res=popup2&uamip=$uamip&uamport=$uamport&userurl=$userurl&redirurl=$redirurl&timeleft=$timeleft','$userurldecode', '$redirurldecode', '$timeleft')\" onBlur = \"javascript:doOnBlur($result)\" bgColor = '#ffffff'>";
 
 
 #      if (!window.opener) {
-#        document.bgColor = '#c0d8f4';
+#        document.bgColor = '#ffffff';
 #      }
 
 #print "THE INPUT: $input";
