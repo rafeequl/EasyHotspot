@@ -21,6 +21,6 @@
  function freeradius_disconnectuser($username, $radiuscommand, $radiusserver, $radiussecret){
 
 	$result = system('echo "User-Name=\''.$username.'\'" | '.$radiuscommand.' '.$radiusserver.' disconnect '.$radiussecret);
-	
+	$this->db->query("UPDATE radacct SET acctstoptime=now(), acctterminatecause='Chillispot Restart' WHERE acctstoptime is NULL");
  }
 ?>
