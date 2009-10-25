@@ -42,6 +42,6 @@ $config['voucher_acct_interim_interval'] = '120';
 //Freeradius
 $config['radiusserver'] = '127.0.0.1:3799';
 $config['radiuscommand'] = 'radclient -x';
-$config['radiussecret'] = 'easyhotspot';ss
+$config['radiussecret'] = 'easyhotspot';
 
 ?>
