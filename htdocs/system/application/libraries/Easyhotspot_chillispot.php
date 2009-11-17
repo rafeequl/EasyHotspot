@@ -110,6 +110,9 @@ class Easyhotspot_chillispot {
 		//default domain
 		fwrite($handle_temp, 'domain key.chillispot.info'."\n");
 		
+		//chillispot if up
+		fwrite($handle_temp, 'ipup /etc/chilli.ipup'."\n");
+		
 		//let's apply new configuration
 		fclose($handle);
 		fclose($handle_temp);
