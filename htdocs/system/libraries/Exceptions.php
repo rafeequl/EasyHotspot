@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -167,4 +167,6 @@ class CI_Exceptions {
 
 }
 // END Exceptions Class
-?>
+
+/* End of file Exceptions.php */
+/* Location: ./system/libraries/Exceptions.php */

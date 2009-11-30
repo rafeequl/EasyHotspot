@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -34,7 +34,7 @@
  * @param	string
  * @return	string
  */	
-if (! function_exists('nl2br_except_pre'))
+if ( ! function_exists('nl2br_except_pre'))
 {
 	function nl2br_except_pre($str)
 	{
@@ -71,7 +71,7 @@ if (! function_exists('nl2br_except_pre'))
  * @param	string
  * @return	string
  */
-if (! function_exists('auto_typography'))
+if ( ! function_exists('auto_typography'))
 {
 	function auto_typography($str)
 	{
@@ -117,7 +117,10 @@ class Auto_typography {
 		$str = ' '.$str.' ';
 		
 		// Standardize Newlines to make matching easier
-		$str = preg_replace("/(\r\n|\r)/", "\n", $str);
+		if (strpos($str, "\r") !== FALSE)
+		{
+			$str = str_replace(array("\r\n", "\r"), "\n", $str);			
+		}
 		
 		/*
 		 * Reduce line breaks
@@ -542,4 +545,6 @@ class Auto_typography {
 }
 
 
-?>
+
+/* End of file typography_helper.php */
+/* Location: ./system/helpers/typography_helper.php */

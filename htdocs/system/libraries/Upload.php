@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -144,7 +144,7 @@ class CI_Upload {
 		// Is the upload path valid?
 		if ( ! $this->validate_upload_path())
 		{
-			$this->set_error('upload_no_filepath');
+			// errors will already be set by validate_upload_path() so just return FALSE
 			return FALSE;
 		}
 						
@@ -185,7 +185,7 @@ class CI_Upload {
 
 		// Set the uploaded data as class variables
 		$this->file_temp = $_FILES[$field]['tmp_name'];		
-		$this->file_name = $_FILES[$field]['name'];
+		$this->file_name = $this->_prep_filename($_FILES[$field]['name']);
 		$this->file_size = $_FILES[$field]['size'];		
 		$this->file_type = preg_replace("/^(.+?);.*$/", "\\1", $_FILES[$field]['type']);
 		$this->file_type = strtolower($this->file_type);
@@ -528,7 +528,7 @@ class CI_Upload {
 	 */	
 	function is_allowed_filetype()
 	{
-		if (count($this->allowed_types) == 0 || ! is_array($this->allowed_types))
+		if (count($this->allowed_types) == 0 OR ! is_array($this->allowed_types))
 		{
 			$this->set_error('upload_no_file_types');
 			return FALSE;
@@ -741,7 +741,7 @@ class CI_Upload {
 			return FALSE;
 		}
 		
-		if ( ! $fp = @fopen($file, 'r+b'))
+		if ( ! $fp = @fopen($file, FOPEN_READ_WRITE))
 		{
 			return FALSE;
 		}
@@ -833,6 +833,48 @@ class CI_Upload {
 		return ( ! isset($this->mimes[$mime])) ? FALSE : $this->mimes[$mime];
 	}
 
+	/**
+	 * Prep Filename
+	 *
+	 * Prevents possible script execution from Apache's handling of files multiple extensions
+     * http://httpd.apache.org/docs/1.3/mod/mod_mime.html#multipleext
+	 *
+	 * @access	private
+	 * @param	string
+	 * @return	string
+	 */
+	function _prep_filename($filename)
+	{
+		if (strpos($filename, '.') === FALSE)
+		{
+			return $filename;
+		}
+		
+		$parts		= explode('.', $filename);
+		$ext		= array_pop($parts);
+		$filename	= array_shift($parts);
+				
+		foreach ($parts as $part)
+		{
+			if ($this->mimes_types(strtolower($part)) === FALSE)
+			{
+				$filename .= '.'.$part.'_';
+			}
+			else
+			{
+				$filename .= '.'.$part;
+			}
+		}
+		
+		$filename .= '.'.$ext;
+		
+		return $filename;
+	}
+
+	// --------------------------------------------------------------------
+
 }
 // END Upload Class
-?>
+
+/* End of file Upload.php */
+/* Location: ./system/libraries/Upload.php */

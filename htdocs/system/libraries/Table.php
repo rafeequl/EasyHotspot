@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -110,8 +110,7 @@ class CI_Table {
 		$new = array();
 		while(count($array) > 0)
 		{	
-			$temp = array_slice($array, 0, $col_limit);	
-			$array = array_diff($array, $temp);	
+			$temp = array_splice($array, 0, $col_limit);
 			
 			if (count($temp) < $col_limit)
 			{
@@ -261,7 +260,7 @@ class CI_Table {
 				{
 					$out .= $this->template['cell_'.$name.'start'];
 					
-					if ($cell == "")
+					if ($cell === "")
 					{
 						$out .= $this->empty_cells;
 					}
@@ -436,4 +435,6 @@ class CI_Table {
 
 }
 
-?>
+
+/* End of file Table.php */
+/* Location: ./system/libraries/Table.php */

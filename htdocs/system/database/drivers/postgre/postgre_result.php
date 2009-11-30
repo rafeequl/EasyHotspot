@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -170,4 +170,6 @@ class CI_DB_postgre_result extends CI_DB_result {
 	
 }
 
-?>
+
+/* End of file postgre_result.php */
+/* Location: ./system/database/drivers/postgre/postgre_result.php */

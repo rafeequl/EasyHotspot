@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -35,7 +35,7 @@
  * @access	public
  * @return	integer
  */	
-if (! function_exists('now'))
+if ( ! function_exists('now'))
 {
 	function now()
 	{
@@ -80,7 +80,7 @@ if (! function_exists('now'))
  * @param	integer
  * @return	integer
  */	
-if (! function_exists('mdate'))
+if ( ! function_exists('mdate'))
 {
 	function mdate($datestr = '', $time = '')
 	{
@@ -107,7 +107,7 @@ if (! function_exists('mdate'))
  * @param	integer	Unix timestamp
  * @return	string
  */	
-if (! function_exists('standard_date'))
+if ( ! function_exists('standard_date'))
 {
 	function standard_date($fmt = 'DATE_RFC822', $time = '')
 	{
@@ -145,7 +145,7 @@ if (! function_exists('standard_date'))
  * @param	integer	Unix timestamp
  * @return	integer
  */	
-if (! function_exists('timespan'))
+if ( ! function_exists('timespan'))
 {
 	function timespan($seconds = 1, $time = '')
 	{
@@ -262,7 +262,7 @@ if (! function_exists('timespan'))
  * @param	integer	a numeric year
  * @return	integer
  */	
-if (! function_exists('days_in_month'))
+if ( ! function_exists('days_in_month'))
 {
 	function days_in_month($month = 0, $year = '')
 	{
@@ -298,7 +298,7 @@ if (! function_exists('days_in_month'))
  * @param	integer Unix timestamp
  * @return	integer
  */	
-if (! function_exists('local_to_gmt'))
+if ( ! function_exists('local_to_gmt'))
 {
 	function local_to_gmt($time = '')
 	{
@@ -324,7 +324,7 @@ if (! function_exists('local_to_gmt'))
  * @param	bool	whether DST is active
  * @return	integer
  */	
-if (! function_exists('gmt_to_local'))
+if ( ! function_exists('gmt_to_local'))
 {
 	function gmt_to_local($time = '', $timezone = 'UTC', $dst = FALSE)
 	{			
@@ -353,7 +353,7 @@ if (! function_exists('gmt_to_local'))
  * @param	integer Unix timestamp
  * @return	integer
  */	
-if (! function_exists('mysql_to_unix'))
+if ( ! function_exists('mysql_to_unix'))
 {
 	function mysql_to_unix($time = '')
 	{
@@ -390,7 +390,7 @@ if (! function_exists('mysql_to_unix'))
  * @param	string	format: us or euro
  * @return	string
  */	
-if (! function_exists('unix_to_human'))
+if ( ! function_exists('unix_to_human'))
 {
 	function unix_to_human($time = '', $seconds = FALSE, $fmt = 'us')
 	{
@@ -430,7 +430,7 @@ if (! function_exists('unix_to_human'))
  * @param	string	format: us or euro
  * @return	integer
  */	
-if (! function_exists('human_to_unix'))
+if ( ! function_exists('human_to_unix'))
 {
 	function human_to_unix($datestr = '')
 	{
@@ -501,7 +501,7 @@ if (! function_exists('human_to_unix'))
  * @param	string	menu name
  * @return	string
  */	
-if (! function_exists('timezone_menu'))
+if ( ! function_exists('timezone_menu'))
 {
 	function timezone_menu($default = 'UTC', $class = "", $name = 'timezones')
 	{
@@ -544,7 +544,7 @@ if (! function_exists('timezone_menu'))
  * @param	string	timezone
  * @return	string
  */	
-if (! function_exists('timezones'))
+if ( ! function_exists('timezones'))
 {
 	function timezones($tz = '')
 	{
@@ -596,4 +596,6 @@ if (! function_exists('timezones'))
 	}
 }
 
-?>
+
+/* End of file date_helper.php */
+/* Location: ./system/helpers/date_helper.php */

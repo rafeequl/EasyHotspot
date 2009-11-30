@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -168,4 +168,6 @@ class CI_Parser {
 
 }
 // END Parser Class
-?>
+
+/* End of file Parser.php */
+/* Location: ./system/libraries/Parser.php */

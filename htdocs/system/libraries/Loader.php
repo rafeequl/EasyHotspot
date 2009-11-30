@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -272,6 +272,8 @@ class CI_Loader {
 		$class = 'CI_DB_'.$CI->db->dbdriver.'_forge';
 
 		$CI->dbforge = new $class();
+		
+		$CI->load->_ci_assign_to_models();
 	}
 	
 	// --------------------------------------------------------------------
@@ -390,7 +392,7 @@ class CI_Loader {
 			{		
 				if (file_exists(BASEPATH.'helpers/'.$helper.EXT))
 				{
-					include(BASEPATH.'helpers/'.$helper.EXT);
+					include_once(BASEPATH.'helpers/'.$helper.EXT);
 				}
 				else
 				{
@@ -451,13 +453,13 @@ class CI_Loader {
 
 			if (file_exists(APPPATH.'plugins/'.$plugin.EXT))
 			{
-				include(APPPATH.'plugins/'.$plugin.EXT);	
+				include_once(APPPATH.'plugins/'.$plugin.EXT);	
 			}
 			else
 			{
 				if (file_exists(BASEPATH.'plugins/'.$plugin.EXT))
 				{
-					include(BASEPATH.'plugins/'.$plugin.EXT);	
+					include_once(BASEPATH.'plugins/'.$plugin.EXT);	
 				}
 				else
 				{
@@ -524,7 +526,7 @@ class CI_Loader {
 				show_error('Unable to load the requested script: scripts/'.$script.EXT);
 			}
 			
-			include(APPPATH.'scripts/'.$script.EXT);
+			include_once(APPPATH.'scripts/'.$script.EXT);
 		}
 		
 		log_message('debug', 'Scripts loaded: '.implode(', ', $scripts));
@@ -701,11 +703,11 @@ class CI_Loader {
 		
 		if ((bool) @ini_get('short_open_tag') === FALSE AND config_item('rewrite_short_tags') == TRUE)
 		{
-			echo eval('?>'.preg_replace("/;*\s*\?>/", "; ?>", str_replace('<?=', '<?php echo ', file_get_contents($_ci_path))).'<?php ');
+			echo eval('?>'.preg_replace("/;*\s*\?>/", "; ?>", str_replace('<?=', '<?php echo ', file_get_contents($_ci_path))));
 		}
 		else
 		{
-			include($_ci_path);
+			include($_ci_path); // include() vs include_once() allows for multiple views with the same name
 		}
 		
 		log_message('debug', 'File loaded: '.$_ci_path);
@@ -782,8 +784,8 @@ class CI_Loader {
 					return;
 				}
 	
-				include($baseclass);				
-				include($subclass);
+				include_once($baseclass);				
+				include_once($subclass);
 				$this->_ci_classes[] = $subclass;
 	
 				return $this->_ci_init_class($class, config_item('subclass_prefix'), $params);			
@@ -810,7 +812,7 @@ class CI_Loader {
 					return;
 				}
 				
-				include($filepath);
+				include_once($filepath);
 				$this->_ci_classes[] = $filepath;
 				return $this->_ci_init_class($class, '', $params);
 			}
@@ -844,7 +846,7 @@ class CI_Loader {
 		{
 			if (file_exists(APPPATH.'config/'.$class.EXT))
 			{
-				include(APPPATH.'config/'.$class.EXT);
+				include_once(APPPATH.'config/'.$class.EXT);
 			}
 		}
 		
@@ -886,7 +888,7 @@ class CI_Loader {
 	 */
 	function _ci_autoloader()
 	{	
-		include(APPPATH.'config/autoload'.EXT);
+		include_once(APPPATH.'config/autoload'.EXT);
 		
 		if ( ! isset($autoload))
 		{
@@ -903,8 +905,8 @@ class CI_Loader {
 			}
 		}		
 
-		// Autoload plugins, helpers, scripts and languages
-		foreach (array('helper', 'plugin', 'script', 'language') as $type)
+		// Autoload plugins, helpers and languages
+		foreach (array('helper', 'plugin', 'language') as $type)
 		{			
 			if (isset($autoload[$type]) AND count($autoload[$type]) > 0)
 			{
@@ -1025,4 +1027,6 @@ class CI_Loader {
 	}
 	
 }
-?>
+
+/* End of file Loader.php */
+/* Location: ./system/libraries/Loader.php */

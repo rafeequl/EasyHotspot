@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -215,4 +215,6 @@ class CI_Pagination {
 	}
 }
 // END Pagination Class
-?>
+
+/* End of file Pagination.php */
+/* Location: ./system/libraries/Pagination.php */

@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -118,4 +118,6 @@ class CI_Language {
 
 }
 // END Language Class
-?>
+
+/* End of file Language.php */
+/* Location: ./system/libraries/Language.php */

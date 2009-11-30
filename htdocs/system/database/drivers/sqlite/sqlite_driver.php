@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -48,7 +48,7 @@ class CI_DB_sqlite_driver extends CI_DB {
 	 */	
 	function db_connect()
 	{
-		if ( ! $conn_id = @sqlite_open($this->database, 0666, $error))
+		if ( ! $conn_id = @sqlite_open($this->database, FILE_WRITE_MODE, $error))
 		{
 			log_message('error', $error);
 			
@@ -73,7 +73,7 @@ class CI_DB_sqlite_driver extends CI_DB {
 	 */	
 	function db_pconnect()
 	{
-		if ( ! $conn_id = @sqlite_popen($this->database, 0666, $error))
+		if ( ! $conn_id = @sqlite_popen($this->database, FILE_WRITE_MODE, $error))
 		{
 			log_message('error', $error);
 			
@@ -455,7 +455,7 @@ class CI_DB_sqlite_driver extends CI_DB {
 			return "{$item}";
 		}
 
-		$exceptions = array('AS', '/', '-', '%', '+', '*');
+		$exceptions = array('AS', '/', '-', '%', '+', '*', 'OR', 'IS');
 		
 		foreach ($exceptions as $exception)
 		{
@@ -482,7 +482,7 @@ class CI_DB_sqlite_driver extends CI_DB {
 	 */
 	function _from_tables($tables)
 	{
-		if (! is_array($tables))
+		if ( ! is_array($tables))
 		{
 			$tables = array($tables);
 		}
@@ -530,7 +530,7 @@ class CI_DB_sqlite_driver extends CI_DB {
 			$valstr[] = $key." = ".$val;
 		}
 		
-		$limit = (!$limit) ? '' : ' LIMIT '.$limit;
+		$limit = ( ! $limit) ? '' : ' LIMIT '.$limit;
 		
 		$orderby = (count($orderby) >= 1)?' ORDER BY '.implode(", ", $orderby):'';
 	
@@ -577,7 +577,7 @@ class CI_DB_sqlite_driver extends CI_DB {
 	{
 		$conditions = '';
 
-		if (count($where) > 0 || count($like) > 0)
+		if (count($where) > 0 OR count($like) > 0)
 		{
 			$conditions = "\nWHERE ";
 			$conditions .= implode("\n", $this->ar_where);
@@ -589,7 +589,7 @@ class CI_DB_sqlite_driver extends CI_DB {
 			$conditions .= implode("\n", $like);
 		}
 
-		$limit = (!$limit) ? '' : ' LIMIT '.$limit;
+		$limit = ( ! $limit) ? '' : ' LIMIT '.$limit;
 	
 		return "DELETE FROM ".$table.$conditions.$limit;
 	}
@@ -635,7 +635,27 @@ class CI_DB_sqlite_driver extends CI_DB {
 		@sqlite_close($conn_id);
 	}
 
+	// --------------------------------------------------------------------
+
+	/**
+	 * Rename a table
+	 *
+	 * Generates a platform-specific query so that a table can be renamed
+	 *
+	 * @access	private
+	 * @param	string	the old table name
+	 * @param	string	the new table name
+	 * @return	string
+	 */
+	function _rename_table($table_name, $new_table_name)
+	{
+		$sql = 'ALTER TABLE '.$this->db->_protect_identifiers($table_name)." RENAME TO ".$this->db->_protect_identifiers($new_table_name);
+		return $sql;
+	}
+
 
 }
 
-?>
+
+/* End of file sqlite_driver.php */
+/* Location: ./system/database/drivers/sqlite/sqlite_driver.php */

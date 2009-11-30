@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -117,4 +117,6 @@ class CI_DB_oci8_utility extends CI_DB_utility {
 	}
 
 }
-?>
+
+/* End of file oci8_utility.php */
+/* Location: ./system/database/drivers/oci8/oci8_utility.php */

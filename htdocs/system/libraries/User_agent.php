@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -497,4 +497,6 @@ class CI_User_agent {
 	
 }
 
-?>
+
+/* End of file User_agent.php */
+/* Location: ./system/libraries/User_agent.php */

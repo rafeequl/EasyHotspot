@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -249,4 +249,6 @@ class CI_DB_mysql_utility extends CI_DB_utility {
 	}
 
 }
-?>
+
+/* End of file mysql_utility.php */
+/* Location: ./system/database/drivers/mysql/mysql_utility.php */

@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -51,6 +51,7 @@ class CI_DB_driver {
 	var $query_times	= array();
 	var $data_cache		= array();
 	var $trans_enabled	= TRUE;
+	var $trans_strict	= TRUE;
 	var $_trans_depth	= 0;
 	var $_trans_status	= TRUE; // Used with transactions to determine if a rollback should occur
 	var $cache_on		= FALSE;
@@ -98,7 +99,7 @@ class CI_DB_driver {
 	{
 		// If an existing DB connection resource is supplied
 		// there is no need to connect and select the database
-		if (is_resource($this->conn_id))
+		if (is_resource($this->conn_id) OR is_object($this->conn_id))
 		{
 			return TRUE;
 		}
@@ -146,7 +147,7 @@ class CI_DB_driver {
 						// In the event the DB was created we need to select it
 						if ($this->db_select())
 						{
-							if (! $this->db_set_charset($this->char_set, $this->dbcollat))
+							if ( ! $this->db_set_charset($this->char_set, $this->dbcollat))
 							{
 								log_message('error', 'Unable to set database connection charset: '.$this->char_set);
 
@@ -172,7 +173,7 @@ class CI_DB_driver {
 				return FALSE;
 			}
 			
-			if (! $this->db_set_charset($this->char_set, $this->dbcollat))
+			if ( ! $this->db_set_charset($this->char_set, $this->dbcollat))
 			{
 				log_message('error', 'Unable to set database connection charset: '.$this->char_set);
 			
@@ -297,16 +298,33 @@ class CI_DB_driver {
 		// Run the Query
 		if (FALSE === ($this->result_id = $this->simple_query($sql)))
 		{
+			if ($this->save_queries == TRUE)
+			{
+				$this->query_times[] = 0;
+			}
+		
 			// This will trigger a rollback if transactions are being used
 			$this->_trans_status = FALSE;
-			
+
 			if ($this->db_debug)
 			{
+				// grab the error number and message now, as we might run some
+				// additional queries before displaying the error
+				$error_no = $this->_error_number();
+				$error_msg = $this->_error_message();
+				
+				// We call this function in order to roll-back queries
+				// if transactions are enabled.  If we don't call this here
+				// the error message will trigger an exit, causing the 
+				// transactions to remain in limbo.
+				$this->trans_complete();
+
+				// Log and display errors
 				log_message('error', 'Query error: '.$this->_error_message());
 				return $this->display_error(
 										array(
-												'Error Number: '.$this->_error_number(),
-												$this->_error_message(),
+												'Error Number: '.$error_no,
+												$error_msg,
 												$sql
 											)
 										);
@@ -449,6 +467,23 @@ class CI_DB_driver {
 	// --------------------------------------------------------------------
 
 	/**
+	 * Enable/disable Transaction Strict Mode
+	 * When strict mode is enabled, if you are running multiple groups of
+	 * transactions, if one group fails all groups will be rolled back.
+	 * If strict mode is disabled, each group is treated autonomously, meaning
+	 * a failure of one group will not affect any others
+	 *
+	 * @access	public
+	 * @return	void		
+	 */	
+	function trans_strict($mode = TRUE)
+	{
+		$this->trans_strict = is_bool($mode) ? $mode : TRUE;
+	}
+	
+	// --------------------------------------------------------------------
+
+	/**
 	 * Start Transaction
 	 *
 	 * @access	public
@@ -493,15 +528,20 @@ class CI_DB_driver {
 			return TRUE;
 		}
 	
-		// The query() function will set this flag to TRUE in the event that a query failed
+		// The query() function will set this flag to FALSE in the event that a query failed
 		if ($this->_trans_status === FALSE)
 		{
 			$this->trans_rollback();
 			
-			if ($this->db_debug)
+			// If we are NOT running in strict mode, we will reset
+			// the _trans_status flag so that subsequent groups of transactions
+			// will be permitted.
+			if ($this->trans_strict === FALSE)
 			{
-				return $this->display_error('db_transaction_failure');
+				$this->_trans_status = TRUE;
 			}
+
+			log_message('debug', 'DB Transaction Failure');			
 			return FALSE;			
 		}
 		
@@ -576,7 +616,7 @@ class CI_DB_driver {
 	 */	
 	function is_write_type($sql)
 	{
-		if ( ! preg_match('/^\s*"?(INSERT|UPDATE|DELETE|REPLACE|CREATE|DROP|LOAD DATA|COPY|ALTER|GRANT|REVOKE|LOCK|UNLOCK)\s+/i', $sql))
+		if ( ! preg_match('/^\s*"?(SET|INSERT|UPDATE|DELETE|REPLACE|CREATE|DROP|LOAD DATA|COPY|ALTER|GRANT|REVOKE|LOCK|UNLOCK)\s+/i', $sql))
 		{
 			return FALSE;
 		}
@@ -1083,7 +1123,7 @@ class CI_DB_driver {
 			return $this->cache_off();
 		}
 		
-		$this->CACHE = new CI_DB_Cache;
+		$this->CACHE = new CI_DB_Cache($this); // pass db object to support multiple db connections and returned db objects
 		return TRUE;
 	}
 
@@ -1097,7 +1137,7 @@ class CI_DB_driver {
 	 */	
 	function close()
 	{
-		if (is_resource($this->conn_id))
+		if (is_resource($this->conn_id) OR is_object($this->conn_id))
 		{
 			$this->_close($this->conn_id);
 		}
@@ -1117,12 +1157,11 @@ class CI_DB_driver {
 	 */	
 	function display_error($error = '', $swap = '', $native = FALSE)
 	{
-//		$LANG = new CI_Lang();
-		$LANG = new CI_Language();
+		global $LANG;
 		$LANG->load('db');
 
-		$heading = 'Database Error';
-		
+		$heading = $LANG->line('db_error_heading');
+
 		if ($native == TRUE)
 		{
 			$message = $error;
@@ -1131,18 +1170,14 @@ class CI_DB_driver {
 		{
 			$message = ( ! is_array($error)) ? array(str_replace('%s', $swap, $LANG->line($error))) : $error;
 		}
-
-		if ( ! class_exists('CI_Exceptions'))
-		{
-//			include(BASEPATH.'core/Exceptions'.EXT);
-			include(BASEPATH.'libraries/Exceptions'.EXT);
-		}
 		
-		$error = new CI_Exceptions();
-		echo $error->show_error('An Error Was Encountered', $message, 'error_db');
+		$error =& load_class('Exceptions');
+		echo $error->show_error($heading, $message, 'error_db');
 		exit;
 	}
 	
 }
 
-?>
+
+/* End of file DB_driver.php */
+/* Location: ./system/database/DB_driver.php */

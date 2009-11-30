@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -379,15 +379,15 @@ class CI_FTP {
 		
 		$list = $this->list_files($filepath);
 		
-		if ($list !== FALSE AND count($list) > 0)
+		if ($list !== FALSE)
 		{
 			foreach ($list as $item)
 			{			
 				// If we can't delete the item it's probaly a folder so
 				// we'll recursively call delete_dir()
-				if ( ! @ftp_delete($this->conn_id, $filepath.$item))
+				if ( ! @ftp_delete($this->conn_id, $item))
 				{
-					$this->delete_dir($filepath.$item);
+					$this->delete_dir($item);
 				}
 			}
 		}
@@ -613,4 +613,6 @@ class CI_FTP {
 
 }
 // END FTP Class
-?>
+
+/* End of file Ftp.php */
+/* Location: ./system/libraries/Ftp.php */

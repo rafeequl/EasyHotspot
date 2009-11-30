@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -38,7 +38,7 @@ class CI_Xmlrpc {
 	var $xmlrpcBoolean	= 'boolean';
 	var $xmlrpcDouble	= 'double';	
 	var $xmlrpcString	= 'string';
-	var $xmlrpcDateTime	= 'dateTime.iso8601';
+	var $xmlrpcDateTime	= 'datetime.iso8601';
 	var $xmlrpcBase64	= 'base64';
 	var $xmlrpcArray	= 'array';
 	var $xmlrpcStruct	= 'struct';
@@ -159,7 +159,7 @@ class CI_Xmlrpc {
 		
 		$parts = parse_url($url);
 		
-		$path = (!isset($parts['path'])) ? '/' : $parts['path'];
+		$path = ( ! isset($parts['path'])) ? '/' : $parts['path'];
 		
 		if (isset($parts['query']) && $parts['query'] != '')
 		{
@@ -384,7 +384,7 @@ class XML_RPC_Client extends CI_Xmlrpc
 	{	
 		$fp = @fsockopen($this->server, $this->port,$this->errno, $this->errstr, $this->timeout);
 		
-		if (! is_resource($fp))
+		if ( ! is_resource($fp))
 		{
 			error_log($this->xmlrpcstr['http_error']);
 			$r = new XML_RPC_Response(0, $this->xmlrpcerr['http_error'],$this->xmlrpcstr['http_error']);
@@ -406,7 +406,7 @@ class XML_RPC_Client extends CI_Xmlrpc
 		$op .= $msg->payload;
 		
 
-		if (!fputs($fp, $op, strlen($op)))
+		if ( ! fputs($fp, $op, strlen($op)))
 		{
 			error_log($this->xmlrpcstr['http_error']);
 			$r = new XML_RPC_Response(0, $this->xmlrpcerr['http_error'], $this->xmlrpcstr['http_error']);
@@ -442,7 +442,7 @@ class XML_RPC_Response
 			$this->errno = $code;
 			$this->errstr = htmlentities($fstr);
 		}
-		else if (!is_object($val))
+		else if ( ! is_object($val))
 		{
 			// programmer error, not an object
 			error_log("Invalid type '" . gettype($val) . "' (value: $val) passed to XML_RPC_Response.  Defaulting to empty value.");
@@ -737,7 +737,7 @@ class XML_RPC_Message extends CI_Xmlrpc
 		//  PARSE XML DATA
 		//-------------------------------------  	
 
-		if (!xml_parse($parser, $data, sizeof($data)))
+		if ( ! xml_parse($parser, $data, sizeof($data)))
 		{
 			$errstr = sprintf('XML error: %s at line %d',
 					xml_error_string(xml_get_error_code($parser)),
@@ -862,7 +862,7 @@ class XML_RPC_Message extends CI_Xmlrpc
 		else
 		{
 			// not top level element: see if parent is OK
-			if (!in_array($this->xh[$the_parser]['stack'][0], $this->valid_parents[$name], TRUE))
+			if ( ! in_array($this->xh[$the_parser]['stack'][0], $this->valid_parents[$name], TRUE))
 			{
 				$this->xh[$the_parser]['isf'] = 2;
 				$this->xh[$the_parser]['isf_reason'] = "XML-RPC element $name cannot be child of ".$this->xh[$the_parser]['stack'][0];
@@ -1005,7 +1005,7 @@ class XML_RPC_Message extends CI_Xmlrpc
 				{
 					// we have a DOUBLE
 					// we must check that only 0123456789-.<space> are characters here
-					if (! preg_match('/^[+-]?[eE0-9\t \.]+$/', $this->xh[$the_parser]['ac']))
+					if ( ! preg_match('/^[+-]?[eE0-9\t \.]+$/', $this->xh[$the_parser]['ac']))
 					{
 						$this->xh[$the_parser]['value'] = 'ERROR_NON_NUMERIC_FOUND';
 					}
@@ -1018,7 +1018,7 @@ class XML_RPC_Message extends CI_Xmlrpc
 				{
 					// we have an I4/INT
 					// we must check that only 0123456789-<space> are characters here
-					if (! preg_match('/^[+-]?[0-9\t ]+$/', $this->xh[$the_parser]['ac']))
+					if ( ! preg_match('/^[+-]?[0-9\t ]+$/', $this->xh[$the_parser]['ac']))
 					{
 						$this->xh[$the_parser]['value'] = 'ERROR_NON_NUMERIC_FOUND';
 					}
@@ -1213,7 +1213,7 @@ class XML_RPC_Values extends CI_Xmlrpc
 	{	
 		parent::CI_Xmlrpc();
 		
-		if ($val != -1 || $type != '')
+		if ($val != -1 OR $type != '')
 		{
 			$type = $type == '' ? 'string' : $type;
 			
@@ -1250,7 +1250,7 @@ class XML_RPC_Values extends CI_Xmlrpc
 
 		if ($type == $this->xmlrpcBoolean)
 		{
-			if (strcasecmp($val,'true')==0 || $val==1 || ($val==true && strcasecmp($val,'false')))
+			if (strcasecmp($val,'true')==0 OR $val==1 OR ($val==true && strcasecmp($val,'false')))
 			{
 				$val = 1;
 			}
@@ -1416,4 +1416,6 @@ class XML_RPC_Values extends CI_Xmlrpc
 	
 }
 // END XML_RPC_Values Class
-?>
+
+/* End of file Xmlrpc.php */
+/* Location: ./system/libraries/Xmlrpc.php */

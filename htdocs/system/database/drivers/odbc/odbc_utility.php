@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -143,4 +143,6 @@ class CI_DB_odbc_utility extends CI_DB_utility {
 		return FALSE;
 	}
 }
-?>
+
+/* End of file odbc_utility.php */
+/* Location: ./system/database/drivers/odbc/odbc_utility.php */

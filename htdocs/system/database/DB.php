@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -46,7 +46,7 @@ function &DB($params = '', $active_record_override = FALSE)
 		
 		$params = $db[$active_group];			
 	}
-	else
+	elseif (is_string($params))
 	{
 		
 		/* parse the URL from the DSN string
@@ -88,7 +88,7 @@ function &DB($params = '', $active_record_override = FALSE)
 	
 	require_once(BASEPATH.'database/DB_driver'.EXT);
 
-	if (! isset($active_record) OR $active_record == TRUE)
+	if ( ! isset($active_record) OR $active_record == TRUE)
 	{
 		require_once(BASEPATH.'database/DB_active_rec'.EXT);
 		
@@ -120,4 +120,6 @@ function &DB($params = '', $active_record_override = FALSE)
 }	
 
 
-?>
+
+/* End of file DB.php */
+/* Location: ./system/database/DB.php */

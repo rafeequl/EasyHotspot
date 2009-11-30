@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -38,7 +38,7 @@
  * @param	integer
  * @return	string
  */	
-if (! function_exists('heading'))
+if ( ! function_exists('heading'))
 {
 	function heading($data = '', $h = '1')
 	{
@@ -58,7 +58,7 @@ if (! function_exists('heading'))
  * @param	mixed
  * @return	string
  */	
-if (! function_exists('ul'))
+if ( ! function_exists('ul'))
 {
 	function ul($list, $attributes = '')
 	{
@@ -78,7 +78,7 @@ if (! function_exists('ul'))
  * @param	mixed
  * @return	string
  */	
-if (! function_exists('ol'))
+if ( ! function_exists('ol'))
 {
 	function ol($list, $attributes = '')
 	{
@@ -100,7 +100,7 @@ if (! function_exists('ol'))
  * @param	intiger		
  * @return	string
  */	
-if (! function_exists('_list'))
+if ( ! function_exists('_list'))
 {
 	function _list($type = 'ul', $list, $attributes = '', $depth = 0)
 	{
@@ -171,7 +171,7 @@ if (! function_exists('_list'))
  * @param	integer
  * @return	string
  */	
-if (! function_exists('br'))
+if ( ! function_exists('br'))
 {
 	function br($num = 1)
 	{
@@ -190,7 +190,7 @@ if (! function_exists('br'))
  * @param	mixed
  * @return	string
  */	
-if (! function_exists('img'))
+if ( ! function_exists('img'))
 {
 	function img($src = '', $index_page = FALSE)
 	{
@@ -199,7 +199,7 @@ if (! function_exists('img'))
 			$src = array('src' => $src);
 		}
 
-		$img = '<img ';
+		$img = '<img';
 		
 		foreach ($src as $k=>$v)
 		{
@@ -245,7 +245,7 @@ if (! function_exists('img'))
  * @param	boolean	should index_page be added to the css path 
  * @return	string
  */	
-if (! function_exists('link_tag'))
+if ( ! function_exists('link_tag'))
 {
 	function link_tag($href = '', $rel = 'stylesheet', $type = 'text/css', $title = '', $media = '', $index_page = FALSE)
 	{
@@ -257,7 +257,7 @@ if (! function_exists('link_tag'))
 		{
 			foreach ($href as $k=>$v)
 			{
-				if ($k == 'href' AND strpos($k, '://') === FALSE)
+				if ($k == 'href' AND strpos($v, '://') === FALSE)
 				{
 					if ($index_page === TRUE)
 					{
@@ -320,7 +320,7 @@ if (! function_exists('link_tag'))
  * @param	array
  * @return	string
  */	
-if (! function_exists('meta'))
+if ( ! function_exists('meta'))
 {
 	function meta($meta = array(), $newline = "\n")
 	{
@@ -343,7 +343,7 @@ if (! function_exists('meta'))
  * @param	integer
  * @return	string
  */	
-if (! function_exists('nbs'))
+if ( ! function_exists('nbs'))
 {
 	function nbs($num = 1)
 	{
@@ -351,4 +351,6 @@ if (! function_exists('nbs'))
 	}
 }
 
-?>
+
+/* End of file html_helper.php */
+/* Location: ./system/helpers/html_helper.php */

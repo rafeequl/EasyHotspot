@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -64,4 +64,6 @@ function &get_instance()
 	return $OBJ->load;
 }
 
-?>
+
+/* End of file Base4.php */
+/* Location: ./system/codeigniter/Base4.php */

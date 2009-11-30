@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -79,4 +79,6 @@ class Model {
 
 }
 // END Model Class
-?>
+
+/* End of file Model.php */
+/* Location: ./system/libraries/Model.php */

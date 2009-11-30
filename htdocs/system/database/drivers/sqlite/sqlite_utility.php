@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -136,4 +136,6 @@ class CI_DB_sqlite_utility extends CI_DB_utility {
 	}
 
 }
-?>
+
+/* End of file sqlite_utility.php */
+/* Location: ./system/database/drivers/sqlite/sqlite_utility.php */

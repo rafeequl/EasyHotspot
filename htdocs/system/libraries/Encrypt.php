@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -481,4 +481,6 @@ class CI_Encrypt {
 }
 
 // END CI_Encrypt class
-?>
+
+/* End of file Encrypt.php */
+/* Location: ./system/libraries/Encrypt.php */

@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
 | -------------------------------------------------------------------
 | MIME TYPES
@@ -10,7 +10,7 @@
 
 $mimes = array(	'hqx'	=>	'application/mac-binhex40',
 				'cpt'	=>	'application/mac-compactpro',
-				'csv'	=>	array('text/x-comma-separated-values', 'text/comma-separated-values', 'application/octet-stream', 'application/vnd.ms-excel'),
+				'csv'	=>	array('text/x-comma-separated-values', 'text/comma-separated-values', 'application/octet-stream', 'application/vnd.ms-excel', 'text/csv', 'application/csv', 'application/excel', 'application/vnd.msexcel'),
 				'bin'	=>	'application/macbinary',
 				'dms'	=>	'application/octet-stream',
 				'lha'	=>	'application/octet-stream',
@@ -30,7 +30,7 @@ $mimes = array(	'hqx'	=>	'application/mac-binhex40',
 				'smil'	=>	'application/smil',
 				'mif'	=>	'application/vnd.mif',
 				'xls'	=>	array('application/excel', 'application/vnd.ms-excel'),
-				'ppt'	=>	'application/powerpoint',
+				'ppt'	=>	array('application/powerpoint', 'application/vnd.ms-powerpoint'),
 				'wbxml'	=>	'application/wbxml',
 				'wmlc'	=>	'application/wmlc',
 				'dcr'	=>	'application/x-director',
@@ -51,12 +51,12 @@ $mimes = array(	'hqx'	=>	'application/mac-binhex40',
 				'tgz'	=>	'application/x-tar',
 				'xhtml'	=>	'application/xhtml+xml',
 				'xht'	=>	'application/xhtml+xml',
-				'zip'	=> array('application/x-zip', 'application/zip', 'application/x-zip-compressed'),
+				'zip'	=>  array('application/x-zip', 'application/zip', 'application/x-zip-compressed'),
 				'mid'	=>	'audio/midi',
 				'midi'	=>	'audio/midi',
 				'mpga'	=>	'audio/mpeg',
 				'mp2'	=>	'audio/mpeg',
-				'mp3'	=>	'audio/mpeg',
+				'mp3'	=>	array('audio/mpeg', 'audio/mpg'),
 				'aif'	=>	'audio/x-aiff',
 				'aiff'	=>	'audio/x-aiff',
 				'aifc'	=>	'audio/x-aiff',
@@ -99,4 +99,6 @@ $mimes = array(	'hqx'	=>	'application/mac-binhex40',
 			);
 
 
-?>
+
+/* End of file mimes.php */
+/* Location: ./system/application/config/mimes.php */

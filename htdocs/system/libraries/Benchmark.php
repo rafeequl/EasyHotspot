@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -70,23 +70,23 @@ class CI_Benchmark {
 		{
 			return '{elapsed_time}';
 		}
-		
+
 		if ( ! isset($this->marker[$point1]))
 		{
 			return '';
 		}
-		
+
 		if ( ! isset($this->marker[$point2]))
 		{
 			$this->marker[$point2] = microtime();
 		}
-			
+
 		list($sm, $ss) = explode(' ', $this->marker[$point1]);
 		list($em, $es) = explode(' ', $this->marker[$point2]);
 
 		return number_format(($em + $es) - ($sm + $ss), $decimals);
 	}
- 	
+
 	// --------------------------------------------------------------------
 
 	/**
@@ -108,4 +108,6 @@ class CI_Benchmark {
 }
 
 // END CI_Benchmark class
-?>
+
+/* End of file Benchmark.php */
+/* Location: ./system/libraries/Benchmark.php */

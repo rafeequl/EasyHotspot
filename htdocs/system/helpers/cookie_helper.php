@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -42,7 +42,7 @@
  * @param	string	the cookie prefix
  * @return	void
  */
-if (! function_exists('set_cookie'))
+if ( ! function_exists('set_cookie'))
 {
 	function set_cookie($name = '', $value = '', $expire = '', $domain = '', $path = '/', $prefix = '')
 	{
@@ -103,7 +103,7 @@ if (! function_exists('set_cookie'))
  * @param	bool
  * @return	mixed
  */
-if (! function_exists('get_cookie'))
+if ( ! function_exists('get_cookie'))
 {
 	function get_cookie($index = '', $xss_clean = FALSE)
 	{
@@ -123,7 +123,7 @@ if (! function_exists('get_cookie'))
  * @param	string	the cookie prefix
  * @return	void
  */
-if (! function_exists('delete_cookie'))
+if ( ! function_exists('delete_cookie'))
 {
 	function delete_cookie($name = '', $domain = '', $path = '/', $prefix = '')
 	{
@@ -131,4 +131,6 @@ if (! function_exists('delete_cookie'))
 	}
 }
 
-?>
+
+/* End of file cookie_helper.php */
+/* Location: ./system/helpers/cookie_helper.php */

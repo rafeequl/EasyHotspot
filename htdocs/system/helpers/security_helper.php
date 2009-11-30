@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -35,7 +35,7 @@
  * @param	string	the character set of your data
  * @return	string
  */	
-if (! function_exists('xss_clean'))
+if ( ! function_exists('xss_clean'))
 {
 	function xss_clean($str, $charset = 'ISO-8859-1')
 	{
@@ -53,7 +53,7 @@ if (! function_exists('xss_clean'))
  * @param	string
  * @return	string
  */	
-if (! function_exists('dohash'))
+if ( ! function_exists('dohash'))
 {	
 	function dohash($str, $type = 'sha1')
 	{
@@ -93,7 +93,7 @@ if (! function_exists('dohash'))
  * @param	string
  * @return	string
  */	
-if (! function_exists('strip_image_tags'))
+if ( ! function_exists('strip_image_tags'))
 {
 	function strip_image_tags($str)
 	{
@@ -113,7 +113,7 @@ if (! function_exists('strip_image_tags'))
  * @param	string
  * @return	string
  */	
-if (! function_exists('encode_php_tags'))
+if ( ! function_exists('encode_php_tags'))
 {
 	function encode_php_tags($str)
 	{
@@ -121,4 +121,6 @@ if (! function_exists('encode_php_tags'))
 	}
 }
 
-?>
+
+/* End of file security_helper.php */
+/* Location: ./system/helpers/security_helper.php */

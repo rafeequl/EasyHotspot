@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -35,7 +35,7 @@
  * @param	bool	checks to see if the path exists
  * @return	string
  */	
-if (! function_exists('set_realpath'))
+if ( ! function_exists('set_realpath'))
 {
 	function set_realpath($path, $check_existance = TRUE)
 	{
@@ -67,4 +67,6 @@ if (! function_exists('set_realpath'))
 	}
 }
 
-?>
+
+/* End of file path_helper.php */
+/* Location: ./system/helpers/path_helper.php */

@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -28,7 +28,7 @@
  */
 
 // CI Version
-define('CI_VERSION',	'1.6.1');
+define('CI_VERSION',	'1.6.2');
 
 /*
  * ------------------------------------------------------
@@ -43,7 +43,14 @@ require(BASEPATH.'codeigniter/Common'.EXT);
  * ------------------------------------------------------
  */
 require(BASEPATH.'codeigniter/Compat'.EXT);
-	
+
+/*
+ * ------------------------------------------------------
+ *  Load the framework constants
+ * ------------------------------------------------------
+ */
+require(APPPATH.'config/constants'.EXT);
+
 /*
  * ------------------------------------------------------
  *  Define a custom error handler so we can log PHP errors
@@ -165,11 +172,11 @@ $method = $RTR->fetch_method();
 
 if ( ! class_exists($class)
 	OR $method == 'controller'
-	OR substr($method, 0, 1) == '_'
+	OR strncmp($method, '_', 1) == 0
 	OR in_array($method, get_class_methods('Controller'), TRUE)
 	)
 {
-	show_404();
+	show_404("{$class}/{$method}");
 }
 
 /*
@@ -214,14 +221,16 @@ else
 	}
 	else
 	{
-		if ( ! method_exists($CI, $method))
+		// is_callable() returns TRUE on some versions of PHP 5 for private and protected
+		// methods, so we'll use this workaround for consistent behavior
+		if ( ! in_array(strtolower($method), array_map('strtolower', get_class_methods($CI))))
 		{
-			show_404();
+			show_404("{$class}/{$method}");
 		}
 
 		// Call the requested method.
-		// Any URI segments present (besides the class/function) will be passed to the method for convenience		
-		call_user_func_array(array(&$CI, $method), array_slice($URI->rsegments, 2));		
+		// Any URI segments present (besides the class/function) will be passed to the method for convenience
+		call_user_func_array(array(&$CI, $method), array_slice($URI->rsegments, 2));
 	}
 }
 
@@ -264,4 +273,5 @@ if (class_exists('CI_DB') AND isset($CI->db))
 }
 
 
-?>
+/* End of file CodeIgniter.php */
+/* Location: ./system/codeigniter/CodeIgniter.php */

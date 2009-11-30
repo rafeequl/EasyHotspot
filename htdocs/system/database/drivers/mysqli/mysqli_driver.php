@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -464,7 +464,7 @@ class CI_DB_mysqli_driver extends CI_DB {
 			return "`{$item}`";
 		}
 
-		$exceptions = array('AS', '/', '-', '%', '+', '*');
+		$exceptions = array('AS', '/', '-', '%', '+', '*', 'OR', 'IS');
 		
 		foreach ($exceptions as $exception)
 		{
@@ -491,7 +491,7 @@ class CI_DB_mysqli_driver extends CI_DB {
 	 */
 	function _from_tables($tables)
 	{
-		if (! is_array($tables))
+		if ( ! is_array($tables))
 		{
 			$tables = array($tables);
 		}
@@ -539,7 +539,7 @@ class CI_DB_mysqli_driver extends CI_DB {
 			$valstr[] = $key." = ".$val;
 		}
 		
-		$limit = (!$limit) ? '' : ' LIMIT '.$limit;
+		$limit = ( ! $limit) ? '' : ' LIMIT '.$limit;
 		
 		$orderby = (count($orderby) >= 1)?' ORDER BY '.implode(", ", $orderby):'';
 	
@@ -586,7 +586,7 @@ class CI_DB_mysqli_driver extends CI_DB {
 	{
 		$conditions = '';
 
-		if (count($where) > 0 || count($like) > 0)
+		if (count($where) > 0 OR count($like) > 0)
 		{
 			$conditions = "\nWHERE ";
 			$conditions .= implode("\n", $this->ar_where);
@@ -598,7 +598,7 @@ class CI_DB_mysqli_driver extends CI_DB {
 			$conditions .= implode("\n", $like);
 		}
 
-		$limit = (!$limit) ? '' : ' LIMIT '.$limit;
+		$limit = ( ! $limit) ? '' : ' LIMIT '.$limit;
 	
 		return "DELETE FROM ".$table.$conditions.$limit;
 	}
@@ -645,4 +645,6 @@ class CI_DB_mysqli_driver extends CI_DB {
 
 }
 
-?>
+
+/* End of file mysqli_driver.php */
+/* Location: ./system/database/drivers/mysqli/mysqli_driver.php */
