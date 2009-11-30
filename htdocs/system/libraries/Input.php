@@ -72,16 +72,15 @@ class CI_Input {
 		$protected = array('_SERVER', '_GET', '_POST', '_FILES', '_REQUEST', '_SESSION', '_ENV', 'GLOBALS', 'HTTP_RAW_POST_DATA',
 							'system_folder', 'application_folder', 'BM', 'EXT', 'CFG', 'URI', 'RTR', 'OUT', 'IN');
 		
-		// Unset globals for securiy. 
+		// Unset globals for security. 
 		// This is effectively the same as register_globals = off
-		foreach (array($_GET, $_POST, $_COOKIE) as $global)
+		foreach (array($_GET, $_POST, $_COOKIE, $_SERVER, $_FILES, $_ENV, (isset($_SESSION) && is_array($_SESSION)) ? $_SESSION : array()) as $global)
 		{
 			if ( ! is_array($global))
 			{
 				if ( ! in_array($global, $protected))
 				{
-					global $$global;
-					$$global = NULL;
+					unset($GLOBALS[$global]);
 				}
 			}
 			else
@@ -90,8 +89,18 @@ class CI_Input {
 				{
 					if ( ! in_array($key, $protected))
 					{
-						global $$key;
-						$$key = NULL;
+						unset($GLOBALS[$key]);
+					}
+					
+					if (is_array($val))
+					{
+						foreach($val as $k => $v)
+						{
+							if ( ! in_array($k, $protected))
+							{
+								unset($GLOBALS[$k]);
+							}
+						}
 					}
 				}	
 			}
@@ -556,14 +565,11 @@ class CI_Input {
 		 *
 		 * <a href="http://%77%77%77%2E%67%6F%6F%67%6C%65%2E%63%6F%6D">Google</a>
 		 *
-		 * Note: Normally urldecode() would be easier but it removes plus signs
+		 * Note: Use rawurldecode() so it does not remove plus signs
 		 *
 		 */	
-		$str = preg_replace("/(%20)+/", '9u3iovBnRThju941s89rKozm', $str);
-		$str = preg_replace("/%u0([a-z0-9]{3})/i", "&#x\\1;", $str);
-		$str = preg_replace("/%([a-z0-9]{2})/i", "&#x\\1;", $str); 
-		$str = str_replace('9u3iovBnRThju941s89rKozm', "%20", $str);	
-				
+		$str = rawurldecode($str);
+		
 		/*
 		 * Convert character entities to ASCII 
 		 *

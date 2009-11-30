@@ -521,9 +521,9 @@ class CI_DB_oci8_driver extends CI_DB {
 	 */
 	function _escape_table($table)
 	{
-		if (stristr($table, '.'))
+		if (strpos($table, '.') !== FALSE)
 		{
-			$table = preg_replace("/\./", "`.`", $table);
+			$table = '"' . str_replace('.', '"."', $table) . '"';
 		}
 
 		return $table;
@@ -556,17 +556,24 @@ class CI_DB_oci8_driver extends CI_DB {
 		}	
 
 		// This function may get "item1 item2" as a string, and so
-		// we may need "`item1` `item2`" and not "`item1 item2`"
+		// we may need ""item1" "item2"" and not ""item1 item2""
 		if (ctype_alnum($item) === FALSE)
 		{
-			// This function may get "field >= 1", and need it to return "`field` >= 1"
+			if (strpos($item, '.') !== FALSE)
+			{
+				$aliased_tables = implode(".",$this->ar_aliased_tables).'.';
+				$table_name =  substr($item, 0, strpos($item, '.')+1);
+				$item = (strpos($aliased_tables, $table_name) !== FALSE) ? $item = $item : $this->dbprefix.$item;
+			}
+
+			// This function may get "field >= 1", and need it to return ""field" >= 1"
 			$lbound = ($first_word_only === TRUE) ? '' : '|\s|\(';
 
-			$item = preg_replace('/(^'.$lbound.')([\w\d\-\_]+?)(\s|\)|$)/iS', '$1`$2`$3', $item);
+			$item = preg_replace('/(^'.$lbound.')([\w\d\-\_]+?)(\s|\)|$)/iS', '$1"$2"$3', $item);
 		}
 		else
 		{
-			return "`{$item}`";
+			return "\"{$item}\"";
 		}
 
 		$exceptions = array('AS', '/', '-', '%', '+', '*');
@@ -574,9 +581,9 @@ class CI_DB_oci8_driver extends CI_DB {
 		foreach ($exceptions as $exception)
 		{
 		
-			if (stristr($item, " `{$exception}` ") !== FALSE)
+			if (stristr($item, " \"{$exception}\" ") !== FALSE)
 			{
-				$item = preg_replace('/ `('.preg_quote($exception).')` /i', ' $1 ', $item);
+				$item = preg_replace('/ "('.preg_quote($exception).')" /i', ' $1 ', $item);
 			}
 		}
 		return $item;
@@ -601,7 +608,7 @@ class CI_DB_oci8_driver extends CI_DB {
 			$tables = array($tables);
 		}
 		
-		return '('.implode(', ', $tables).')';
+		return implode(', ', $tables);
 	}
 
 	// --------------------------------------------------------------------
@@ -648,7 +655,11 @@ class CI_DB_oci8_driver extends CI_DB {
 		
 		$orderby = (count($orderby) >= 1)?' ORDER BY '.implode(", ", $orderby):'';
 	
-		return "UPDATE ".$this->_escape_table($table)." SET ".implode(', ', $valstr)." WHERE ".implode(" ", $where).$orderby.$limit;
+		$sql = "UPDATE ".$this->_escape_table($table)." SET ".implode(', ', $valstr);
+		$sql .= ($where != '' AND count($where) >=1) ? " WHERE ".implode(" ", $where) : '';
+		$sql .= $orderby.$limit;
+		
+		return $sql;
 	}
 
 	// --------------------------------------------------------------------

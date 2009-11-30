@@ -70,12 +70,7 @@ class CI_DB_driver {
 	 * Constructor.  Accepts one parameter containing the database
 	 * connection settings.
 	 *
-	 * Database settings can be passed as discreet
-	 * parameters or as a data source name in the first
-	 * parameter. DSNs must have this prototype:
-	 * $dsn = 'driver://username:password@hostname/database';
-	 *
-	 * @param mixed. Can be an array or a DSN string
+	 * @param array
 	 */	
 	function CI_DB_driver($params)
 	{
@@ -85,24 +80,6 @@ class CI_DB_driver {
 			{
 				$this->$key = $val;
 			}
-		}
-		elseif (strpos($params, '://'))
-		{
-			if (FALSE === ($dsn = @parse_url($params)))
-			{
-				log_message('error', 'Invalid DB Connection String');
-			
-				if ($this->db_debug)
-				{
-					return $this->display_error('db_invalid_connection_str');
-				}
-				return FALSE;			
-			}
-			
-			$this->hostname = ( ! isset($dsn['host'])) ? '' : rawurldecode($dsn['host']);
-			$this->username = ( ! isset($dsn['user'])) ? '' : rawurldecode($dsn['user']);
-			$this->password = ( ! isset($dsn['pass'])) ? '' : rawurldecode($dsn['pass']);
-			$this->database = ( ! isset($dsn['path'])) ? '' : rawurldecode(substr($dsn['path'], 1));
 		}
 
 		log_message('debug', 'Database Driver Class Initialized');
@@ -556,8 +533,8 @@ class CI_DB_driver {
 	 * @return	string		
 	 */	
 	function compile_binds($sql, $binds)
-	{	
-		if (FALSE === strpos($sql, $this->bind_marker))
+	{
+		if (strpos($sql, $this->bind_marker) === FALSE)
 		{
 			return $sql;
 		}
@@ -567,17 +544,25 @@ class CI_DB_driver {
 			$binds = array($binds);
 		}
 		
-		foreach ($binds as $val)
-		{
-			$val = $this->escape($val);
-					
-			// Just in case the replacement string contains the bind
-			// character we'll temporarily replace it with a marker
-			$val = str_replace($this->bind_marker, '{%bind_marker%}', $val);
-			$sql = preg_replace("#".preg_quote($this->bind_marker, '#')."#", str_replace('$', '\$', $val), $sql, 1);
+		// Get the sql segments around the bind markers
+		$segments = explode($this->bind_marker, $sql);
+
+		// The count of bind should be 1 less then the count of segments
+		// If there are more bind arguments trim it down
+		if (count($binds) >= count($segments)) {
+			$binds = array_slice($binds, 0, count($segments)-1);
 		}
 
-		return str_replace('{%bind_marker%}', $this->bind_marker, $sql);		
+		// Construct the binded query
+		$result = $segments[0];
+		$i = 0;
+		foreach ($binds as $bind)
+		{
+			$result .= $this->escape($bind);
+			$result .= $segments[++$i];
+		}
+
+		return $result;
 	}
 	
 	// --------------------------------------------------------------------
