@@ -30,6 +30,7 @@
 | make active.  By default there is only one group (the "default" group).
 |
 */
+$active_record = TRUE;
 
 $active_group = "default";
 
@@ -39,11 +40,13 @@ $db['default']['password'] = "easyhotspot";
 $db['default']['database'] = "easyhotspot_opensource";
 $db['default']['dbdriver'] = "mysql";
 $db['default']['dbprefix'] = "";
-$db['default']['active_r'] = TRUE;
+# $db['default']['active_r'] = TRUE;
 $db['default']['pconnect'] = TRUE;
 $db['default']['db_debug'] = TRUE;
 $db['default']['cache_on'] = FALSE;
 $db['default']['cachedir'] = "";
 
+$db['default']['char_set'] = "utf8";
+$db['default']['dbcollat'] = "utf8_general_ci";
 
 ?>

@@ -106,5 +106,16 @@ $autoload['language'] = array('easyhotspot');
 */
 // $autoload['core'] = array();
 
+/*
+| -------------------------------------------------------------------
+| Auto-load Model files
+| -------------------------------------------------------------------
+| Prototype:
+|
+| $autoload['model'] = array('my_model');
+|
+*/
+
+$autoload['model'] = array();
 
 ?>

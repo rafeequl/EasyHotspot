@@ -5,10 +5,10 @@
  * An open source application development framework for PHP 4.3.2 or newer
  *
  * @package		CodeIgniter
- * @author		Rick Ellis
+ * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2006, EllisLab, Inc.
- * @license		http://www.codeignitor.com/user_guide/license.html
- * @link		http://www.codeigniter.com
+ * @license		http://codeigniter.com/user_guide/license.html
+ * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
  */
@@ -21,8 +21,8 @@
  * @package		CodeIgniter
  * @subpackage	Helpers
  * @category	Helpers
- * @author		Rick Ellis
- * @link		http://www.codeigniter.com/user_guide/helpers/typography_helper.html
+ * @author		ExpressionEngine Dev Team
+ * @link		http://codeigniter.com/user_guide/helpers/typography_helper.html
  */
 
 // ------------------------------------------------------------------------
@@ -34,28 +34,31 @@
  * @param	string
  * @return	string
  */	
-function nl2br_except_pre($str)
+if (! function_exists('nl2br_except_pre'))
 {
-	$ex = explode("pre>",$str);
-	$ct = count($ex);
-	
-	$newstr = "";
-	for ($i = 0; $i < $ct; $i++)
+	function nl2br_except_pre($str)
 	{
-		if (($i % 2) == 0)
-		{
-			$newstr .= nl2br($ex[$i]);
-		}
-		else
-		{
-			$newstr .= $ex[$i];
-		}
-		
-		if ($ct - 1 != $i)
-			$newstr .= "pre>";
-	}
+		$ex = explode("pre>",$str);
+		$ct = count($ex);
 	
-	return $newstr;
+		$newstr = "";
+		for ($i = 0; $i < $ct; $i++)
+		{
+			if (($i % 2) == 0)
+			{
+				$newstr .= nl2br($ex[$i]);
+			}
+			else
+			{
+				$newstr .= $ex[$i];
+			}
+		
+			if ($ct - 1 != $i)
+				$newstr .= "pre>";
+		}
+	
+		return $newstr;
+	}
 }
 	
 // ------------------------------------------------------------------------
@@ -68,10 +71,13 @@ function nl2br_except_pre($str)
  * @param	string
  * @return	string
  */
-function auto_typography($str)
+if (! function_exists('auto_typography'))
 {
-	$TYPE = new Auto_typography();
-	return $TYPE->convert($str);
+	function auto_typography($str)
+	{
+		$TYPE = new Auto_typography();
+		return $TYPE->convert($str);
+	}
 }
 	
 // ------------------------------------------------------------------------
@@ -82,14 +88,13 @@ function auto_typography($str)
  *
  * @access		private
  * @category	Helpers
- * @author		Rick Ellis
- * @author		Paul Burdick
- * @link		http://www.codeigniter.com/user_guide/helpers/
+ * @author		ExpressionEngine Dev Team
+ * @link		http://codeigniter.com/user_guide/helpers/
  */
 class Auto_typography {
 
 	// Block level elements that should not be wrapped inside <p> tags
-	var $block_elements = 'div|blockquote|pre|code|h\d|script|ol|un';
+	var $block_elements = 'div|blockquote|pre|code|h\d|script|ol|ul';
 	
 	// Elements that should not have <p> and <br /> tags within them.
 	var $skip_elements	= 'pre|ol|ul';
@@ -152,8 +157,8 @@ class Auto_typography {
 		 * ends.  Later on we'll do some further clean up.
 		 *
 		 */
-		$str = preg_replace("#(<.*?)(".$this->block_elements.")(.*?>)#", "</p>\\1\\2\\3", $str);
-		$str = preg_replace("#(</.*?)(".$this->block_elements.")(.*?>)#", "\\1\\2\\3<p>", $str);
+		$str = preg_replace("#(<)(".$this->block_elements.")(.*?>)#", "</p>\\1\\2\\3", $str);
+		$str = preg_replace("#(</)(".$this->block_elements.")(.*?>)#", "\\1\\2\\3<p>", $str);
 	
 		/*
 		 * Convert "ignore" tags to temporary marker

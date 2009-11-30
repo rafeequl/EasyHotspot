@@ -5,10 +5,10 @@
  * An open source application development framework for PHP 4.3.2 or newer
  *
  * @package		CodeIgniter
- * @author		Rick Ellis
+ * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2006, EllisLab, Inc.
- * @license		http://www.codeignitor.com/user_guide/license.html
- * @link		http://www.codeigniter.com
+ * @license		http://codeigniter.com/user_guide/license.html
+ * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
  */
@@ -23,8 +23,8 @@
  * @package		CodeIgniter
  * @subpackage	Libraries
  * @category	User Agent
- * @author		Rick Ellis
- * @link		http://www.codeigniter.com/user_guide/libraries/user_agent.html
+ * @author		ExpressionEngine Dev Team
+ * @link		http://codeigniter.com/user_guide/libraries/user_agent.html
  */
 class CI_User_agent {
 
@@ -256,7 +256,7 @@ class CI_User_agent {
 	{
 		if ((count($this->languages) == 0) AND isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) AND $_SERVER['HTTP_ACCEPT_LANGUAGE'] != '')
 		{
-			$languages = preg_replace('/(;q=.+)/i', '', trim($_SERVER['HTTP_ACCEPT_LANGUAGE']));
+			$languages = preg_replace('/(;q=[0-9\.]+)/i', '', strtolower(trim($_SERVER['HTTP_ACCEPT_LANGUAGE'])));
 			
 			$this->languages = explode(',', $languages);
 		}
@@ -279,7 +279,7 @@ class CI_User_agent {
 	{	
 		if ((count($this->charsets) == 0) AND isset($_SERVER['HTTP_ACCEPT_CHARSET']) AND $_SERVER['HTTP_ACCEPT_CHARSET'] != '')
 		{
-			$charsets = preg_replace('/(;q=.+)/i', '', trim($_SERVER['HTTP_ACCEPT_CHARSET']));
+			$charsets = preg_replace('/(;q=.+)/i', '', strtolower(trim($_SERVER['HTTP_ACCEPT_CHARSET'])));
 			
 			$this->charsets = explode(',', $charsets);
 		}

@@ -5,10 +5,10 @@
  * An open source application development framework for PHP 4.3.2 or newer
  *
  * @package		CodeIgniter
- * @author		Rick Ellis
+ * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2006, EllisLab, Inc.
- * @license		http://www.codeignitor.com/user_guide/license.html
- * @link		http://www.codeigniter.com
+ * @license		http://codeigniter.com/user_guide/license.html
+ * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
  */
@@ -23,8 +23,8 @@
  * @package		CodeIgniter
  * @subpackage	Libraries
  * @category	Libraries
- * @author		Rick Ellis
- * @link		http://www.codeigniter.com/user_guide/libraries/email.html
+ * @author		ExpressionEngine Dev Team
+ * @link		http://codeigniter.com/user_guide/libraries/email.html
  */
 class CI_Email {
 
@@ -36,13 +36,13 @@ class CI_Email {
 	var	$smtp_pass		= "";		// SMTP Password
 	var	$smtp_port		= "25";		// SMTP Port
 	var	$smtp_timeout	= 5;		// SMTP Timeout in seconds
-	var	$wordwrap		= TRUE;		// true/false  Turns word-wrap on/off
+	var	$wordwrap		= TRUE;		// TRUE/FALSE  Turns word-wrap on/off
 	var	$wrapchars		= "76";		// Number of characters to wrap at.
 	var	$mailtype		= "text";	// text/html  Defines email formatting
 	var	$charset		= "utf-8";	// Default char set: iso-8859-1 or us-ascii
 	var	$multipart		= "mixed";	// "mixed" (in the body) or "related" (separate)
 	var $alt_message	= '';		// Alternative message for HTML emails
-	var	$validate		= FALSE;	// true/false.  Enables email validation
+	var	$validate		= FALSE;	// TRUE/FALSE.  Enables email validation
 	var	$priority		= "3";		// Default priority (1 - 5)
 	var	$newline		= "\n";		// Default newline. "\r\n" or "\n" (Use "\r\n" to comply with RFC 822)
 
@@ -50,8 +50,8 @@ class CI_Email {
 									// even on the receiving end think they need to muck with CRLFs, so using "\n", while
 									// distasteful, is the only thing that seems to work for all environments.
 
-	var	$bcc_batch_mode	= FALSE;	// true/false  Turns on/off Bcc batch feature
-	var	$bcc_batch_size	= 200;		// If bcc_batch_mode = true, sets max number of Bccs in each batch
+	var	$bcc_batch_mode	= FALSE;	// TRUE/FALSE  Turns on/off Bcc batch feature
+	var	$bcc_batch_size	= 200;		// If bcc_batch_mode = TRUE, sets max number of Bccs in each batch
 	var	$_subject		= "";
 	var	$_body			= "";
 	var	$_finalbody		= "";
@@ -73,7 +73,7 @@ class CI_Email {
 	var	$_attach_type	= array();
 	var	$_attach_disp	= array();
 	var	$_protocols		= array('mail', 'sendmail', 'smtp');
-	var	$_base_charsets	= array('iso-8859-1', 'us-ascii');
+	var	$_base_charsets	= array('us-ascii', 'iso-2022-');	// 7-bit charsets (excluding language suffix)
 	var	$_bit_depths	= array('7bit', '8bit');
 	var	$_priorities	= array('1 (Highest)', '2 (High)', '3 (Normal)', '4 (Low)', '5 (Lowest)');	
 
@@ -122,7 +122,7 @@ class CI_Email {
 			}
 		}
 		$this->_smtp_auth = ($this->smtp_user == '' AND $this->smtp_pass == '') ? FALSE : TRUE;			
-		$this->_safe_mode = (@ini_get("safe_mode") == 0) ? FALSE : TRUE;
+		$this->_safe_mode = ((boolean)@ini_get("safe_mode") === FALSE) ? FALSE : TRUE;
 	}
   	
 	// --------------------------------------------------------------------
@@ -282,7 +282,7 @@ class CI_Email {
 	{
 		if ($limit != '' && is_numeric($limit))
 		{
-			$this->bcc_batch_mode = true;
+			$this->bcc_batch_mode = TRUE;
 			$this->bcc_batch_size = $limit;
 		}
 
@@ -538,12 +538,12 @@ class CI_Email {
 	 * @param	bool
 	 * @return	string
 	 */	
-	function _get_protocol($return = true)
+	function _get_protocol($return = TRUE)
 	{
 		$this->protocol = strtolower($this->protocol);
 		$this->protocol = ( ! in_array($this->protocol, $this->_protocols, TRUE)) ? 'mail' : $this->protocol;
 		
-		if ($return == true)
+		if ($return == TRUE)
 			return $this->protocol;
 	}
   	
@@ -556,15 +556,22 @@ class CI_Email {
 	 * @param	bool
 	 * @return	string
 	 */	
-	function _get_encoding($return = true)
+	function _get_encoding($return = TRUE)
 	{		
-		$this->_encoding = ( ! in_array($this->_encoding, $this->_bit_depths)) ? '7bit' : $this->_encoding;
+		$this->_encoding = ( ! in_array($this->_encoding, $this->_bit_depths)) ? '8bit' : $this->_encoding;
 		
-		if ( ! in_array($this->charset, $this->_base_charsets, TRUE))
-			$this->_encoding = "8bit";
+		foreach ($this->_base_charsets as $charset)
+		{
+			if (strncmp($charset, $this->charset, strlen($charset)) == 0)
+			{
+				$this->_encoding = '7bit';
+			}
+		}
 			
-		if ($return == true)
-			return $this->_encoding;
+		if ($return == TRUE)
+		{
+			return $this->_encoding;			
+		}
 	}
 
 	// --------------------------------------------------------------------
@@ -602,7 +609,7 @@ class CI_Email {
 		$timezone = date("Z");
 		$operator = (substr($timezone, 0, 1) == '-') ? '-' : '+';
 		$timezone = abs($timezone);
-		$timezone = ($timezone/3600) * 100 + ($timezone % 3600) /60;
+		$timezone = floor($timezone/3600) * 100 + ($timezone % 3600 ) / 60;
 		
 		return sprintf("%s %s%04d", date("D, j M Y H:i:s"), $operator, $timezone);
 	}
@@ -684,13 +691,17 @@ class CI_Email {
 		}
 			
 		$clean_email = array();
-
-		for ($i=0; $i < count($email); $i++)
+		
+		foreach ($email as $addy)
 		{
-			if (preg_match( '/\<(.*)\>/', $email[$i], $match))
-		   		$clean_email[] = $match['1'];
+			if (preg_match( '/\<(.*)\>/', $addy, $match))
+			{
+		   		$clean_email[] = $match['1'];				
+			}
 		   	else
-		   		$clean_email[] = $email[$i];
+			{
+		   		$clean_email[] = $addy;					
+			}
 		}
 		
 		return $clean_email;
@@ -1038,7 +1049,7 @@ class CI_Email {
 			
 			if ( ! $fp = fopen($filename, 'r'))
 			{
-				$this->_set_error_message('email_attachment_unredable', $filename);
+				$this->_set_error_message('email_attachment_unreadable', $filename);
 				return FALSE;
 			}
 			
@@ -1303,7 +1314,7 @@ class CI_Email {
 		}
 
 		$this->_set_error_message('email_sent', $this->_get_protocol());
-		return true;
+		return TRUE;
 	}	
   	
 	// --------------------------------------------------------------------
@@ -1325,7 +1336,9 @@ class CI_Email {
 		}
 		else
 		{
-			if ( ! mail($this->_recipients, $this->_subject, $this->_finalbody, $this->_header_str, "-f".$this->clean_email($this->_headers['From'])))
+			// most documentation of sendmail using the "-f" flag lacks a space after it, however
+			// we've encountered servers that seem to require it to be in place.
+			if ( ! mail($this->_recipients, $this->_subject, $this->_finalbody, $this->_header_str, "-f ".$this->clean_email($this->_headers['From'])))
 				return FALSE;
 			else
 				return TRUE;
@@ -1416,7 +1429,7 @@ class CI_Email {
 		}
 
 		$this->_send_command('quit');
-		return true;
+		return TRUE;
 	}	
   	
 	// --------------------------------------------------------------------
@@ -1509,7 +1522,7 @@ class CI_Email {
 		if ($cmd == 'quit')
 			fclose($this->_smtp_connect);
 	
-		return true;
+		return TRUE;
 	}
   	
 	// --------------------------------------------------------------------
@@ -1523,7 +1536,7 @@ class CI_Email {
 	function _smtp_authenticate()
 	{	
 		if ( ! $this->_smtp_auth)
-			return true;
+			return TRUE;
 			
 		if ($this->smtp_user == ""  AND  $this->smtp_pass == "")
 		{
@@ -1537,7 +1550,7 @@ class CI_Email {
 
 		if (substr($reply, 0, 3) != '334')
 		{
-			$this->_set_error_message('email_filed_smtp_login', $reply);			
+			$this->_set_error_message('email_failed_smtp_login', $reply);			
 			return FALSE;
 		}
 
@@ -1561,7 +1574,7 @@ class CI_Email {
 			return FALSE;
 		}
 	
-		return true;
+		return TRUE;
 	}
   	
 	// --------------------------------------------------------------------
@@ -1580,7 +1593,7 @@ class CI_Email {
 			return FALSE;
 		}
 		else
-			return true;
+			return TRUE;
 	}
   	
 	// --------------------------------------------------------------------

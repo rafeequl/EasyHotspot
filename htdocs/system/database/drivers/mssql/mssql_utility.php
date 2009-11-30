@@ -5,10 +5,10 @@
  * An open source application development framework for PHP 4.3.2 or newer
  *
  * @package		CodeIgniter
- * @author		Rick Ellis
+ * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2006, EllisLab, Inc.
- * @license		http://www.codeignitor.com/user_guide/license.html
- * @link		http://www.codeigniter.com
+ * @license		http://codeigniter.com/user_guide/license.html
+ * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
  */
@@ -19,52 +19,10 @@
  * MS SQL Utility Class
  *
  * @category	Database
- * @author		Rick Ellis
- * @link		http://www.codeigniter.com/user_guide/database/
+ * @author		ExpressionEngine Dev Team
+ * @link		http://codeigniter.com/user_guide/database/
  */
 class CI_DB_mssql_utility extends CI_DB_utility {
-
-
-	/**
-	 * Create database
-	 *
-	 * @access	private
-	 * @param	string	the database name
-	 * @return	bool
-	 */
-	function _create_database($name)
-	{
-		return "CREATE DATABASE ".$name;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Drop database
-	 *
-	 * @access	private
-	 * @param	string	the database name
-	 * @return	bool
-	 */
-	function _drop_database($name)
-	{
-		return "DROP DATABASE ".$name;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Drop Table
-	 *
-	 * @access	private
-	 * @return	bool
-	 */
-	function _drop_table($table)
-	{
-		return "DROP TABLE ".$this->db->_escape_table($table);
-	}
-
-	// --------------------------------------------------------------------
 
 	/**
 	 * List databases
@@ -94,7 +52,7 @@ class CI_DB_mssql_utility extends CI_DB_utility {
 	}
 
 	// --------------------------------------------------------------------
-
+	
 	/**
 	 * Repair table query
 	 *
@@ -124,6 +82,39 @@ class CI_DB_mssql_utility extends CI_DB_utility {
 		return $this->db->display_error('db_unsuported_feature');
 	}
 
+	/**
+	 *
+	 * The functions below have been deprecated as of 1.6, and are only here for backwards
+	 * compatibility.  They now reside in dbforge().  The use of dbutils for database manipulation
+	 * is STRONGLY discouraged in favour if using dbforge.
+	 *
+	 */
+
+	/**
+	 * Create database
+	 *
+	 * @access	private
+	 * @param	string	the database name
+	 * @return	bool
+	 */
+	function _create_database($name)
+	{
+		return "CREATE DATABASE ".$name;
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Drop database
+	 *
+	 * @access	private
+	 * @param	string	the database name
+	 * @return	bool
+	 */
+	function _drop_database($name)
+	{
+		return "DROP DATABASE ".$name;
+	}
 
 }
 

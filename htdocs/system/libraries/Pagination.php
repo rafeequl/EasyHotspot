@@ -5,10 +5,10 @@
  * An open source application development framework for PHP 4.3.2 or newer
  *
  * @package		CodeIgniter
- * @author		Rick Ellis
+ * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2006, EllisLab, Inc.
- * @license		http://www.codeignitor.com/user_guide/license.html
- * @link		http://www.codeigniter.com
+ * @license		http://codeigniter.com/user_guide/license.html
+ * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
  */
@@ -21,8 +21,8 @@
  * @package		CodeIgniter
  * @subpackage	Libraries
  * @category	Pagination
- * @author		Rick Ellis
- * @link		http://www.codeigniter.com/user_guide/libraries/pagination.html
+ * @author		ExpressionEngine Dev Team
+ * @link		http://codeigniter.com/user_guide/libraries/pagination.html
  */
 class CI_Pagination {
 
@@ -124,6 +124,13 @@ class CI_Pagination {
 			// Prep the current page - no funny business!
 			$this->cur_page = (int) $this->cur_page;
 		}
+
+		$this->num_links = (int)$this->num_links;
+		
+		if ($this->num_links < 1)
+		{
+			show_error('Your number of links must be a positive number.');
+		}
 				
 		if ( ! is_numeric($this->cur_page))
 		{
@@ -158,7 +165,7 @@ class CI_Pagination {
 		}
 
 		// Render the "previous" link
-		if  (($this->cur_page - $this->num_links) >= 0)
+		if  ($this->cur_page != 1)
 		{
 			$i = $uri_page_number - $this->per_page;
 			if ($i == 0) $i = '';

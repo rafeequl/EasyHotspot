@@ -5,10 +5,10 @@
  * An open source application development framework for PHP 4.3.2 or newer
  *
  * @package		CodeIgniter
- * @author		Rick Ellis
+ * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2006, EllisLab, Inc.
- * @license		http://www.codeignitor.com/user_guide/license.html
- * @link		http://www.codeigniter.com
+ * @license		http://codeigniter.com/user_guide/license.html
+ * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
  */
@@ -21,8 +21,8 @@
  * @package		CodeIgniter
  * @subpackage	Libraries
  * @category	Validation
- * @author		Rick Ellis
- * @link		http://www.codeigniter.com/user_guide/libraries/validation.html
+ * @author		ExpressionEngine Dev Team
+ * @link		http://codeigniter.com/user_guide/libraries/validation.html
  */
 class CI_Validation {
 	
@@ -86,8 +86,8 @@ class CI_Validation {
 		}		
 			
 		foreach($this->_fields as $key => $val)
-		{		
-			$this->$key = ( ! isset($_POST[$key]) OR is_array($_POST[$key])) ? '' : $this->prep_for_form($_POST[$key]);
+		{
+			$this->$key = ( ! isset($_POST[$key])) ? '' : $this->prep_for_form($_POST[$key]);
 			
 			$error = $key.'_error';
 			if ( ! isset($this->$error))
@@ -195,7 +195,7 @@ class CI_Validation {
 			$ex = explode('|', $rules);
 
 			// Is the field required?  If not, if the field is blank  we'll move on to the next test
-			if ( ! in_array('required', $ex, TRUE) AND strpos($rules, 'callback_') === FALSE)
+			if ( ! in_array('required', $ex, TRUE))
 			{
 				if ( ! isset($_POST[$field]) OR $_POST[$field] == '')
 				{
@@ -228,8 +228,14 @@ class CI_Validation {
 						$line = $this->_error_messages['isset'];
 					}
 					
-					$field = ( ! isset($this->_fields[$field])) ? $field : $this->_fields[$field];
-					$this->_error_array[] = sprintf($line, $field);	
+					// Build the error message
+					$mfield = ( ! isset($this->_fields[$field])) ? $field : $this->_fields[$field];
+					$message = sprintf($line, $mfield);
+
+					// Set the error variable.  Example: $this->username_error
+					$error = $field.'_error';
+					$this->$error = $this->_error_prefix.$message.$this->_error_suffix;
+					$this->_error_array[] = $message;
 				}
 						
 				continue;
@@ -317,7 +323,7 @@ class CI_Validation {
 					}
 					else
 					{
-						$line = $this->_error_messages[$rule];;
+						$line = $this->_error_messages[$rule];
 					}				
 
 					// Build the error message
@@ -490,7 +496,7 @@ class CI_Validation {
 	 */
 	function valid_ip($ip)
 	{
-		return $this->CI->valid_ip($ip);
+		return $this->CI->input->valid_ip($ip);
 	}
 
 	// --------------------------------------------------------------------
@@ -541,28 +547,46 @@ class CI_Validation {
 	 * Numeric
 	 *
 	 * @access	public
-	 * @param	int
+	 * @param	string
 	 * @return	bool
 	 */	
 	function numeric($str)
 	{
-		return ( ! ereg("^[0-9\.]+$", $str)) ? FALSE : TRUE;
+		return (bool)preg_match( '/^[\-+]?[0-9]*\.?[0-9]+$/', $str);
+
 	}
 
 	// --------------------------------------------------------------------
 	
 	/**
-	 * Is Numeric
+	 * Integer
 	 *
 	 * @access	public
 	 * @param	string
 	 * @return	bool
 	 */	
-	function is_numeric($str)
+	function integer($str)
 	{
-		return ( ! is_numeric($str)) ? FALSE : TRUE;
+		return (bool)preg_match( '/^[\-+]?[0-9]+$/', $str);
 	}
 	
+	// --------------------------------------------------------------------
+	
+	/**
+	 * Valid Base64
+	 *
+	 * Tests a string for characters outside of the Base64 alphabet
+	 * as defined by RFC 2045 http://www.faqs.org/rfcs/rfc2045
+	 *
+	 * @access	public
+	 * @param	string
+	 * @return	bool
+	 */
+	function valid_base64($str)
+	{
+		return (bool) ! preg_match('/[^a-zA-Z0-9\/\+=]/', $str);
+	}
+
 	// --------------------------------------------------------------------
 	
 	/**
@@ -653,14 +677,22 @@ class CI_Validation {
 	 * @param	string
 	 * @return	string
 	 */
-	function prep_for_form($str = '')
+	function prep_for_form($data = '')
 	{
-		if ($this->_safe_form_data == FALSE OR $str == '')
+		if (is_array($data))
 		{
-			return $str;
+			foreach ($data as $key => $val)
+			{
+				$data[$key] = $this->prep_for_form($val);
+			}
+		}
+		
+		if ($this->_safe_form_data == FALSE OR $data == '')
+		{
+			return $data;
 		}
 
-		return str_replace(array("'", '"', '<', '>'), array("&#39;", "&quot;", '&lt;', '&gt;'), stripslashes($str));
+		return str_replace(array("'", '"', '<', '>'), array("&#39;", "&quot;", '&lt;', '&gt;'), stripslashes($data));
 	}
 	
 	// --------------------------------------------------------------------
@@ -699,7 +731,7 @@ class CI_Validation {
 	 */	
 	function strip_image_tags($str)
 	{
-		$_POST[$this->_current_field] = $this->input->strip_image_tags($str);
+		$_POST[$this->_current_field] = $this->CI->input->strip_image_tags($str);
 	}
 	
 	// --------------------------------------------------------------------

@@ -5,10 +5,10 @@
  * An open source application development framework for PHP 4.3.2 or newer
  *
  * @package		CodeIgniter
- * @author		Rick Ellis
+ * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2006, EllisLab, Inc.
- * @license		http://www.codeignitor.com/user_guide/license.html
- * @link		http://www.codeigniter.com
+ * @license		http://codeigniter.com/user_guide/license.html
+ * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
  */
@@ -23,13 +23,15 @@
  * @package		CodeIgniter
  * @subpackage	Libraries
  * @category	URI
- * @author		Rick Ellis
- * @link		http://www.codeigniter.com/user_guide/libraries/uri.html
+ * @author		ExpressionEngine Dev Team
+ * @link		http://codeigniter.com/user_guide/libraries/uri.html
  */
 class CI_URI {
 
-	var $router;
 	var	$keyval	= array();
+	var $uri_string;
+	var $segments		= array();
+	var $rsegments		= array();
 
 	/**
 	 * Constructor
@@ -42,9 +44,232 @@ class CI_URI {
 	 */		
 	function CI_URI()
 	{
-		$this->router =& load_class('Router');	
+		$this->config =& load_class('Config');
 		log_message('debug', "URI Class Initialized");
 	}
+	
+	
+	// --------------------------------------------------------------------
+	
+	/**
+	 * Get the URI String
+	 *
+	 * @access	private
+	 * @return	string
+	 */	
+	function _fetch_uri_string()
+	{	
+		if (strtoupper($this->config->item('uri_protocol')) == 'AUTO')
+		{
+			// If the URL has a question mark then it's simplest to just
+			// build the URI string from the zero index of the $_GET array.
+			// This avoids having to deal with $_SERVER variables, which
+			// can be unreliable in some environments
+			if (is_array($_GET) AND count($_GET) == 1)
+			{
+				$this->uri_string = key($_GET);			
+				return;
+			}
+		
+			// Is there a PATH_INFO variable?
+			// Note: some servers seem to have trouble with getenv() so we'll test it two ways		
+			$path = (isset($_SERVER['PATH_INFO'])) ? $_SERVER['PATH_INFO'] : @getenv('PATH_INFO');			
+			if ($path != '' AND $path != '/' AND $path != "/".SELF)
+			{
+				$this->uri_string = $path;
+				return;
+			}
+					
+			// No PATH_INFO?... What about QUERY_STRING?
+			$path =  (isset($_SERVER['QUERY_STRING'])) ? $_SERVER['QUERY_STRING'] : @getenv('QUERY_STRING');	
+			if ($path != '' AND $path != '/')
+			{
+				$this->uri_string = $path;
+				return;
+			}
+			
+			// No QUERY_STRING?... Maybe the ORIG_PATH_INFO variable exists?
+			$path = (isset($_SERVER['ORIG_PATH_INFO'])) ? $_SERVER['ORIG_PATH_INFO'] : @getenv('ORIG_PATH_INFO');	
+			if ($path != '' AND $path != '/' AND $path != "/".SELF)
+			{
+				$this->uri_string = $path;
+				return;
+			}
+
+			// We've exhausted all our options...
+			$this->uri_string = '';
+		}
+		else
+		{
+			$uri = strtoupper($this->config->item('uri_protocol'));
+			
+			if ($uri == 'REQUEST_URI')
+			{
+				$this->uri_string = $this->_parse_request_uri();
+				return;
+			}
+			
+			$this->uri_string = (isset($_SERVER[$uri])) ? $_SERVER[$uri] : @getenv($uri);
+		}
+		
+		// If the URI contains only a slash we'll kill it
+		if ($this->uri_string == '/')
+		{
+			$this->uri_string = '';
+		}		
+	}
+	
+	// --------------------------------------------------------------------
+	
+	/**
+	 * Parse the REQUEST_URI
+	 *
+	 * Due to the way REQUEST_URI works it usually contains path info
+	 * that makes it unusable as URI data.  We'll trim off the unnecessary
+	 * data, hopefully arriving at a valid URI that we can use.
+	 *
+	 * @access	private
+	 * @return	string
+	 */	
+	function _parse_request_uri()
+	{
+		if ( ! isset($_SERVER['REQUEST_URI']) OR $_SERVER['REQUEST_URI'] == '')
+		{
+			return '';
+		}
+		
+		$request_uri = preg_replace("|/(.*)|", "\\1", str_replace("\\", "/", $_SERVER['REQUEST_URI']));
+
+		if ($request_uri == '' OR $request_uri == SELF)
+		{
+			return '';
+		}
+		
+		$fc_path = FCPATH;		
+		if (strpos($request_uri, '?') !== FALSE)
+		{
+			$fc_path .= '?';
+		}
+		
+		$parsed_uri = explode("/", $request_uri);
+				
+		$i = 0;
+		foreach(explode("/", $fc_path) as $segment)
+		{
+			if (isset($parsed_uri[$i]) AND $segment == $parsed_uri[$i])
+			{
+				$i++;
+			}
+		}
+		
+		$parsed_uri = implode("/", array_slice($parsed_uri, $i));
+		
+		if ($parsed_uri != '')
+		{
+			$parsed_uri = '/'.$parsed_uri;
+		}
+
+		return $parsed_uri;
+	}
+
+	// --------------------------------------------------------------------
+	
+	/**
+	 * Filter segments for malicious characters
+	 *
+	 * @access	private
+	 * @param	string
+	 * @return	string
+	 */	
+	function _filter_uri($str)
+	{
+		if ($str != '' AND $this->config->item('permitted_uri_chars') != '')
+		{
+			if ( ! preg_match("|^[".preg_quote($this->config->item('permitted_uri_chars'))."]+$|i", $str))
+			{
+				exit('The URI you submitted has disallowed characters.');
+			}
+		}
+			
+		return $str;
+	}
+
+	// --------------------------------------------------------------------
+	
+	/**
+	 * Remove the suffix from the URL if needed
+	 *
+	 * @access	private
+	 * @return	void
+	 */	
+	function _remove_url_suffix()
+	{
+		if  ($this->config->item('url_suffix') != "")
+		{
+			$this->uri_string = preg_replace("|".preg_quote($this->config->item('url_suffix'))."$|", "", $this->uri_string);
+		}
+	}
+	
+	// --------------------------------------------------------------------
+	
+	/**
+	 * Explode the URI Segments. The individual segments will
+	 * be stored in the $this->segments array.	
+	 *
+	 * @access	private
+	 * @return	void
+	 */		
+	function _explode_segments()
+	{
+		foreach(explode("/", preg_replace("|/*(.+?)/*$|", "\\1", $this->uri_string)) as $val)
+		{
+			// Filter segments for security
+			$val = trim($this->_filter_uri($val));
+			
+			if ($val != '')
+				$this->segments[] = $val;
+		}
+	}
+	
+	// --------------------------------------------------------------------	
+	/**
+	 * Re-index Segments
+	 *
+	 * This function re-indexes the $this->segment array so that it
+	 * starts at 1 rather then 0.  Doing so makes it simpler to
+	 * use functions like $this->uri->segment(n) since there is
+	 * a 1:1 relationship between the segment array and the actual segments.
+	 *
+	 * @access	private
+	 * @return	void
+	 */	
+	function _reindex_segments()
+	{
+		// Is the routed segment array different then the main segment array?
+		// have to compute the diff both ways since PHP returns only values in $arr1 that are not in $arr2.
+		$diff = (array_diff($this->rsegments, $this->segments) != array_diff($this->segments, $this->rsegments)) ? TRUE : FALSE;
+
+		$i = 1;
+		foreach ($this->segments as $val)
+		{
+			$this->segments[$i++] = $val;
+		}
+		unset($this->segments[0]);
+		
+		if ($diff == FALSE)
+		{
+			$this->rsegments = $this->segments;
+		}
+		else
+		{
+			$i = 1;
+			foreach ($this->rsegments as $val)
+			{
+				$this->rsegments[$i++] = $val;
+			}
+			unset($this->rsegments[0]);
+		}
+	}	
 	
 	// --------------------------------------------------------------------
 	
@@ -60,7 +285,7 @@ class CI_URI {
 	 */
 	function segment($n, $no_result = FALSE)
 	{
-		return ( ! isset($this->router->segments[$n])) ? $no_result : $this->router->segments[$n];
+		return ( ! isset($this->segments[$n])) ? $no_result : $this->segments[$n];
 	}
 
 	// --------------------------------------------------------------------
@@ -79,7 +304,7 @@ class CI_URI {
 	 */
 	function rsegment($n, $no_result = FALSE)
 	{
-		return ( ! isset($this->router->rsegments[$n])) ? $no_result : $this->router->rsegments[$n];
+		return ( ! isset($this->rsegments[$n])) ? $no_result : $this->rsegments[$n];
 	}
 
 	// --------------------------------------------------------------------
@@ -203,6 +428,8 @@ class CI_URI {
 		return $retval;
 	}
 
+	// --------------------------------------------------------------------
+
 	/**
 	 * Generate a URI string from an associative array
 	 *
@@ -210,7 +437,8 @@ class CI_URI {
 	 * @access	public
 	 * @param	array	an associative array of key/values
 	 * @return	array
-	 */	function assoc_to_uri($array)
+	 */	
+	function assoc_to_uri($array)
 	{	
 		$temp = array();
 		foreach ((array)$array as $key => $val)
@@ -293,7 +521,7 @@ class CI_URI {
 	 */
 	function segment_array()
 	{
-		return $this->router->segments;
+		return $this->segments;
 	}
 
 	// --------------------------------------------------------------------
@@ -306,7 +534,7 @@ class CI_URI {
 	 */
 	function rsegment_array()
 	{
-		return $this->router->rsegments;
+		return $this->rsegments;
 	}
 	
 	// --------------------------------------------------------------------
@@ -319,7 +547,7 @@ class CI_URI {
 	 */
 	function total_segments()
 	{
-		return count($this->router->segments);
+		return count($this->segments);
 	}
 
 	// --------------------------------------------------------------------
@@ -332,7 +560,7 @@ class CI_URI {
 	 */
 	function total_rsegments()
 	{
-		return count($this->router->rsegments);
+		return count($this->rsegments);
 	}
 	
 	// --------------------------------------------------------------------
@@ -345,7 +573,7 @@ class CI_URI {
 	 */
 	function uri_string()
 	{
-		return $this->router->uri_string;
+		return $this->uri_string;
 	}
 
 	

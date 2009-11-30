@@ -5,10 +5,10 @@
  * An open source application development framework for PHP 4.3.2 or newer
  *
  * @package		CodeIgniter
- * @author		Rick Ellis
+ * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2006, EllisLab, Inc.
- * @license		http://www.codeignitor.com/user_guide/license.html
- * @link		http://www.codeigniter.com
+ * @license		http://codeigniter.com/user_guide/license.html
+ * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
  */
@@ -21,8 +21,8 @@
  * @package		CodeIgniter
  * @subpackage	Libraries
  * @category	Sessions
- * @author		Rick Ellis
- * @link		http://www.codeigniter.com/user_guide/libraries/sessions.html
+ * @author		ExpressionEngine Dev Team
+ * @link		http://codeigniter.com/user_guide/libraries/sessions.html
  */
 class CI_Session {
 
@@ -35,7 +35,8 @@ class CI_Session {
 	var $sess_cookie	= 'ci_session';
 	var $userdata		= array();
 	var $gc_probability	= 5;
-
+	var $flashdata_key 	= 'flash';
+	var $time_to_update	= 300;
 
 	/**
 	 * Session Constructor
@@ -68,10 +69,16 @@ class CI_Session {
 		 * is set in the config file.  If the developer
 		 * is doing any sort of time localization they
 		 * might want to set the session time to GMT so
-		 * they can offset the "last_activity" and
-		 * "last_visit" times based on each user's locale.
+		 * they can offset the "last_activity" time
+		 * based on each user's locale.
 		 *
 		 */
+
+		if (is_numeric($this->CI->config->item('sess_time_to_update')))
+		{
+			$this->time_to_update = $this->CI->config->item('sess_time_to_update');
+		}
+
 		if (strtolower($this->CI->config->item('time_reference')) == 'gmt')
 		{
 			$now = time();
@@ -146,7 +153,7 @@ class CI_Session {
 		else
 		{	
 			// We only update the session every five minutes
-			if (($this->userdata['last_activity'] + 300) < $this->now)
+			if (($this->userdata['last_activity'] + $this->time_to_update) < $this->now)
 			{
 				$this->sess_update();
 			}
@@ -156,7 +163,13 @@ class CI_Session {
 		if ($this->use_database === TRUE)
 		{		
 			$this->sess_gc();
-		}	
+		}
+
+		// Delete 'old' flashdata (from last request)
+       	$this->_flashdata_sweep();
+        
+        // Mark all new flashdata as old (data will be deleted before next request)
+       	$this->_flashdata_mark();
 	}
 	
 	// --------------------------------------------------------------------
@@ -207,7 +220,7 @@ class CI_Session {
 		}
 		
 		// Does the User Agent Match?
-		if ($this->CI->config->item('sess_match_useragent') == TRUE AND $session['user_agent'] != substr($this->CI->input->user_agent(), 0, 50))
+		if ($this->CI->config->item('sess_match_useragent') == TRUE AND trim($session['user_agent']) != trim(substr($this->CI->input->user_agent(), 0, 50)))
 		{
 			$this->sess_destroy();
 			return FALSE;
@@ -313,7 +326,6 @@ class CI_Session {
 		}
 			
 		// Write the cookie
-		$this->userdata['last_visit'] = 0;		
 		$this->sess_write();
 	}
 	
@@ -327,17 +339,24 @@ class CI_Session {
 	 */
 	function sess_update()
 	{	
-		if (($this->userdata['last_activity'] + $this->sess_length) < $this->now)
+		// Save the old session id so we know which record to 
+		// update in the database if we need it
+		$old_sessid = $this->userdata['session_id'];
+		$new_sessid = '';
+		while (strlen($new_sessid) < 32)
 		{
-			$this->userdata['last_visit'] = $this->userdata['last_activity'];
+			$new_sessid .= mt_rand(0, mt_getrandmax());
 		}
-	
+		$new_sessid = md5(uniqid($new_sessid, TRUE));
+		
+        // Update the session data in the session data array
+		$this->userdata['session_id'] = $new_sessid;
 		$this->userdata['last_activity'] = $this->now;
 		
 		// Update the session in the DB if needed
 		if ($this->use_database === TRUE)
 		{		
-			$this->CI->db->query($this->CI->db->update_string($this->session_table, array('last_activity' => $this->now), array('session_id' => $this->userdata['session_id'])));
+			$this->CI->db->query($this->CI->db->update_string($this->session_table, array('last_activity' => $this->now, 'session_id' => $new_sessid), array('session_id' => $old_sessid)));
 		}
 		
 		// Write the cookie
@@ -392,7 +411,7 @@ class CI_Session {
 	// --------------------------------------------------------------------
 	
 	/**
-	 * Fetch a specific item form  the session array
+	 * Fetch a specific item from the session array
 	 *
 	 * @access	public
 	 * @param	string
@@ -401,6 +420,19 @@ class CI_Session {
 	function userdata($item)
 	{
 		return ( ! isset($this->userdata[$item])) ? FALSE : $this->userdata[$item];
+	}
+
+	// --------------------------------------------------------------------
+	
+	/**
+	 * Fetch all session data
+	 *
+	 * @access	public
+	 * @return	mixed
+	 */	
+	function all_userdata()
+	{
+        return ( ! isset($this->userdata)) ? FALSE : $this->userdata;
 	}
 	
 	// --------------------------------------------------------------------
@@ -427,7 +459,7 @@ class CI_Session {
 				$this->userdata[$key] = $val;
 			}
 		}
-	
+
 		$this->sess_write();
 	}
 	
@@ -466,9 +498,9 @@ class CI_Session {
 	 * @param	mixed
 	 * @return	mixed
 	 */
-	 function strip_slashes($vals)
-	 {
-	 	if (is_array($vals))
+	function strip_slashes($vals)
+	{
+		if (is_array($vals))
 	 	{	
 	 		foreach ($vals as $key=>$val)
 	 		{
@@ -483,6 +515,118 @@ class CI_Session {
 	 	return $vals;
 	}
 
+	
+    // ------------------------------------------------------------------------
+
+    /**
+	 * Add or change flashdata, only available
+	 * until the next request
+	 *
+	 * @access	public
+	 * @param	mixed
+	 * @param	string
+	 * @return	void
+	 */
+    function set_flashdata($newdata = array(), $newval = '')
+    {
+        if (is_string($newdata))
+        {
+            $newdata = array($newdata => $newval);
+        }
+        
+        if (count($newdata) > 0)
+        {
+            foreach ($newdata as $key => $val)
+            {
+                $flashdata_key = $this->flashdata_key.':new:'.$key;
+                $this->set_userdata($flashdata_key, $val);
+            }
+        }
+    } 
+	
+    // ------------------------------------------------------------------------
+
+    /**
+     * Keeps existing flashdata available to next request.
+	 *
+	 * @access	public
+	 * @param	string
+	 * @return	void
+     */
+    function keep_flashdata($key)
+    {
+		// 'old' flashdata gets removed.  Here we mark all 
+		// flashdata as 'new' to preserve it from _flashdata_sweep()
+		// Note the function will return FALSE if the $key 
+		// provided cannot be found
+        $old_flashdata_key = $this->flashdata_key.':old:'.$key;
+        $value = $this->userdata($old_flashdata_key);
+
+        $new_flashdata_key = $this->flashdata_key.':new:'.$key;
+        $this->set_userdata($new_flashdata_key, $value);
+    }
+	
+    // ------------------------------------------------------------------------
+
+	/**
+	 * Fetch a specific flashdata item from the session array
+	 *
+	 * @access	public
+	 * @param	string
+	 * @return	string
+	 */	
+    function flashdata($key)
+    {
+        $flashdata_key = $this->flashdata_key.':old:'.$key;
+        return $this->userdata($flashdata_key);
+    }
+
+    // ------------------------------------------------------------------------
+
+    /**
+     * Identifies flashdata as 'old' for removal
+	 * when _flashdata_sweep() runs.
+	 *
+	 * @access	private
+	 * @return	void
+     */
+    function _flashdata_mark()
+    {
+		$userdata = $this->all_userdata();
+        foreach ($userdata as $name => $value)
+        {
+            $parts = explode(':new:', $name);
+            if (is_array($parts) && count($parts) === 2)
+            {
+                $new_name = $this->flashdata_key.':old:'.$parts[1];
+                $this->set_userdata($new_name, $value);
+                $this->unset_userdata($name);
+            }
+        }
+    }
+
+    // ------------------------------------------------------------------------
+
+    /**
+     * Removes all flashdata marked as 'old'
+	 *
+	 * @access	private
+	 * @return	void
+     */
+
+    function _flashdata_sweep()
+    {
+		$userdata = $this->all_userdata();
+        foreach ($userdata as $key => $value)
+        {
+            if (strpos($key, ':old:'))
+            {
+                $this->unset_userdata($key);
+            }
+        }
+
+    }
+	
 }
 // END Session Class
 ?>

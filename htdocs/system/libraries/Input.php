@@ -5,10 +5,10 @@
  * An open source application development framework for PHP 4.3.2 or newer
  *
  * @package		CodeIgniter
- * @author		Rick Ellis
+ * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2006, EllisLab, Inc.
- * @license		http://www.codeignitor.com/user_guide/license.html
- * @link		http://www.codeigniter.com
+ * @license		http://codeigniter.com/user_guide/license.html
+ * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
  */
@@ -23,8 +23,8 @@
  * @package		CodeIgniter
  * @subpackage	Libraries
  * @category	Input
- * @author		Rick Ellis
- * @link		http://www.codeigniter.com/user_guide/libraries/input.html
+ * @author		ExpressionEngine Dev Team
+ * @link		http://codeigniter.com/user_guide/libraries/input.html
  */
 class CI_Input {
 	var $use_xss_clean		= FALSE;
@@ -68,8 +68,9 @@ class CI_Input {
 	 */
 	function _sanitize_globals()
 	{
-		// Would kind of be "wrong" to unset any of these GLOBALS.
-		$protected = array('_SERVER', '_GET', '_POST', '_FILES', '_REQUEST', '_SESSION', '_ENV', 'GLOBALS', 'HTTP_RAW_POST_DATA');
+		// Would kind of be "wrong" to unset any of these GLOBALS
+		$protected = array('_SERVER', '_GET', '_POST', '_FILES', '_REQUEST', '_SESSION', '_ENV', 'GLOBALS', 'HTTP_RAW_POST_DATA',
+							'system_folder', 'application_folder', 'BM', 'EXT', 'CFG', 'URI', 'RTR', 'OUT', 'IN');
 		
 		// Unset globals for securiy. 
 		// This is effectively the same as register_globals = off
@@ -79,7 +80,7 @@ class CI_Input {
 			{
 				if ( ! in_array($global, $protected))
 				{
-					global $global;
+					global $$global;
 					$$global = NULL;
 				}
 			}
@@ -852,8 +853,6 @@ class CI_Input {
 	 */
 	function _html_entity_decode_callback($match)
 	{
-		//$CI =& get_instance();
-		//$charset = $CI->config->item('charset');
 		global $CFG;
 		$charset = $CFG->item('charset');
 

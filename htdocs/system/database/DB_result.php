@@ -5,10 +5,10 @@
  * An open source application development framework for PHP 4.3.2 or newer
  *
  * @package		CodeIgniter
- * @author		Rick Ellis
+ * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2006, EllisLab, Inc.
- * @license		http://www.codeignitor.com/user_guide/license.html
- * @link		http://www.codeigniter.com
+ * @license		http://codeigniter.com/user_guide/license.html
+ * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
  */
@@ -23,8 +23,8 @@
  * class for the specific database will extend and instantiate it.
  *
  * @category	Database
- * @author		Rick Ellis
- * @link		http://www.codeigniter.com/user_guide/database/
+ * @author		ExpressionEngine Dev Team
+ * @link		http://codeigniter.com/user_guide/database/
  */
 class CI_DB_result {
 
@@ -34,6 +34,7 @@ class CI_DB_result {
 	var $result_object	= array();
 	var $current_row 	= 0;
 	var $num_rows		= 0;
+	var $row_data		= NULL;
 
 
 	/**
@@ -118,12 +119,61 @@ class CI_DB_result {
 	 * Query result.  Acts as a wrapper function for the following functions.
 	 *
 	 * @access	public
+	 * @param	string
 	 * @param	string	can be "object" or "array"
 	 * @return	mixed	either a result object or array	
 	 */	
 	function row($n = 0, $type = 'object')
 	{
+		if ( ! is_numeric($n))
+		{
+			// We cache the row data for subsequent uses
+			if ( ! is_array($this->row_data))
+			{
+				$this->row_data = $this->row_array(0);
+			}
+		
+			if (isset($this->row_data[$n]))
+			{
+				return $this->row_data[$n];
+			}
+			// reset the $n variable if the result was not achieved			
+			$n = 0;
+		}
+		
 		return ($type == 'object') ? $this->row_object($n) : $this->row_array($n);
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Assigns an item into a particular column slot
+	 *
+	 * @access	public
+	 * @return	object
+	 */	
+	function set_row($key, $value = NULL)
+	{
+		// We cache the row data for subsequent uses
+		if ( ! is_array($this->row_data))
+		{
+			$this->row_data = $this->row_array(0);
+		}
+	
+		if (is_array($key))
+		{
+			foreach ($key as $k => $v)
+			{
+				$this->row_data[$k] = $v;
+			}
+			
+			return;
+		}
+	
+		if ($key != '' AND ! is_null($value))
+		{
+			$this->row_data[$key] = $value;
+		}
 	}
 
 	// --------------------------------------------------------------------

@@ -5,10 +5,10 @@
  * An open source application development framework for PHP 4.3.2 or newer
  *
  * @package		CodeIgniter
- * @author		Rick Ellis
+ * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2006, EllisLab, Inc.
- * @license		http://www.codeignitor.com/user_guide/license.html
- * @link		http://www.codeigniter.com
+ * @license		http://codeigniter.com/user_guide/license.html
+ * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
  */
@@ -25,10 +25,24 @@
  * @package		CodeIgniter
  * @subpackage	Drivers
  * @category	Database
- * @author		Rick Ellis
- * @link		http://www.codeigniter.com/user_guide/database/
+ * @author		ExpressionEngine Dev Team
+ * @link		http://codeigniter.com/user_guide/database/
  */
 class CI_DB_odbc_driver extends CI_DB {
+
+	/**
+	 * The syntax to count rows is slightly different across different
+	 * database engines, so this string appears in each driver and is
+	 * used for the count_all() and count_all_results() functions.
+	 */
+	var $_count_string = "SELECT COUNT(*) AS ";
+	var $_random_keyword;
+
+
+	function CI_DB_odbc_driver()
+	{
+		$this->_random_keyword = ' RND('.time().')'; // database specific random keyword
+	}
 
 	/**
 	 * Non-persistent database connection
@@ -70,6 +84,22 @@ class CI_DB_odbc_driver extends CI_DB {
 
 	// --------------------------------------------------------------------
 
+	/**
+	 * Set client character set
+	 *
+	 * @access	public
+	 * @param	string
+	 * @param	string
+	 * @return	resource
+	 */
+	function db_set_charset($charset, $collation)
+	{
+		// TODO - add support if needed
+		return TRUE;
+	}
+
+	// --------------------------------------------------------------------
+	
 	/**
 	 * Version number query string
 	 *
@@ -251,8 +281,8 @@ class CI_DB_odbc_driver extends CI_DB {
 		if ($table == '')
 			return '0';
 	
-		$query = $this->query("SELECT COUNT(*) AS numrows FROM `".$this->dbprefix.$table."`");
-		
+		$query = $this->query($this->_count_string . $this->_protect_identifiers('numrows'). " FROM " . $this->_protect_identifiers($this->dbprefix.$table));
+	
 		if ($query->num_rows() == 0)
 			return '0';
 
@@ -268,11 +298,20 @@ class CI_DB_odbc_driver extends CI_DB {
 	 * Generates a platform-specific query string so that the table names can be fetched
 	 *
 	 * @access	private
+	 * @param	boolean
 	 * @return	string
 	 */
-	function _list_tables()
+	function _list_tables($prefix_limit = FALSE)
 	{
-		return "SHOW TABLES FROM `".$this->database."`";		
+		$sql = "SHOW TABLES FROM `".$this->database."`";
+
+		if ($prefix_limit !== FALSE AND $this->dbprefix != '')
+		{
+			//$sql .= " LIKE '".$this->dbprefix."%'";
+			return FALSE; // not currently supported
+		}
+		
+		return $sql;
 	}
 	
 	// --------------------------------------------------------------------
@@ -358,6 +397,81 @@ class CI_DB_odbc_driver extends CI_DB {
 	// --------------------------------------------------------------------
 
 	/**
+	 * Protect Identifiers
+	 *
+	 * This function adds backticks if appropriate based on db type
+	 *
+	 * @access	private
+	 * @param	mixed	the item to escape
+	 * @param	boolean	only affect the first word
+	 * @return	mixed	the item with backticks
+	 */
+	function _protect_identifiers($item, $first_word_only = FALSE)
+	{
+		if (is_array($item))
+		{
+			$escaped_array = array();
+
+			foreach($item as $k=>$v)
+			{
+				$escaped_array[$this->_protect_identifiers($k)] = $this->_protect_identifiers($v, $first_word_only);
+			}
+
+			return $escaped_array;
+		}	
+
+		// This function may get "item1 item2" as a string, and so
+		// we may need "`item1` `item2`" and not "`item1 item2`"
+		if (ctype_alnum($item) === FALSE)
+		{
+			// This function may get "field >= 1", and need it to return "`field` >= 1"
+			$lbound = ($first_word_only === TRUE) ? '' : '|\s|\(';
+
+			$item = preg_replace('/(^'.$lbound.')([\w\d\-\_]+?)(\s|\)|$)/iS', '$1`$2`$3', $item);
+		}
+		else
+		{
+			return "`{$item}`";
+		}
+
+		$exceptions = array('AS', '/', '-', '%', '+', '*');
+		
+		foreach ($exceptions as $exception)
+		{
+		
+			if (stristr($item, " `{$exception}` ") !== FALSE)
+			{
+				$item = preg_replace('/ `('.preg_quote($exception).')` /i', ' $1 ', $item);
+			}
+		}
+		return $item;
+	}
+			
+	// --------------------------------------------------------------------
+
+	/**
+	 * From Tables
+	 *
+	 * This function implicitly groups FROM tables so there is no confusion
+	 * about operator precedence in harmony with SQL standards
+	 *
+	 * @access	public
+	 * @param	type
+	 * @return	type
+	 */
+	function _from_tables($tables)
+	{
+		if (! is_array($tables))
+		{
+			$tables = array($tables);
+		}
+		
+		return '('.implode(', ', $tables).')';
+	}
+
+	// --------------------------------------------------------------------
+	
+	/**
 	 * Insert statement
 	 *
 	 * Generates a platform-specific insert string from the supplied data
@@ -384,16 +498,41 @@ class CI_DB_odbc_driver extends CI_DB {
 	 * @param	string	the table name
 	 * @param	array	the update data
 	 * @param	array	the where clause
+	 * @param	array	the orderby clause
+	 * @param	array	the limit clause
 	 * @return	string
 	 */
-	function _update($table, $values, $where)
+	function _update($table, $values, $where, $orderby = array(), $limit = FALSE)
 	{
 		foreach($values as $key => $val)
 		{
 			$valstr[] = $key." = ".$val;
 		}
+		
+		$limit = (!$limit) ? '' : ' LIMIT '.$limit;
+		
+		$orderby = (count($orderby) >= 1)?' ORDER BY '.implode(", ", $orderby):'';
 	
-		return "UPDATE ".$this->_escape_table($table)." SET ".implode(', ', $valstr)." WHERE ".implode(" ", $where);
+		return "UPDATE ".$this->_escape_table($table)." SET ".implode(', ', $valstr)." WHERE ".implode(" ", $where).$orderby.$limit;
+	}
+
+	
+	// --------------------------------------------------------------------
+
+	/**
+	 * Truncate statement
+	 *
+	 * Generates a platform-specific truncate string from the supplied data
+	 * If the database does not support the truncate() command
+	 * This function maps to "DELETE FROM table"
+	 *
+	 * @access	public
+	 * @param	string	the table name
+	 * @return	string
+	 */	
+	function _truncate($table)
+	{
+		return $this->_delete($table);
 	}
 	
 	// --------------------------------------------------------------------
@@ -406,11 +545,28 @@ class CI_DB_odbc_driver extends CI_DB {
 	 * @access	public
 	 * @param	string	the table name
 	 * @param	array	the where clause
+	 * @param	string	the limit clause
 	 * @return	string
 	 */	
-	function _delete($table, $where)
+	function _delete($table, $where = array(), $like = array(), $limit = FALSE)
 	{
-		return "DELETE FROM ".$this->_escape_table($table)." WHERE ".implode(" ", $where);
+		$conditions = '';
+
+		if (count($where) > 0 || count($like) > 0)
+		{
+			$conditions = "\nWHERE ";
+			$conditions .= implode("\n", $this->ar_where);
+
+			if (count($where) > 0 && count($like) > 0)
+			{
+				$conditions .= " AND ";
+			}
+			$conditions .= implode("\n", $like);
+		}
+
+		$limit = (!$limit) ? '' : ' LIMIT '.$limit;
+	
+		return "DELETE FROM ".$table.$conditions.$limit;
 	}
 
 	// --------------------------------------------------------------------

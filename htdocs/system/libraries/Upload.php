@@ -5,10 +5,10 @@
  * An open source application development framework for PHP 4.3.2 or newer
  *
  * @package		CodeIgniter
- * @author		Rick Ellis
+ * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2006, EllisLab, Inc.
- * @license		http://www.codeignitor.com/user_guide/license.html
- * @link		http://www.codeigniter.com
+ * @license		http://codeigniter.com/user_guide/license.html
+ * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
  */
@@ -21,8 +21,8 @@
  * @package		CodeIgniter
  * @subpackage	Libraries
  * @category	Uploads
- * @author		Rick Ellis
- * @link		http://www.codeigniter.com/user_guide/libraries/file_uploading.html
+ * @author		ExpressionEngine Dev Team
+ * @link		http://codeigniter.com/user_guide/libraries/file_uploading.html
  */
 class CI_Upload {
 	
@@ -137,13 +137,14 @@ class CI_Upload {
 		// Is $_FILES[$field] set? If not, no reason to continue.
 		if ( ! isset($_FILES[$field]))
 		{
-			$this->set_error('upload_userfile_not_set');
+			$this->set_error('upload_no_file_selected');
 			return FALSE;
 		}
 		
 		// Is the upload path valid?
 		if ( ! $this->validate_upload_path())
 		{
+			$this->set_error('upload_no_filepath');
 			return FALSE;
 		}
 						
@@ -154,11 +155,26 @@ class CI_Upload {
 
 			switch($error)
 			{
-				case 1  :   $this->set_error('upload_file_exceeds_limit');
+				case 1:	// UPLOAD_ERR_INI_SIZE
+					$this->set_error('upload_file_exceeds_limit');
 					break;
-				case 3  :   $this->set_error('upload_file_partial');
+				case 2: // UPLOAD_ERR_FORM_SIZE
+					$this->set_error('upload_file_exceeds_form_limit');
 					break;
-				case 4  :   $this->set_error('upload_no_file_selected');
+				case 3: // UPLOAD_ERR_PARTIAL
+				   $this->set_error('upload_file_partial');
+					break;
+				case 4: // UPLOAD_ERR_NO_FILE
+				   $this->set_error('upload_no_file_selected');
+					break;
+				case 6: // UPLOAD_ERR_NO_TMP_DIR
+					$this->set_error('upload_no_temp_directory');
+					break;
+				case 7: // UPLOAD_ERR_CANT_WRITE
+					$this->set_error('upload_unable_to_write_file');
+					break;
+				case 8: // UPLOAD_ERR_EXTENSION
+					$this->set_error('upload_stopped_by_extension');
 					break;
 				default :   $this->set_error('upload_no_file_selected');
 					break;
@@ -512,7 +528,7 @@ class CI_Upload {
 	 */	
 	function is_allowed_filetype()
 	{
-		if (count($this->allowed_types) == 0)
+		if (count($this->allowed_types) == 0 || ! is_array($this->allowed_types))
 		{
 			$this->set_error('upload_no_file_types');
 			return FALSE;
@@ -626,7 +642,7 @@ class CI_Upload {
 			return FALSE;
 		}
 
-		if ( ! is_writable($this->upload_path))
+		if ( ! is_really_writable($this->upload_path))
 		{
 			$this->set_error('upload_not_writable');
 			return FALSE;
@@ -696,7 +712,7 @@ class CI_Upload {
 			$filename = str_replace($val, '', $filename);
 		}
 
-		return $filename;
+		return stripslashes($filename);
 	}
 	
 	// --------------------------------------------------------------------

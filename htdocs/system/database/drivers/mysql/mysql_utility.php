@@ -5,10 +5,10 @@
  * An open source application development framework for PHP 4.3.2 or newer
  *
  * @package		CodeIgniter
- * @author		Rick Ellis
+ * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2006, EllisLab, Inc.
- * @license		http://www.codeignitor.com/user_guide/license.html
- * @link		http://www.codeigniter.com
+ * @license		http://codeigniter.com/user_guide/license.html
+ * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
  */
@@ -19,38 +19,10 @@
  * MySQL Utility Class
  *
  * @category	Database
- * @author		Rick Ellis
- * @link		http://www.codeigniter.com/user_guide/database/
+ * @author		ExpressionEngine Dev Team
+ * @link		http://codeigniter.com/user_guide/database/
  */
 class CI_DB_mysql_utility extends CI_DB_utility {
-	
-	/**
-	 * Create database
-	 *
-	 * @access	private
-	 * @param	string	the database name
-	 * @return	bool
-	 */
-	function _create_database($name)
-	{
-		return "CREATE DATABASE ".$name;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Drop database
-	 *
-	 * @access	private
-	 * @param	string	the database name
-	 * @return	bool
-	 */
-	function _drop_database($name)
-	{
-		return "DROP DATABASE ".$name;
-	}
-
-	// --------------------------------------------------------------------
 
 	/**
 	 * List databases
@@ -61,19 +33,6 @@ class CI_DB_mysql_utility extends CI_DB_utility {
 	function _list_databases()
 	{
 		return "SHOW DATABASES";
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Drop Table
-	 *
-	 * @access	private
-	 * @return	bool
-	 */
-	function _drop_table($table)
-	{
-		return "DROP TABLE IF EXISTS ".$this->db->_escape_table($table);
 	}
 
 	// --------------------------------------------------------------------
@@ -109,7 +68,6 @@ class CI_DB_mysql_utility extends CI_DB_utility {
 	}
 
 	// --------------------------------------------------------------------
-
 	/**
 	 * MySQL Export
 	 *
@@ -187,9 +145,10 @@ class CI_DB_mysql_utility extends CI_DB_utility {
 			$is_int = array();
 			while ($field = mysql_fetch_field($query->result_id))
 			{
+				// Most versions of MySQL store timestamp as a string
 				$is_int[$i] = (in_array(
 										strtolower(mysql_field_type($query->result_id, $i)),
-										array('tinyint', 'smallint', 'mediumint', 'int', 'bigint', 'timestamp'),
+										array('tinyint', 'smallint', 'mediumint', 'int', 'bigint'), //, 'timestamp'), 
 										TRUE)
 										) ? TRUE : FALSE;
 										
@@ -210,22 +169,39 @@ class CI_DB_mysql_utility extends CI_DB_utility {
 				$i = 0;
 				foreach ($row as $v)
 				{
-					// Do a little formatting...
-					$v = str_replace(array("\x00", "\x0a", "\x0d", "\x1a"), array('\0', '\n', '\r', '\Z'), $v);
-					$v = str_replace(array("\n", "\r", "\t"), array('\n', '\r', '\t'), $v);
-					$v = str_replace('\\', '\\\\',	$v);
-					$v = str_replace('\'', '\\\'',	$v);
-					$v = str_replace('\\\n', '\n',	$v);
-					$v = str_replace('\\\r', '\r',	$v);
-					$v = str_replace('\\\t', '\t',	$v);
-				
-					// Escape the data if it's not an integer type
-					$val_str .= ($is_int[$i] == FALSE) ? $this->db->escape($v) : $v;
-					$val_str .= ', ';
+					// Is the value NULL?
+					if ($v === NULL)
+					{
+						$val_str .= 'NULL';
+					}
+					else
+					{
+						// Do a little formatting...
+						$v = str_replace(array("\x00", "\x0a", "\x0d", "\x1a"), array('\0', '\n', '\r', '\Z'), $v);
+						$v = str_replace(array("\n", "\r", "\t"), array('\n', '\r', '\t'), $v);
+						$v = str_replace('\\', '\\\\',	$v);
+						$v = str_replace('\'', '\\\'',	$v);
+						$v = str_replace('\\\n', '\n',	$v);
+						$v = str_replace('\\\r', '\r',	$v);
+						$v = str_replace('\\\t', '\t',	$v);
+
+						// Escape the data if it's not an integer
+						if ($is_int[$i] == FALSE)
+						{
+							$val_str .= $this->db->escape($v);
+						}
+						else
+						{
+							$val_str .= $v;
+						}					
+					}					
 					
+					// Append a comma
+					$val_str .= ', ';
 					$i++;
 				}
 				
+				// Remove the comma at the end of the string
 				$val_str = preg_replace( "/, $/" , "" , $val_str);
 								
 				// Build the INSERT string
@@ -238,7 +214,39 @@ class CI_DB_mysql_utility extends CI_DB_utility {
 		return $output;
 	}
 
+	/**
+	 *
+	 * The functions below have been deprecated as of 1.6, and are only here for backwards
+	 * compatibility.  They now reside in dbforge().  The use of dbutils for database manipulation
+	 * is STRONGLY discouraged in favour if using dbforge.
+	 *
+	 */
+
+	/**
+	 * Create database
+	 *
+	 * @access	private
+	 * @param	string	the database name
+	 * @return	bool
+	 */
+	function _create_database($name)
+	{
+		return "CREATE DATABASE ".$name;
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Drop database
+	 *
+	 * @access	private
+	 * @param	string	the database name
+	 * @return	bool
+	 */
+	function _drop_database($name)
+	{
+		return "DROP DATABASE ".$name;
+	}
 
 }
-
 ?>

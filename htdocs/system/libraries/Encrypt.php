@@ -5,10 +5,10 @@
  * An open source application development framework for PHP 4.3.2 or newer
  *
  * @package		CodeIgniter
- * @author		Rick Ellis
+ * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2006, EllisLab, Inc.
- * @license		http://www.codeignitor.com/user_guide/license.html
- * @link		http://www.codeigniter.com
+ * @license		http://codeigniter.com/user_guide/license.html
+ * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
  */
@@ -23,11 +23,12 @@
  * @package		CodeIgniter
  * @subpackage	Libraries
  * @category	Libraries
- * @author		Rick Ellis
- * @link		http://www.codeigniter.com/user_guide/libraries/encryption.html
+ * @author		ExpressionEngine Dev Team
+ * @link		http://codeigniter.com/user_guide/libraries/encryption.html
  */
 class CI_Encrypt {
-
+	
+	var $CI;
 	var $encryption_key	= '';
 	var $_hash_type	= 'sha1';
 	var $_mcrypt_exists = FALSE;
@@ -42,6 +43,7 @@ class CI_Encrypt {
 	 */
 	function CI_Encrypt()
 	{
+		$this->CI =& get_instance();
 		$this->_mcrypt_exists = ( ! function_exists('mcrypt_encrypt')) ? FALSE : TRUE;
 		log_message('debug', "Encrypt Class Initialized");
 	}
@@ -138,16 +140,22 @@ class CI_Encrypt {
 	function decode($string, $key = '')
 	{
 		$key = $this->get_key($key);
+		
+		$this->CI->load->library('validation');
+		
+		if ($this->CI->validation->valid_base64($string) === FALSE)
+		{
+			return FALSE;
+		}
+
 		$dec = base64_decode($string);
-		
-		 if ($dec === FALSE)
-		 {
-		 	return FALSE;
-		 }
-		
+
 		if ($this->_mcrypt_exists === TRUE)
 		{
-			$dec = $this->mcrypt_decode($dec, $key);
+			if (($dec = $this->mcrypt_decode($dec, $key)) === FALSE)
+			{
+				return FALSE;
+			}
 		}
 		
 		return $this->_xor_decode($dec, $key);
@@ -249,7 +257,7 @@ class CI_Encrypt {
 	{	
 		$init_size = mcrypt_get_iv_size($this->_get_cipher(), $this->_get_mode());
 		$init_vect = mcrypt_create_iv($init_size, MCRYPT_RAND);
-		return mcrypt_encrypt($this->_get_cipher(), $key, $data, $this->_get_mode(), $init_vect);
+		return $this->_add_cipher_noise($init_vect.mcrypt_encrypt($this->_get_cipher(), $key, $data, $this->_get_mode(), $init_vect), $key);
 	}
   	
 	// --------------------------------------------------------------------
@@ -264,13 +272,92 @@ class CI_Encrypt {
 	 */	
 	function mcrypt_decode($data, $key)
 	{
+		$data = $this->_remove_cipher_noise($data, $key);
 		$init_size = mcrypt_get_iv_size($this->_get_cipher(), $this->_get_mode());
-		$init_vect = mcrypt_create_iv($init_size, MCRYPT_RAND);
+		
+		if ($init_size > strlen($data))
+		{
+			return FALSE;
+		}
+		
+		$init_vect = substr($data, 0, $init_size);
+		$data = substr($data, $init_size);
 		return rtrim(mcrypt_decrypt($this->_get_cipher(), $key, $data, $this->_get_mode(), $init_vect), "\0");
 	}
   	
 	// --------------------------------------------------------------------
 
+	/**
+	 * Adds permuted noise to the IV + encrypted data to protect
+	 * against Man-in-the-middle attacks on CBC mode ciphers
+	 * http://www.ciphersbyritter.com/GLOSSARY.HTM#IV
+	 *
+	 * Function description
+	 *
+	 * @access	private
+	 * @param	string
+	 * @param	string
+	 * @return	string
+	 */
+	function _add_cipher_noise($data, $key)
+	{
+		$keyhash = $this->hash($key);
+		$keylen = strlen($keyhash);
+		$str = '';
+	
+		for ($i = 0, $j = 0, $len = strlen($data); $i < $len; ++$i, ++$j)
+		{	
+			if ($j >= $keylen)
+			{
+				$j = 0;
+			}
+			
+			$str .= chr((ord($data[$i]) + ord($keyhash[$j])) % 256);
+		}
+		
+		return $str;
+	}
+
+	// --------------------------------------------------------------------
+	
+	/**
+	 * Removes permuted noise from the IV + encrypted data, reversing
+	 * _add_cipher_noise()
+	 *
+	 * Function description
+	 *
+	 * @access	public
+	 * @param	type
+	 * @return	type
+	 */
+	function _remove_cipher_noise($data, $key)
+	{
+		$keyhash = $this->hash($key);
+		$keylen = strlen($keyhash);
+		$str = '';
+
+		for ($i = 0, $j = 0, $len = strlen($data); $i < $len; ++$i, ++$j)
+		{
+			if ($j >= $keylen)
+			{
+				$j = 0;
+			}
+			
+			$temp = ord($data[$i]) - ord($keyhash[$j]);
+			
+			if ($temp < 0)
+			{
+				$temp = $temp + 256;
+			}
+			
+			$str .= chr($temp);
+		}
+		
+		return $str;
+	}
+
+	// --------------------------------------------------------------------
+	
 	/**
 	 * Set the Mcrypt Cipher
 	 *

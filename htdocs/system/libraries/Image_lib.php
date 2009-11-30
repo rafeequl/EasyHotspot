@@ -5,10 +5,10 @@
  * An open source application development framework for PHP 4.3.2 or newer
  *
  * @package		CodeIgniter
- * @author		Rick Ellis
+ * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2006, EllisLab, Inc.
- * @license		http://www.codeignitor.com/user_guide/license.html
- * @link		http://www.codeigniter.com
+ * @license		http://codeigniter.com/user_guide/license.html
+ * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
  */
@@ -21,8 +21,8 @@
  * @package		CodeIgniter
  * @subpackage	Libraries
  * @category	Image_lib
- * @author		Rick Ellis
- * @link		http://www.codeigniter.com/user_guide/libraries/image_lib.html
+ * @author		ExpressionEngine Dev Team
+ * @link		http://codeigniter.com/user_guide/libraries/image_lib.html
  */
 class CI_Image_lib {
 	
@@ -110,7 +110,10 @@ class CI_Image_lib {
 		foreach ($props as $val)
 		{
 			$this->$val = '';
-		}  		
+		}
+
+		// special consideration for master_dim
+		$this->master_dim = 'auto';
 	}
 	
 	// --------------------------------------------------------------------
@@ -449,14 +452,14 @@ class CI_Image_lib {
 		if ($action == 'crop')
 		{
 			// If the target width/height match the source then it's pointless to crop, right?
-			if ($this->width >= $this->orig_width AND $this->height >= $this->orig_height)
+			// So if dynamic output isn't on, then we'll return true so the user thinks
+			// the process succeeded. It'll be our little secret...
+
+			if ($this->width >= $this->orig_width AND $this->height >= $this->orig_height AND $this->dynamic_output !== TRUE)
 			{
-				// We'll return true so the user thinks the process succeeded.
-				// It'll be our little secret...
-	
 				return TRUE;
 			}
-			
+
 			//  Reassign the source width/height if cropping
 			$this->orig_width  = $this->width;
 			$this->orig_height = $this->height;	
@@ -473,7 +476,7 @@ class CI_Image_lib {
 			// If the target width/height match the source, AND if
 			// the new file name is not equal to the old file name
 			// we'll simply make a copy of the original with the new name		
-			if (($this->orig_width == $this->width AND $this->orig_height == $this->height) AND ($this->source_image != $this->dest_image))
+			if (($this->orig_width == $this->width AND $this->orig_height == $this->height) AND ($this->source_image != $this->new_image))			
 			{
 				if ( ! @copy($this->full_src_path, $this->full_dst_path))
 				{
@@ -497,7 +500,7 @@ class CI_Image_lib {
 		}
 
 		//  Create The Image
-		if ($this->image_library == 'gd2' AND function_exists('imagecreatetruecolor') AND $v2_override == FALSE)
+		if ($this->image_library == 'gd2' AND function_exists('imagecreatetruecolor'))
 		{
 			$create	= 'imagecreatetruecolor';
 			$copy	= 'imagecopyresampled';

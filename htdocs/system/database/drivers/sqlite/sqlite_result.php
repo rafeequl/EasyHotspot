@@ -5,10 +5,10 @@
  * An open source application development framework for PHP 4.3.2 or newer
  *
  * @package		CodeIgniter
- * @author		Rick Ellis
+ * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2006, EllisLab, Inc.
- * @license		http://www.codeignitor.com/user_guide/license.html
- * @link		http://www.codeigniter.com
+ * @license		http://codeigniter.com/user_guide/license.html
+ * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
  */
@@ -21,8 +21,8 @@
  * This class extends the parent result class: CI_DB_result
  *
  * @category	Database
- * @author		Rick Ellis
- * @link		http://www.codeigniter.com/user_guide/database/
+ * @author		ExpressionEngine Dev Team
+ * @link		http://codeigniter.com/user_guide/database/
  */
 class CI_DB_sqlite_result extends CI_DB_result {
 	
@@ -65,7 +65,7 @@ class CI_DB_sqlite_result extends CI_DB_result {
 		$field_names = array();
 		for ($i = 0; $i < $this->num_fields(); $i++)
 		{
-			$Ffield_names[] = sqlite_field_name($this->result_id, $i);
+			$field_names[] = sqlite_field_name($this->result_id, $i);
 		}
 		
 		return $field_names;
@@ -167,7 +167,14 @@ class CI_DB_sqlite_result extends CI_DB_result {
 		}
 		else
 		{
-			return $this->_fetch_assoc();
+			$arr = sqlite_fetch_array($this->result_id, SQLITE_ASSOC);
+			if (is_array($arr))
+			{
+				$obj = (object) $arr;
+				return $obj;
+			} else {
+				return NULL;
+			} 
 		}
 	}
 

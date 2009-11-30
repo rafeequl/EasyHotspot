@@ -5,10 +5,10 @@
  * An open source application development framework for PHP 4.3.2 or newer
  *
  * @package		CodeIgniter
- * @author		Rick Ellis
+ * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2006, EllisLab, Inc.
- * @license		http://www.codeignitor.com/user_guide/license.html
- * @link		http://www.codeigniter.com
+ * @license		http://codeigniter.com/user_guide/license.html
+ * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
  */
@@ -21,8 +21,8 @@
  * @package		CodeIgniter
  * @subpackage	Helpers
  * @category	Helpers
- * @author		Rick Ellis
- * @link		http://www.codeigniter.com/user_guide/helpers/array_helper.html
+ * @author		ExpressionEngine Dev Team
+ * @link		http://codeigniter.com/user_guide/helpers/array_helper.html
  */
 
 // ------------------------------------------------------------------------
@@ -39,14 +39,17 @@
  * @param	mixed
  * @return	mixed	depends on what the array contains
  */	
-function element($item, $array, $default = FALSE)
+if (! function_exists('element'))
 {
-	if ( ! isset($array[$item]) OR $array[$item] == "")
+	function element($item, $array, $default = FALSE)
 	{
-		return $default;
-	}
+		if ( ! isset($array[$item]) OR $array[$item] == "")
+		{
+			return $default;
+		}
 
-	return $array[$item];
+		return $array[$item];
+	}	
 }
 
 // ------------------------------------------------------------------------
@@ -58,14 +61,16 @@ function element($item, $array, $default = FALSE)
  * @param	array
  * @return	mixed	depends on what the array contains
  */	
-function random_element($array)
+if (! function_exists('random_element'))
 {
-	if ( ! is_array($array))
+	function random_element($array)
 	{
-		return $array;
-	}
-	return $array[array_rand($array)];
+		if ( ! is_array($array))
+		{
+			return $array;
+		}
+		return $array[array_rand($array)];
+	}	
 }
-
 
 ?>

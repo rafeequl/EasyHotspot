@@ -5,10 +5,10 @@
  * An open source application development framework for PHP 4.3.2 or newer
  *
  * @package		CodeIgniter
- * @author		Rick Ellis
+ * @author		ExpressionEngine Dev Team
  * @copyright	Copyright (c) 2006, EllisLab, Inc.
- * @license		http://www.codeignitor.com/user_guide/license.html
- * @link		http://www.codeigniter.com
+ * @license		http://codeigniter.com/user_guide/license.html
+ * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
  */
@@ -19,8 +19,8 @@
  * Database Cache Class
  *
  * @category	Database
- * @author		Rick Ellis
- * @link		http://www.codeigniter.com/user_guide/database/
+ * @author		ExpressionEngine Dev Team
+ * @link		http://codeigniter.com/user_guide/database/
  */
 class CI_DB_Cache {
 
@@ -63,14 +63,9 @@ class CI_DB_Cache {
 	
 		// Add a trailing slash to the path if needed
 		$path = preg_replace("/(.+?)\/*$/", "\\1/",  $path);
-	
-		if ( ! is_dir($path) OR ! is_writable($path))
+
+		if ( ! is_dir($path) OR ! is_really_writable($path))
 		{
-			if ($this->CI->db->db_debug)
-			{
-				return $this->CI->db->display_error('db_invalid_cache_path');
-			}
-			
 			// If the path is wrong we'll turn off caching
 			return $this->CI->db->cache_off();
 		}
@@ -163,7 +158,7 @@ class CI_DB_Cache {
 	{	
 		if ($segment_one == '')
 		{
-			$segment_one  = ($this->CI->uri->segment(1) == FALSE) ? 'default' : $this->CI->uri->segment(2);
+			$segment_one  = ($this->CI->uri->segment(1) == FALSE) ? 'default' : $this->CI->uri->segment(1);
 		}
 		
 		if ($segment_two == '')

@@ -78,7 +78,6 @@ class AdminHome extends Controller
 		$data['radius2'] = exec('netstat -an | grep :1812 | grep -c udp');
 		$data['radius3'] = exec('netstat -an | grep :1812 | grep -c udp');
 		$data['coaport'] = exec('netstat -an | grep :3799 | grep -c udp');
-		$this->load->view('home/home_view',$data);
 						 
 		$this->load->vars($data);
 	        
