@@ -48,7 +48,7 @@ Class Postplanmodel extends model{
 	
 	function getPerByte(){
 		$this->db->select('price');
-		$this->db->where('name=\'packet\'');
+		$this->db->where(array('name' => 'packet'));
 		
 		return $this->db->get($this->_table);
 
@@ -62,7 +62,7 @@ Class Postplanmodel extends model{
 	 */
 	function getPerMinute(){
 		$this->db->select('price');
-		$this->db->where('name=\'time\'');
+		$this->db->where(array('name' => 'time'));
 		
 		return $this->db->get($this->_table);
 
@@ -71,7 +71,7 @@ Class Postplanmodel extends model{
 	
 	function getIdleTimeout(){
 		$this->db->select('price');
-		$this->db->where('name=\'idletimeout\'');
+		$this->db->where('name', 'idletimeout');
 		
 		return $this->db->get($this->_table);
 		
@@ -79,7 +79,7 @@ Class Postplanmodel extends model{
 	
 	function getDownloadRate(){
 		$this->db->select('price');
-		$this->db->where('name=\'bw_download\'');
+		$this->db->where('name', 'bw_download');
 		
 		return $this->db->get($this->_table);
 		
@@ -87,7 +87,7 @@ Class Postplanmodel extends model{
 	
 	function getUploadRate(){
 		$this->db->select('price');
-		$this->db->where('name=\'bw_upload\'');
+		$this->db->where('name', 'bw_upload');
 		
 		return $this->db->get($this->_table);
 		
