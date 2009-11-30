@@ -427,7 +427,7 @@ class CI_DB_active_record extends CI_DB_driver {
 		{
 			$prefix = (count($this->ar_where) == 0) ? '' : $type;
 
-			if ( ! $this->_has_operator($k) && is_null($key[$k]))
+			if (is_null($v) && ! $this->_has_operator($k))
 			{
 				// value appears not to have been set, assign the test to IS NULL
 				$k .= ' IS NULL';
@@ -435,7 +435,6 @@ class CI_DB_active_record extends CI_DB_driver {
 			
 			if ( ! is_null($v))
 			{
-
 				if ($escape === TRUE)
 				{
 					// exception for "field<=" keys
@@ -447,38 +446,32 @@ class CI_DB_active_record extends CI_DB_driver {
 					{
 						$k = $this->_protect_identifiers($k);
 					}
+					
+					$v = ' '.$this->escape($v);
 				}
 
 				if ( ! $this->_has_operator($k))
 				{
 					$k .= ' =';
 				}
-
-				if ($v !== '' AND $v !== NULL)
-				{		
-					if ($escape === TRUE)
-					{
-						$v = ' '.$this->escape($v);
-					}
-				}
 			}
 			else
 			{
-
 				if ($escape === TRUE)
 				{
 					$k = $this->_protect_identifiers($k, TRUE);
-				}
-				
+				}				
 			}
 
 			$this->ar_where[] = $prefix.$k.$v;
+			
 			if ($this->ar_caching === TRUE)
 			{
 				$this->ar_cache_where[] = $prefix.$k.$v;
 			}
 			
 		}
+		
 		return $this;
 	}
 
@@ -804,7 +797,7 @@ class CI_DB_active_record extends CI_DB_driver {
 
 	function orhaving($key, $value = '', $escape = TRUE)
 	{
-		return $this->or_having($key, $value = '', $escape);
+		return $this->or_having($key, $value, $escape);
 	}	
 	// --------------------------------------------------------------------
 
@@ -852,7 +845,11 @@ class CI_DB_active_record extends CI_DB_driver {
 				$k = $this->_protect_identifiers($k);
 			}
 
-			
+			if ( ! $this->_has_operator($k))
+			{
+				$k .= ' = ';
+			}
+
 			if ($v != '')
 			{
 				$v = ' '.$this->escape_str($v);
@@ -1394,27 +1391,7 @@ class CI_DB_active_record extends CI_DB_driver {
 	{
 		return $this->from($table);
 	}
-	
-	// --------------------------------------------------------------------
 
-	/**
-	 * Tests whether the string has an SQL operator
-	 *
-	 * @access	private
-	 * @param	string
-	 * @return	bool
-	 */
-	function _has_operator($str)
-	{
-		$str = trim($str);
-		if ( ! preg_match("/(\s|<|>|!|=|is null|is not null)/i", $str))
-		{
-			return FALSE;
-		}
-
-		return TRUE;
-	}
-	
 	// --------------------------------------------------------------------
 
 	/**

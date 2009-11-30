@@ -133,32 +133,14 @@ class CI_Input {
 		}
 		else
 		{
-			if (is_array($_GET) AND count($_GET) > 0)
-			{
-				foreach($_GET as $key => $val)
-				{
-					$_GET[$this->_clean_input_keys($key)] = $this->_clean_input_data($val);
-				}
-			}
+			$_GET = $this->_clean_input_data($_GET);
 		}
 
 		// Clean $_POST Data
-		if (is_array($_POST) AND count($_POST) > 0)
-		{
-			foreach($_POST as $key => $val)
-			{
-				$_POST[$this->_clean_input_keys($key)] = $this->_clean_input_data($val);
-			}
-		}
-
+		$_POST = $this->_clean_input_data($_POST);
+		
 		// Clean $_COOKIE Data
-		if (is_array($_COOKIE) AND count($_COOKIE) > 0)
-		{
-			foreach($_COOKIE as $key => $val)
-			{
-				$_COOKIE[$this->_clean_input_keys($key)] = $this->_clean_input_data($val);
-			}
-		}
+		$_COOKIE = $this->_clean_input_data($_COOKIE);
 
 		log_message('debug', "Global POST and COOKIE data sanitized");
 	}
@@ -232,7 +214,35 @@ class CI_Input {
 	}
 
 	// --------------------------------------------------------------------
+	
+	/**
+	 * Fetch from array
+	 *
+	 * This is a helper function to retrieve values from global arrays
+	 *
+	 * @access	private
+	 * @param	array
+	 * @param	string
+	 * @param	bool
+	 * @return	string
+	 */
+	function _fetch_from_array(&$array, $index = '', $xss_clean = FALSE)
+	{
+		if ( ! isset($array[$index]))
+		{
+			return FALSE;
+		}
 
+		if ($xss_clean === TRUE)
+		{
+			return $this->xss_clean($array[$index]);
+		}
+
+		return $array[$index];
+	}
+
+	// --------------------------------------------------------------------
+	
 	/**
 	 * Fetch an item from the GET array
 	 *
@@ -243,27 +253,7 @@ class CI_Input {
 	 */
 	function get($index = '', $xss_clean = FALSE)
 	{
-		if ( ! isset($_GET[$index]))
-		{
-			return FALSE;
-		}
-
-		if ($xss_clean === TRUE)
-		{
-			if (is_array($_GET[$index]))
-			{
-				foreach($_GET[$index] as $key => $val)
-				{
-					$_GET[$index][$key] = $this->xss_clean($val);
-				}
-			}
-			else
-			{
-				return $this->xss_clean($_GET[$index]);
-			}
-		}
-
-		return $_GET[$index];
+		return $this->_fetch_from_array($_GET, $index, $xss_clean);
 	}
 
 	// --------------------------------------------------------------------
@@ -278,27 +268,29 @@ class CI_Input {
 	 */
 	function post($index = '', $xss_clean = FALSE)
 	{
-		if ( ! isset($_POST[$index]))
-		{
-			return FALSE;
-		}
+		return $this->_fetch_from_array($_POST, $index, $xss_clean);
+	}
 
-		if ($xss_clean === TRUE)
-		{
-			if (is_array($_POST[$index]))
-			{
-				foreach($_POST[$index] as $key => $val)
-				{
-					$_POST[$index][$key] = $this->xss_clean($val);
-				}
-			}
-			else
-			{
-				return $this->xss_clean($_POST[$index]);
-			}
-		}
+	// --------------------------------------------------------------------
 
-		return $_POST[$index];
+	/**
+	 * Fetch an item from either the GET array or the POST
+	 *
+	 * @access	public
+	 * @param	string	The index key
+	 * @param	bool	XSS cleaning
+	 * @return	string
+	 */
+	function get_post($index = '', $xss_clean = FALSE)
+	{		
+		if ( ! isset($_POST[$index]) )
+		{
+			return $this->get($index, $xss_clean);
+		}
+		else
+		{
+			return $this->post($index, $xss_clean);
+		}		
 	}
 
 	// --------------------------------------------------------------------
@@ -313,32 +305,7 @@ class CI_Input {
 	 */
 	function cookie($index = '', $xss_clean = FALSE)
 	{
-		if ( ! isset($_COOKIE[$index]))
-		{
-			return FALSE;
-		}
-
-		if ($xss_clean === TRUE)
-		{
-			if (is_array($_COOKIE[$index]))
-			{
-				$cookie = array();
-				foreach($_COOKIE[$index] as $key => $val)
-				{
-					$cookie[$key] = $this->xss_clean($val);
-				}
-
-				return $cookie;
-			}
-			else
-			{
-				return $this->xss_clean($_COOKIE[$index]);
-			}
-		}
-		else
-		{
-			return $_COOKIE[$index];
-		}
+		return $this->_fetch_from_array($_COOKIE, $index, $xss_clean);
 	}
 
 	// --------------------------------------------------------------------
@@ -353,17 +320,7 @@ class CI_Input {
 	 */
 	function server($index = '', $xss_clean = FALSE)
 	{
-		if ( ! isset($_SERVER[$index]))
-		{
-			return FALSE;
-		}
-
-		if ($xss_clean === TRUE)
-		{
-			return $this->xss_clean($_SERVER[$index]);
-		}
-
-		return $_SERVER[$index];
+		return $this->_fetch_from_array($_SERVER, $index, $xss_clean);
 	}
 
 	// --------------------------------------------------------------------
@@ -554,7 +511,7 @@ class CI_Input {
 	 * @param	string
 	 * @return	string
 	 */
-	function xss_clean($str)
+	function xss_clean($str, $is_image = FALSE)
 	{
 		/*
 		 * Is the string an array?
@@ -571,14 +528,9 @@ class CI_Input {
 		}
 
 		/*
-		 * Remove Null Characters
-		 *
-		 * This prevents sandwiching null characters
-		 * between ascii characters, like Java\0script.
-		 *
+		 * Remove Invisible Characters
 		 */
-		$str = preg_replace('/\0+/', '', $str);
-		$str = preg_replace('/(\\\\0)+/', '', $str);
+		$str = $this->_remove_invisible_characters($str);
 
 		/*
 		 * Protect GET variables in URLs
@@ -608,7 +560,6 @@ class CI_Input {
 		/*
 		 * Un-Protect GET variables in URLs
 		 */
-		 
 		$str = str_replace($this->xss_hash(), '&', $str);
 
 		/*
@@ -622,7 +573,7 @@ class CI_Input {
 		 *
 		 */
 		$str = rawurldecode($str);
-
+	
 		/*
 		 * Convert character entities to ASCII 
 		 *
@@ -632,38 +583,15 @@ class CI_Input {
 		 *
 		 */
 
-		$str = preg_replace_callback("/[a-z]+=([\'\"]).*?\\1/si", array($this, '_attribute_conversion'), $str);
-		 
-		$str = preg_replace_callback("/<([\w]+)[^>]*>/si", array($this, '_html_entity_decode_callback'), $str);
+		$str = preg_replace_callback("/[a-z]+=([\'\"]).*?\\1/si", array($this, '_convert_attribute'), $str);
+	 
+		$str = preg_replace_callback("/<\w+.*?(?=>|<|$)/si", array($this, '_html_entity_decode_callback'), $str);
 
 		/*
-
-		Old Code that when modified to use preg_replace()'s above became more efficient memory-wise
-
-		if (preg_match_all("/[a-z]+=([\'\"]).*?\\1/si", $str, $matches))
-		{        
-			for ($i = 0; $i < count($matches[0]); $i++)
-			{
-				if (stristr($matches[0][$i], '>'))
-				{
-					$str = str_replace(	$matches['0'][$i], 
-										str_replace('>', '&lt;', $matches[0][$i]),  
-										$str);
-				}
-			}
-		}
-		 
-        if (preg_match_all("/<([\w]+)[^>]*>/si", $str, $matches))
-        {        
-			for ($i = 0; $i < count($matches[0]); $i++)
-			{
-				$str = str_replace($matches[0][$i], 
-									$this->_html_entity_decode($matches[0][$i], $charset), 
-									$str);
-			}
-		}
-		*/
-
+		 * Remove Invisible Characters Again!
+		 */
+		$str = $this->_remove_invisible_characters($str);
+		
 		/*
 		 * Convert all tabs to spaces
 		 *
@@ -677,8 +605,13 @@ class CI_Input {
  		if (strpos($str, "\t") !== FALSE)
 		{
 			$str = str_replace("\t", ' ', $str);
-		}		
-
+		}
+		
+		/*
+		 * Capture converted string for later comparison
+		 */
+		$converted_string = $str;
+		
 		/*
 		 * Not Allowed Under Any Conditions
 		 */
@@ -703,8 +636,17 @@ class CI_Input {
 		 * But it doesn't seem to pose a problem.
 		 *
 		 */
-		$str = str_replace(array('<?php', '<?PHP', '<?', '?'.'>'),  array('&lt;?php', '&lt;?PHP', '&lt;?', '?&gt;'), $str);
-
+		if ($is_image === TRUE)
+		{
+			// Images have a tendency to have the PHP short opening and closing tags every so often
+			// so we skip those and only do the long opening tags.
+			$str = str_replace(array('<?php', '<?PHP'),  array('&lt;?php', '&lt;?PHP'), $str);
+		}
+		else
+		{
+			$str = str_replace(array('<?php', '<?PHP', '<?', '?'.'>'),  array('&lt;?php', '&lt;?PHP', '&lt;?', '?&gt;'), $str);
+		}
+		
 		/*
 		 * Compact any exploded words
 		 *
@@ -716,39 +658,39 @@ class CI_Input {
 		foreach ($words as $word)
 		{
 			$temp = '';
-			for ($i = 0; $i < strlen($word); $i++)
+			
+			for ($i = 0, $wordlen = strlen($word); $i < $wordlen; $i++)
 			{
 				$temp .= substr($word, $i, 1)."\s*";
 			}
-	
+
 			// We only want to do this when it is followed by a non-word character
 			// That way valid stuff like "dealer to" does not become "dealerto"
-			$str = preg_replace('#('.substr($temp, 0, -3).')(\W)#ise', "preg_replace('/\s+/s', '', '\\1').'\\2'", $str);
+			$str = preg_replace_callback('#('.substr($temp, 0, -3).')(\W)#is', array($this, '_compact_exploded_words'), $str);
 		}
-
+		
 		/*
 		 * Remove disallowed Javascript in links or img tags
+		 * We used to do some version comparisons and use of stripos for PHP5, but it is dog slow compared
+		 * to these simplified non-capturing preg_match(), especially if the pattern exists in the string
 		 */
 		do
 		{
 			$original = $str;
 	
-			if ((version_compare(PHP_VERSION, '5.0', '>=') === TRUE && stripos($str, '</a>') !== FALSE) OR 
-				 preg_match("/<\/a>/i", $str))
+			if (preg_match("/<a/i", $str))
 			{
-				$str = preg_replace_callback("#<a.*?</a>#si", array($this, '_js_link_removal'), $str);
+				$str = preg_replace_callback("#<a\s*([^>]*?)(>|$)#si", array($this, '_js_link_removal'), $str);
 			}
 	
-			if ((version_compare(PHP_VERSION, '5.0', '>=') === TRUE && stripos($str, '<img') !== FALSE) OR 
-				 preg_match("/img/i", $str))
+			if (preg_match("/<img/i", $str))
 			{
-				$str = preg_replace_callback("#<img.*?".">#si", array($this, '_js_img_removal'), $str);
+				$str = preg_replace_callback("#<img\s*([^>]*?)(>|$)#si", array($this, '_js_img_removal'), $str);
 			}
 	
-			if ((version_compare(PHP_VERSION, '5.0', '>=') === TRUE && (stripos($str, 'script') !== FALSE OR stripos($str, 'xss') !== FALSE)) OR
-				 preg_match("/(script|xss)/i", $str))
+			if (preg_match("/script/i", $str) OR preg_match("/xss/i", $str))
 			{
-				$str = preg_replace("#</*(script|xss).*?\>#si", "", $str);
+				$str = preg_replace("#<(/*)(script|xss)(.*?)\>#si", '[removed]', $str);
 			}
 		}
 		while($original != $str);
@@ -763,9 +705,19 @@ class CI_Input {
 		 * but it's unlikely to be a problem.
 		 *
 		 */
-		$event_handlers = array('onblur','onchange','onclick','onfocus','onload','onmouseover','onmouseup','onmousedown','onselect','onsubmit','onunload','onkeypress','onkeydown','onkeyup','onresize', 'xmlns');
-		$str = preg_replace("#<([^>]+)(".implode('|', $event_handlers).")([^>]*)>#iU", "&lt;\\1\\2\\3&gt;", $str);
+		$event_handlers = array('on\w*','xmlns');
 
+		if ($is_image === TRUE)
+		{
+			/*
+			 * Adobe Photoshop puts XML metadata into JFIF images, including namespacing, 
+			 * so we have to allow this for images. -Paul
+			 */
+			unset($event_handlers[array_search('xmlns', $event_handlers)]);
+		}
+		
+		$str = preg_replace("#<([^><]+)(".implode('|', $event_handlers).")(\s*=\s*[^><]*)([><]*)#i", "<\\1\\4", $str);
+		
 		/*
 		 * Sanitize naughty HTML elements
 		 *
@@ -776,7 +728,7 @@ class CI_Input {
 		 * Becomes: &lt;blink&gt;
 		 *
 		 */
-		$naughty = 'alert|applet|basefont|base|behavior|bgsound|blink|body|embed|expression|form|frameset|frame|head|html|ilayer|iframe|input|layer|link|meta|object|plaintext|style|script|textarea|title|xml|xss';
+		$naughty = 'alert|applet|audio|basefont|base|behavior|bgsound|blink|body|embed|expression|form|frameset|frame|head|html|ilayer|iframe|input|layer|link|meta|object|plaintext|style|script|textarea|title|video|xml|xss';
 		$str = preg_replace_callback('#<(/*\s*)('.$naughty.')([^><]*)([><]*)#is', array($this, '_sanitize_naughty_html'), $str);
 
 		/*
@@ -808,10 +760,29 @@ class CI_Input {
 	
 		foreach ($this->never_allowed_regex as $key => $val)
 		{
-			$str = preg_replace("#".$key."#i", $val, $str);   
+			$str = preg_replace("#".$key."#i", $val, $str);
 		}
 
+		/*
+		 *  Images are Handled in a Special Way
+		 *  - Essentially, we want to know that after all of the character conversion is done whether
+		 *  any unwanted, likely XSS, code was found.  If not, we return TRUE, as the image is clean.
+		 *  However, if the string post-conversion does not matched the string post-removal of XSS,
+		 *  then it fails, as there was unwanted XSS code found and removed/changed during processing.
+		 */
 
+		if ($is_image === TRUE)
+		{
+			if ($str == $converted_string)
+			{
+				return TRUE;
+			}
+			else
+			{
+				return FALSE;
+			}
+		}
+		
 		log_message('debug', "XSS Filtering completed");
 		return $str;
 	}
@@ -842,6 +813,61 @@ class CI_Input {
 	// --------------------------------------------------------------------
 	
 	/**
+	 * Remove Invisible Characters
+	 *
+	 * This prevents sandwiching null characters
+	 * between ascii characters, like Java\0script.
+	 *
+	 * @access	public
+	 * @param	string
+	 * @return	string
+	 */
+	function _remove_invisible_characters($str)
+	{
+		static $non_displayables;
+		
+		if ( ! isset($non_displayables))
+		{
+			// every control character except newline (10), carriage return (13), and horizontal tab (09),
+			// both as a URL encoded character (::shakes fist at IE and WebKit::), and the actual character
+			$non_displayables = array(
+										'/%0[0-8]/', '/[\x00-\x08]/',			// 00-08
+										'/%11/', '/\x0b/', '/%12/', '/\x0c/',	// 11, 12
+										'/%1[4-9]/', '/%2[0-9]/', '/%3[0-1]/',	// url encoded 14-31
+										'/[\x0e-\x1f]/');						// 14-31
+			
+		}
+
+		do
+		{
+			$cleaned = $str;
+			$str = preg_replace($non_displayables, '', $str);
+		}
+		while ($cleaned != $str);
+
+		return $str;
+	}
+
+	// --------------------------------------------------------------------
+	
+	/**
+	 * Compact Exploded Words
+	 *
+	 * Callback function for xss_clean() to remove whitespace from
+	 * things like j a v a s c r i p t
+	 *
+	 * @access	public
+	 * @param	type
+	 * @return	type
+	 */
+	function _compact_exploded_words($matches)
+	{
+		return preg_replace('/\s+/s', '', $matches[1]).$matches[2];
+	}
+
+	// --------------------------------------------------------------------
+	
+	/**
 	 * Sanitize Naughty HTML
 	 *
 	 * Callback function for xss_clean() to remove naughty HTML elements
@@ -856,15 +882,8 @@ class CI_Input {
 		$str = '&lt;'.$matches[1].$matches[2].$matches[3];
 		
 		// encode captured opening or closing brace to prevent recursive vectors
-		if ($matches[4] == '>')
-		{
-			$str .= '&gt;';
-		}
-		elseif ($matches[4] == '<')
-		{
-			$str .= '&lt;';
-		}
-
+		$str .= str_replace(array('>', '<'), array('&gt;', '&lt;'), $matches[4]);
+		
 		return $str;
 	}
 
@@ -884,7 +903,8 @@ class CI_Input {
 	 */
 	function _js_link_removal($match)
 	{
-		return preg_replace("#<a.+?href=.*?(alert\(|alert&\#40;|javascript\:|window\.|document\.|\.cookie|<script|<xss).*?\>.*?</a>#si", "", $match[0]);
+		$attributes = $this->_filter_attributes(str_replace(array('<', '>'), '', $match[1]));
+		return str_replace($match[1], preg_replace("#href=.*?(alert\(|alert&\#40;|javascript\:|charset\=|window\.|document\.|\.cookie|<script|<xss|base64\s*,)#si", "", $attributes), $match[0]);
 	}
 
 	/**
@@ -901,7 +921,8 @@ class CI_Input {
 	 */
 	function _js_img_removal($match)
 	{
-		return preg_replace("#<img.+?src=.*?(alert\(|alert&\#40;|javascript\:|window\.|document\.|\.cookie|<script|<xss).*?\>#si", "", $match[0]);
+		$attributes = $this->_filter_attributes(str_replace(array('<', '>'), '', $match[1]));
+		return str_replace($match[1], preg_replace("#src=.*?(alert\(|alert&\#40;|javascript\:|charset\=|window\.|document\.|\.cookie|<script|<xss|base64\s*,)#si", "", $attributes), $match[0]);
 	}
 
 	// --------------------------------------------------------------------
@@ -915,9 +936,9 @@ class CI_Input {
 	 * @param	array
 	 * @return	string
 	 */
-	function _attribute_conversion($match)
+	function _convert_attribute($match)
 	{
-		return str_replace('>', '&lt;', $match[0]);
+		return str_replace(array('>', '<'), array('&gt;', '&lt;'), $match[0]);
 	}
 
 	// --------------------------------------------------------------------
@@ -978,12 +999,12 @@ class CI_Input {
 		if (function_exists('html_entity_decode') && (strtolower($charset) != 'utf-8' OR version_compare(phpversion(), '5.0.0', '>=')))
 		{
 			$str = html_entity_decode($str, ENT_COMPAT, $charset);
-			$str = preg_replace('~&#x([0-9a-f]{2,5})~ei', 'chr(hexdec("\\1"))', $str);
+			$str = preg_replace('~&#x(0*[0-9a-f]{2,5})~ei', 'chr(hexdec("\\1"))', $str);
 			return preg_replace('~&#([0-9]{2,4})~e', 'chr(\\1)', $str);
 		}
 
 		// Numeric Entities
-		$str = preg_replace('~&#x([0-9a-f]{2,5});{0,1}~ei', 'chr(hexdec("\\1"))', $str);
+		$str = preg_replace('~&#x(0*[0-9a-f]{2,5});{0,1}~ei', 'chr(hexdec("\\1"))', $str);
 		$str = preg_replace('~&#([0-9]{2,4});{0,1}~e', 'chr(\\1)', $str);
 
 		// Literal Entities - Slightly slow so we do another check
@@ -994,6 +1015,34 @@ class CI_Input {
 
 		return $str;
 	}
+
+	// --------------------------------------------------------------------
+	
+	/**
+	 * Filter Attributes
+	 *
+	 * Filters tag attributes for consistency and safety
+	 *
+	 * @access	public
+	 * @param	string
+	 * @return	string
+	 */
+	function _filter_attributes($str)
+	{
+		$out = '';
+
+		if (preg_match_all('#\s*[a-z\-]+\s*=\s*(\042|\047)([^\\1]*?)\\1#is', $str, $matches))
+		{
+			foreach ($matches[0] as $match)
+			{
+				$out .= "{$match}";
+			}			
+		}
+
+		return $out;
+	}
+
+	// --------------------------------------------------------------------
 
 }
 // END Input class

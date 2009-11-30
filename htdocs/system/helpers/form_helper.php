@@ -40,26 +40,20 @@
  */	
 if ( ! function_exists('form_open'))
 {
-	function form_open($action = '', $attributes = array(), $hidden = array())
+	function form_open($action = '', $attributes = '', $hidden = array())
 	{
 		$CI =& get_instance();
+
+		if ($attributes == '')
+		{
+			$attributes = 'method="post"';
+		}
 
 		$action = ( strpos($action, '://') === FALSE) ? $CI->config->site_url($action) : $action;
 
 		$form = '<form action="'.$action.'"';
 	
-		if ( ! isset($attributes['method']))
-		{
-			$form .= ' method="post"';
-		}
-	
-		if (is_array($attributes) AND count($attributes) > 0)
-		{
-			foreach ($attributes as $key => $val)
-			{
-				$form .= ' '.$key.'="'.$val.'"';
-			}
-		}
+        $form .= _attributes_to_string($attributes, TRUE);
 	
 		$form .= '>';
 
@@ -141,7 +135,7 @@ if ( ! function_exists('form_input'))
 {
 	function form_input($data = '', $value = '', $extra = '')
 	{
-		$defaults = array('type' => 'text', 'name' => (( ! is_array($data)) ? $data : ''), 'value' => $value, 'maxlength' => '500', 'size' => '50');
+		$defaults = array('type' => 'text', 'name' => (( ! is_array($data)) ? $data : ''), 'value' => $value);
 
 		return "<input ".parse_form_attributes($data, $defaults).$extra." />\n";
 	}
@@ -464,16 +458,9 @@ if ( ! function_exists('form_fieldset'))
 {
 	function form_fieldset($legend_text = '', $attributes = array())
 	{
-
 		$fieldset = "<fieldset";
 
-		if (is_array($attributes) AND count($attributes) > 0)
-		{
-			foreach ($attributes as $key => $val)
-			{
-				$fieldset .= ' '.$key.'="'.$val.'"';
-			}
-		}
+        $fieldset .= _attributes_to_string($attributes, FALSE);
 	
 		$fieldset .= ">\n";
 	
@@ -481,8 +468,6 @@ if ( ! function_exists('form_fieldset'))
 		{
 			$fieldset .= "<legend>$legend_text</legend>\n";
 		}
-		
-
 
 		return $fieldset;
 	}
@@ -610,6 +595,55 @@ if ( ! function_exists('parse_form_attributes'))
 	}
 }
 
+// ------------------------------------------------------------------------
+
+/**
+ * Attributes To String
+ *
+ * Helper function used by some of the form helpers
+ *
+ * @access	private
+ * @param	mixed
+ * @param	bool
+ * @return	string
+ */	
+if ( ! function_exists('_attributes_to_string'))
+{
+	function _attributes_to_string($attributes, $formtag = FALSE)
+	{
+	   if (is_string($attributes) AND strlen($attributes) > 0)
+	   {
+		   if ($formtag == TRUE AND strpos($attributes, 'method=') === FALSE)
+		   {
+			  $attributes .= ' method="post"';
+		   }
+		   
+		   return ' '.$attributes;       
+	   }
+	
+	   if (is_object($attributes) AND count($attributes) > 0)
+	   {
+		  $attributes = (array)$attributes;
+	   }
+	   
+	   if (is_array($attributes) AND count($attributes) > 0)
+	   {
+		  $atts = '';
+
+		  if ( ! isset($attributes['method']) AND $formtag === TRUE)
+		  {
+			 $atts .= ' method="post"';
+		  }
+	
+		  foreach ($attributes as $key => $val)
+		  {
+			 $atts .= ' '.$key.'="'.$val.'"';
+		  }
+
+		  return $atts;
+	   }
+	} 
+}
 
 /* End of file form_helper.php */
 /* Location: ./system/helpers/form_helper.php */

@@ -377,7 +377,7 @@ class CI_Email {
 	/**
 	 * Add a Header Item
 	 *
-	 * @access	public
+	 * @access	private
 	 * @param	string
 	 * @param	string
 	 * @return	void
@@ -392,7 +392,7 @@ class CI_Email {
 	/**
 	 * Convert a String to an Array
 	 *
-	 * @access	public
+	 * @access	private
 	 * @param	string
 	 * @return	array
 	 */	
@@ -646,7 +646,7 @@ class CI_Email {
 	/**
 	 * Set RFC 822 Date
 	 *
-	 * @access	public
+	 * @access	private
 	 * @return	string
 	 */	
 	function _set_date()
@@ -902,7 +902,7 @@ class CI_Email {
 	/**
 	 * Build final headers
 	 *
-	 * @access	public
+	 * @access	private
 	 * @param	string
 	 * @return	string
 	 */	
@@ -920,7 +920,7 @@ class CI_Email {
 	/**
 	 * Write Headers as a string
 	 *
-	 * @access	public
+	 * @access	private
 	 * @return	void
 	 */
 	function _write_headers()
@@ -953,7 +953,7 @@ class CI_Email {
 	/**
 	 * Build Final Body and attachments
 	 *
-	 * @access	public
+	 * @access	private
 	 * @return	void
 	 */	
 	function _build_message()
@@ -993,7 +993,8 @@ class CI_Email {
 	
 				if ($this->send_multipart === FALSE)
 				{
-					$hdr .= "Content-Type: text/html;". $this->newline;
+					$hdr .= "Content-Type: text/html; charset=" . $this->charset . $this->newline;
+					$hdr .= "Content-Transfer-Encoding: quoted-printable";
 				}
 				else
 				{	
@@ -1144,7 +1145,7 @@ class CI_Email {
 	 * Prepares string for Quoted-Printable Content-Transfer-Encoding
 	 * Refer to RFC 2045 http://www.ietf.org/rfc/rfc2045.txt
 	 *
-	 * @access	public
+	 * @access	private
 	 * @param	string
 	 * @param	integer
 	 * @return	string
@@ -1281,7 +1282,6 @@ class CI_Email {
 	{
 		$float = $this->bcc_batch_size -1;
 
-		$flag = 0;
 		$set = "";
 
 		$chunk = array();
@@ -1525,7 +1525,7 @@ class CI_Email {
 	/**
 	 * SMTP Connect
 	 *
-	 * @access	public
+	 * @access	private
 	 * @param	string
 	 * @return	string
 	 */	
@@ -1798,7 +1798,7 @@ class CI_Email {
 	/**
 	 * Set Message
 	 *
-	 * @access	public
+	 * @access	private
 	 * @param	string
 	 * @return	string
 	 */	

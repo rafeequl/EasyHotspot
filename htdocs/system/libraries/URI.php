@@ -246,22 +246,9 @@ class CI_URI {
 	 */	
 	function _reindex_segments()
 	{
-		$i = 1;
-
-		foreach ($this->segments as $val)
-		{
-			$this->segments[$i++] = $val;
-		}
-
+		array_unshift($this->segments, NULL);
+		array_unshift($this->rsegments, NULL);
 		unset($this->segments[0]);
-		
-		$i = 1;
-		
-		foreach ($this->rsegments as $val)
-		{
-			$this->rsegments[$i++] = $val;
-		}
-		
 		unset($this->rsegments[0]);
 	}	
 	
@@ -309,7 +296,7 @@ class CI_URI {
 	 * This function generates and associative array of URI data starting
 	 * at the supplied segment. For example, if this is your URI:
 	 *
-	 *	www.your-site.com/user/search/name/joe/location/UK/gender/male
+	 *	example.com/user/search/name/joe/location/UK/gender/male
 	 *
 	 * You can use this function to generate an array with this prototype:
 	 *
