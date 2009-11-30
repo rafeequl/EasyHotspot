@@ -73,7 +73,7 @@ CREATE TABLE `ci_sessions` (
 
 LOCK TABLES `ci_sessions` WRITE;
 /*!40000 ALTER TABLE `ci_sessions` DISABLE KEYS */;
-INSERT INTO `ci_sessions` VALUES ('2ff83c539570a8b1d3ca787ad57eb7d6','0.0.0.0','Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en',1259597355,'a:8:{s:10:\"country_id\";s:1:\"0\";s:5:\"email\";s:18:\"root@localhost.com\";s:10:\"last_visit\";s:19:\"2009-11-30 23:04:02\";s:7:\"created\";s:19:\"2009-11-30 23:04:02\";s:8:\"modified\";s:19:\"0000-00-00 00:00:00\";s:2:\"id\";s:1:\"1\";s:9:\"user_name\";s:5:\"admin\";s:4:\"role\";s:10:\"superadmin\";}');
+INSERT INTO `ci_sessions` VALUES ('2ff83c539570a8b1d3ca787ad57eb7d6','0.0.0.0','Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en',1259599103,'a:8:{s:10:\"country_id\";s:1:\"0\";s:5:\"email\";s:18:\"root@localhost.com\";s:10:\"last_visit\";s:19:\"2009-11-30 23:09:14\";s:7:\"created\";s:19:\"2009-11-30 23:09:14\";s:8:\"modified\";s:19:\"0000-00-00 00:00:00\";s:2:\"id\";s:1:\"1\";s:9:\"user_name\";s:5:\"admin\";s:4:\"role\";s:10:\"superadmin\";}');
 /*!40000 ALTER TABLE `ci_sessions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -181,7 +181,7 @@ CREATE TABLE `fa_user` (
   `modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   KEY `user_FI_1` (`country_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -190,7 +190,7 @@ CREATE TABLE `fa_user` (
 
 LOCK TABLES `fa_user` WRITE;
 /*!40000 ALTER TABLE `fa_user` DISABLE KEYS */;
-INSERT INTO `fa_user` VALUES (1,'admin',0,'8709d7dc8f2ba1f9bd2b7140ff7078c2','root@localhost.com','superadmin',0,NULL,'2009-11-30 23:09:14','2009-11-30 16:09:14','0000-00-00 00:00:00'),(7,'vcool',0,'f1dd6cb27c75c626fb56d8d8fbd232ea','rafeequl@gmail.com','user',0,NULL,'2009-11-30 21:15:47','2009-11-30 14:15:47','0000-00-00 00:00:00'),(8,'supervisor',0,'8730b46e10650dffe2284c1450a3017a','rafeequl@yahoo.com','superadmin',0,NULL,'2008-02-19 15:44:51','2008-02-19 08:44:51','0000-00-00 00:00:00');
+INSERT INTO `fa_user` VALUES (1,'admin',0,'8709d7dc8f2ba1f9bd2b7140ff7078c2','root@localhost.com','superadmin',0,NULL,'2009-11-30 23:32:21','2009-11-30 16:32:21','0000-00-00 00:00:00'),(9,'Cashier',0,'d54b6677bad5dd90583d582164114e7f','cashier@mail.com','user',0,NULL,NULL,'2009-11-30 16:33:17','0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `fa_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -216,7 +216,7 @@ CREATE TABLE `fa_user_profile` (
 
 LOCK TABLES `fa_user_profile` WRITE;
 /*!40000 ALTER TABLE `fa_user_profile` DISABLE KEYS */;
-INSERT INTO `fa_user_profile` VALUES (1,'Rafeequl','Rafeequl Rahman Awan','102'),(5,'aa','aa','aa'),(7,'vcool','Rafeequl Rahman','123'),(8,'Rafeequl','Rafeequl Rahman Awan','007');
+INSERT INTO `fa_user_profile` VALUES (1,'Admin','Admin','666'),(9,'cashier','cashier','123');
 /*!40000 ALTER TABLE `fa_user_profile` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -246,7 +246,6 @@ CREATE TABLE `fa_user_temp` (
 
 LOCK TABLES `fa_user_temp` WRITE;
 /*!40000 ALTER TABLE `fa_user_temp` DISABLE KEYS */;
-INSERT INTO `fa_user_temp` VALUES (1,'123456',100,'ecdd9981841fa22896d34776a5249535','rafeequl@gmsail.com','llprt','2007-12-10 21:28:17');
 /*!40000 ALTER TABLE `fa_user_temp` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -748,4 +747,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2009-11-30 23:27:33
+-- Dump completed on 2009-11-30 23:41:19
