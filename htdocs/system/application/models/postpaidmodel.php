@@ -197,22 +197,22 @@ class Postpaidmodel extends model {
 		
 		//field on radreply table
 		//Dowloadrate
-		$bw_download = array('value' => $_POST['bw_download']);
-		$this->db->where('username',$_POST['username']);
-		$this->db->where('attribute','WISPr-Bandwidth-Max-Down');
-		$this->db->update($this->_table_radreply,$bw_download);
-		
-		//Uploadrate
-		$bw_upload = array('value' => $_POST['bw_upload']);
-		$this->db->where('username',$_POST['username']);
-		$this->db->where('attribute','WISPr-Bandwidth-Max-Up');
-		$this->db->update($this->_table_radreply,$bw_upload);
+		// $bw_download = array('value' => $_POST['bw_download']);
+		// 		$this->db->where('username',$_POST['username']);
+		// 		$this->db->where('attribute','WISPr-Bandwidth-Max-Down');
+		// 		$this->db->update($this->_table_radreply,$bw_download);
+		// 		
+		// 		//Uploadrate
+		// 		$bw_upload = array('value' => $_POST['bw_upload']);
+		// 		$this->db->where('username',$_POST['username']);
+		// 		$this->db->where('attribute','WISPr-Bandwidth-Max-Up');
+		// 		$this->db->update($this->_table_radreply,$bw_upload);
 		
 		//Accounting interval
 		if($ci->config->item('postpaid_acct_interim_interval')){
 		$this->db->where('username',$_POST['username']);
 		$this->db->where('attribute','Acct-Interim-Interval');
-		$this->db->update($this->_table_radreply,$ci->config->item('postpaid_acct_interim_interval'));
+		$this->db->update($this->_table_radreply, array('value' => $ci->config->item('postpaid_acct_interim_interval')));
 		}
 		$this->db->trans_complete();
 	}
