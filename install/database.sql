@@ -37,7 +37,7 @@ CREATE TABLE `billingplan` (
   `created_by` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,7 +73,7 @@ CREATE TABLE `ci_sessions` (
 
 LOCK TABLES `ci_sessions` WRITE;
 /*!40000 ALTER TABLE `ci_sessions` DISABLE KEYS */;
-INSERT INTO `ci_sessions` VALUES ('2ff83c539570a8b1d3ca787ad57eb7d6','0.0.0.0','Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en',1259599103,'a:8:{s:10:\"country_id\";s:1:\"0\";s:5:\"email\";s:18:\"root@localhost.com\";s:10:\"last_visit\";s:19:\"2009-11-30 23:09:14\";s:7:\"created\";s:19:\"2009-11-30 23:09:14\";s:8:\"modified\";s:19:\"0000-00-00 00:00:00\";s:2:\"id\";s:1:\"1\";s:9:\"user_name\";s:5:\"admin\";s:4:\"role\";s:10:\"superadmin\";}');
+INSERT INTO `ci_sessions` VALUES ('54f07cd491a000ab5d2a134b591b2067','192.168.1.100','Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_2; ',1259644640,'a:10:{s:10:\"country_id\";s:1:\"0\";s:5:\"email\";s:18:\"root@localhost.com\";s:10:\"last_visit\";s:19:\"2009-12-01 04:58:58\";s:7:\"created\";s:19:\"2009-12-01 11:58:58\";s:8:\"modified\";s:19:\"0000-00-00 00:00:00\";s:2:\"id\";s:1:\"1\";s:9:\"user_name\";s:5:\"admin\";s:4:\"role\";s:10:\"superadmin\";s:22:\"flash:old:flashMessage\";s:32:\"You have successfully logged in.\";s:24:\"flash:old:requested_page\";s:8:\"/voucher\";}'),('2ff83c539570a8b1d3ca787ad57eb7d6','0.0.0.0','Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en',1259602235,'a:8:{s:10:\"country_id\";s:1:\"0\";s:5:\"email\";s:18:\"root@localhost.com\";s:10:\"last_visit\";s:19:\"2009-11-30 23:09:14\";s:7:\"created\";s:19:\"2009-11-30 23:09:14\";s:8:\"modified\";s:19:\"0000-00-00 00:00:00\";s:2:\"id\";s:1:\"1\";s:9:\"user_name\";s:5:\"admin\";s:4:\"role\";s:10:\"superadmin\";}'),('713ad3c57582542e495e83e6c9a47887','192.168.1.100','Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_2; ',1259642646,'a:2:{s:24:\"flash:new:requested_page\";s:0:\"\";s:22:\"flash:new:flashMessage\";s:85:\"You do not have the credentials to access this reserved area, please login and retry.\";}');
 /*!40000 ALTER TABLE `ci_sessions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -190,7 +190,7 @@ CREATE TABLE `fa_user` (
 
 LOCK TABLES `fa_user` WRITE;
 /*!40000 ALTER TABLE `fa_user` DISABLE KEYS */;
-INSERT INTO `fa_user` VALUES (1,'admin',0,'8709d7dc8f2ba1f9bd2b7140ff7078c2','root@localhost.com','superadmin',0,NULL,'2009-11-30 23:32:21','2009-11-30 16:32:21','0000-00-00 00:00:00'),(9,'Cashier',0,'d54b6677bad5dd90583d582164114e7f','cashier@mail.com','user',0,NULL,NULL,'2009-11-30 16:33:17','0000-00-00 00:00:00');
+INSERT INTO `fa_user` VALUES (1,'admin',0,'8709d7dc8f2ba1f9bd2b7140ff7078c2','root@localhost.com','superadmin',0,NULL,'2009-12-01 05:17:20','2009-12-01 05:17:20','0000-00-00 00:00:00'),(9,'Cashier',0,'d54b6677bad5dd90583d582164114e7f','cashier@mail.com','user',0,NULL,NULL,'2009-11-30 16:33:17','0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `fa_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -237,7 +237,7 @@ CREATE TABLE `fa_user_temp` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `user_FI_1` (`country_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -462,7 +462,7 @@ CREATE TABLE `radcheck` (
   `value` varchar(253) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `username` (`username`(32))
-) ENGINE=InnoDB AUTO_INCREMENT=170 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=172 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -471,7 +471,7 @@ CREATE TABLE `radcheck` (
 
 LOCK TABLES `radcheck` WRITE;
 /*!40000 ALTER TABLE `radcheck` DISABLE KEYS */;
-INSERT INTO `radcheck` VALUES (146,'tethaz6','Cleartext-Password',':=','caldotuk'),(147,'tethaz6','Expiration',':=','November 24 2009 24:00:00'),(148,'zerhaw7','Cleartext-Password',':=','cepdakar'),(149,'zerhaw7','Expiration',':=','October 26 2009 24:00:00'),(150,'a','Expiration',':=','November 4 2009 24:00:00'),(151,'a','Simultaneous-Use',':=','1'),(152,'a','Cleartext-Password',':=','a'),(153,'vidvur5','Cleartext-Password',':=','dabsokul'),(154,'vidvur5','Expiration',':=','November 30 2009 24:00:00'),(155,'tiyben12','Cleartext-Password',':=','giktasok'),(156,'tiyben12','Expiration',':=','November 30 2009 24:00:00'),(165,'sepsog9','Cleartext-Password',':=','as'),(166,'sepsog9','Expiration',':=','December 30 2009 24:00:00'),(167,'vcool','Expiration',':=','December 1 2009 24:00:00'),(168,'vcool','Simultaneous-Use',':=','1'),(169,'vcool','Cleartext-Password',':=','vcool123');
+INSERT INTO `radcheck` VALUES (146,'tethaz6','Cleartext-Password',':=','caldotuk'),(147,'tethaz6','Expiration',':=','November 24 2009 24:00:00'),(148,'zerhaw7','Cleartext-Password',':=','cepdakar'),(149,'zerhaw7','Expiration',':=','October 26 2009 24:00:00'),(150,'a','Expiration',':=','November 4 2009 24:00:00'),(151,'a','Simultaneous-Use',':=','1'),(152,'a','Cleartext-Password',':=','a'),(153,'vidvur5','Cleartext-Password',':=','dabsokul'),(154,'vidvur5','Expiration',':=','November 30 2009 24:00:00'),(155,'tiyben12','Cleartext-Password',':=','giktasok'),(156,'tiyben12','Expiration',':=','November 30 2009 24:00:00'),(167,'vcool','Expiration',':=','December 1 2009 24:00:00'),(168,'vcool','Simultaneous-Use',':=','1'),(169,'vcool','Cleartext-Password',':=','vcool123');
 /*!40000 ALTER TABLE `radcheck` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -490,7 +490,7 @@ CREATE TABLE `radgroupcheck` (
   `value` varchar(253) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `groupname` (`groupname`(32))
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -518,7 +518,7 @@ CREATE TABLE `radgroupreply` (
   `value` varchar(253) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `groupname` (`groupname`(32))
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -558,28 +558,31 @@ LOCK TABLES `radpostauth` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `radusergroup`
+-- Table structure for table `radreply`
 --
 
-DROP TABLE IF EXISTS `radusergroup`;
+DROP TABLE IF EXISTS `radreply`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `radusergroup` (
+CREATE TABLE `radreply` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(64) NOT NULL DEFAULT '',
-  `groupname` varchar(64) NOT NULL DEFAULT '',
-  `priority` int(11) NOT NULL DEFAULT '1',
+  `attribute` varchar(32) NOT NULL DEFAULT '',
+  `op` char(2) NOT NULL DEFAULT '=',
+  `value` varchar(253) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
   KEY `username` (`username`(32))
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `radusergroup`
+-- Dumping data for table `radreply`
 --
 
-LOCK TABLES `radusergroup` WRITE;
-/*!40000 ALTER TABLE `radusergroup` DISABLE KEYS */;
-INSERT INTO `radusergroup` VALUES ('tethaz6','1 hour',1),('zerhaw7','1 Mega',1),('vidvur5','1 hour',1),('tiyben12','1 hour',1),('sepsog9','1 Mega',1);
-/*!40000 ALTER TABLE `radusergroup` ENABLE KEYS */;
+LOCK TABLES `radreply` WRITE;
+/*!40000 ALTER TABLE `radreply` DISABLE KEYS */;
+INSERT INTO `radreply` VALUES (53,'tethaz6','Expiration',':=','November 24 2009 24:00:00'),(54,'zerhaw7','Expiration',':=','October 26 2009 24:00:00'),(55,'a','WISPr-Bandwidth-Max-Down',':=','32000'),(56,'a','WISPr-Bandwidth-Max-Up',':=','16000'),(57,'a','Idle-Timeout',':=','300'),(58,'a','Expiration',':=','November 4 2009 24:00:00'),(59,'a','Acct-Interim-Interval',':=','120'),(60,'vidvur5','Expiration',':=','November 30 2009 24:00:00'),(61,'tiyben12','Expiration',':=','November 30 2009 24:00:00'),(74,'vcool','WISPr-Bandwidth-Max-Down',':=','32000'),(75,'vcool','WISPr-Bandwidth-Max-Up',':=','16000'),(76,'vcool','Idle-Timeout',':=','300'),(77,'vcool','Expiration',':=','December 1 2009 24:00:00'),(78,'vcool','Acct-Interim-Interval',':=','120');
+/*!40000 ALTER TABLE `radreply` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -597,7 +600,7 @@ CREATE TABLE `voucher` (
   `isprinted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -606,7 +609,7 @@ CREATE TABLE `voucher` (
 
 LOCK TABLES `voucher` WRITE;
 /*!40000 ALTER TABLE `voucher` DISABLE KEYS */;
-INSERT INTO `voucher` VALUES (21,'tethaz6','caldotuk','1 hour',0),(22,'zerhaw7','cepdakar','1 Mega',0),(23,'vidvur5','dabsokul','1 hour',0),(24,'tiyben12','giktasok','1 hour',1),(26,'sepsog9','as','1 Mega',0);
+INSERT INTO `voucher` VALUES (21,'tethaz6','caldotuk','1 hour',0),(22,'zerhaw7','cepdakar','1 Mega',0),(23,'vidvur5','dabsokul','1 hour',0),(24,'tiyben12','giktasok','1 hour',1);
 /*!40000 ALTER TABLE `voucher` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -687,18 +690,9 @@ SET character_set_client = @saved_cs_client;
 
 /*!50001 DROP TABLE IF EXISTS `postpaid_account_bill`*/;
 /*!50001 DROP VIEW IF EXISTS `postpaid_account_bill`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8 */;
-/*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`easyhotspot`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `postpaid_account_bill` AS select `postpaid_account`.`realname` AS `realname`,`postpaid_account`.`username` AS `username`,`postpaid_account`.`password` AS `password`,`radacct`.`acctstarttime` AS `start`,`radacct`.`acctstoptime` AS `stop`,(`radacct`.`acctsessiontime` / 60) AS `time_used`,((`radacct`.`acctoutputoctets` + `radacct`.`acctinputoctets`) / 1048576) AS `packet_used`,`postpaid_account`.`bill_by` AS `bill_by`,(`postplan`.`price` * (`radacct`.`acctsessiontime` / 60)) AS `time_price`,(`postplan`.`price` * ((`radacct`.`acctoutputoctets` + `radacct`.`acctinputoctets`) / 1048576)) AS `packet_price` from ((`postpaid_account` left join `radacct` on((`postpaid_account`.`username` = `radacct`.`username`))) join `postplan` on((`postplan`.`name` = `postpaid_account`.`bill_by`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
 -- Final view structure for view `postpaid_account_list`
@@ -706,18 +700,8 @@ SET character_set_client = @saved_cs_client;
 
 /*!50001 DROP TABLE IF EXISTS `postpaid_account_list`*/;
 /*!50001 DROP VIEW IF EXISTS `postpaid_account_list`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8 */;
-/*!50001 SET character_set_results     = utf8 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`easyhotspot`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `postpaid_account_list` AS select `postpaid_account`.`id` AS `id`,`postpaid_account`.`realname` AS `realname`,`postpaid_account`.`username` AS `username`,`postpaid_account`.`password` AS `password`,(sum(`radacct`.`acctsessiontime`) / 60) AS `time_used`,(sum((`radacct`.`acctoutputoctets` + `radacct`.`acctinputoctets`)) / 1048576) AS `packet_used`,`postpaid_account`.`bill_by` AS `bill_by`,(`postplan`.`price` * (sum(`radacct`.`acctsessiontime`) / 60)) AS `time_price`,(`postplan`.`price` * (sum((`radacct`.`acctoutputoctets` + `radacct`.`acctinputoctets`)) / 1048576)) AS `packet_price`,`postpaid_account`.`valid_until` AS `valid_until` from ((`postpaid_account` left join `radacct` on((`postpaid_account`.`username` = `radacct`.`username`))) join `postplan` on((`postplan`.`name` = `postpaid_account`.`bill_by`))) group by `postpaid_account`.`username` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
 -- Final view structure for view `voucher_list`
@@ -725,26 +709,7 @@ SET character_set_client = @saved_cs_client;
 
 /*!50001 DROP TABLE IF EXISTS `voucher_list`*/;
 /*!50001 DROP VIEW IF EXISTS `voucher_list`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = latin1 */;
-/*!50001 SET character_set_results     = latin1 */;
 /*!50001 SET collation_connection      = latin1_swedish_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`easyhotspot`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `voucher_list` AS select `v`.`id` AS `id`,`v`.`username` AS `username`,`v`.`password` AS `password`,`v`.`billingplan` AS `billingplan`,`b`.`type` AS `type`,`b`.`amount` AS `amount`,`b`.`valid_for` AS `valid_for`,`b`.`price` AS `price`,`rc`.`value` AS `valid_until`,(sum(`ra`.`acctsessiontime`) / 60) AS `time_used`,if((`b`.`type` = _latin1'time'),(`b`.`amount` - (sum(`ra`.`acctsessiontime`) / 60)),_latin1'null') AS `time_remain`,((sum(`ra`.`acctoutputoctets`) + sum(`ra`.`acctinputoctets`)) / 1048576) AS `packet_used`,if((`b`.`type` = _latin1'packet'),(`b`.`amount` - (sum((`ra`.`acctoutputoctets` + `ra`.`acctinputoctets`)) / 1048576)),_latin1'null') AS `packet_remain`,`v`.`isprinted` AS `isprinted`,if((`b`.`type` = _latin1'time'),if(((sum(`ra`.`acctsessiontime`) / 60) >= `b`.`amount`),_latin1'exp',_latin1'valid'),if((((sum(`ra`.`acctoutputoctets`) + sum(`ra`.`acctinputoctets`)) / 1048576) >= `b`.`amount`),_latin1'exp',_latin1'valid')) AS `valid` from (((`voucher` `v` left join `radacct` `ra` on((`v`.`username` = `ra`.`username`))) join `billingplan` `b` on((`b`.`name` = `v`.`billingplan`))) join `radcheck` `rc` on((`rc`.`username` = `v`.`username`))) where (`rc`.`attribute` = 'Expiration') group by `v`.`username` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2009-11-30 23:41:19
