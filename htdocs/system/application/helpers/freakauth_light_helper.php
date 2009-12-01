@@ -30,7 +30,8 @@ function loadFalExtension()
             //let's load the core library (i.e. FreakAuth_light.php) extension
             $obj->load->library('MyFAL');
     
-            $obj->freakauth_light = & new MyFAL();
+            // $obj->freakauth_light = & new MyFAL();
+			$obj->freakauth_light =  new MyFAL();
             log_message('debug', 'MyFAL library loaded');
             log_message('debug', 'MyFAL class assigned to $this->CI->freakauth_light');
         }
