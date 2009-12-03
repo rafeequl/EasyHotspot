@@ -148,7 +148,12 @@ Class Vouchermodel extends model {
 				$this->db->insert($this->_table_radcheck,$radcheck);
 				
 				//radreply table
-				$this->db->insert($this->_table_radreply,$radcheck);
+				$date_radreply = mktime(0,0,0, date('m'), $day+$valid_for, $year);
+				$date_radreply = date("Y-n-j", $date_radreply)."T".$time;
+
+				$radreply = array('username' => $user['username'], 'attribute' => 'WISPr-Session-Terminate-Time', 'op' => ':=', 'value' => $date_radreply);
+				$this->db->insert($this->_table_radreply, $radreply);
+				// $this->db->insert($this->_table_radreply,$radcheck);
 				
 				//OK stops here
 				$this->db->trans_complete();

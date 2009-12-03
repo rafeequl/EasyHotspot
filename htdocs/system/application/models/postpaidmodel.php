@@ -136,7 +136,13 @@ class Postpaidmodel extends model {
 			$this->db->insert($this->_table_radcheck,$data);
 			
 			//radreply
-			$this->db->insert($this->_table_radreply,$data);
+			$date_radreply = mktime(0,0,0, date('m'), $day+$_POST['valid_until'], $year);
+			$date_radreply = date("Y-n-j", $date_radreply)."T".$time;
+
+			$radreply = array('username' => $data['username'], 'attribute' => 'WISPr-Session-Terminate-Time', 'op' => ':=', 'value' => $date_radreply);
+			$this->db->insert($this->_table_radreply, $radreply);
+			// $this->db->insert($this->_table_radreply,$data);
+			
 			
 		}
 		
