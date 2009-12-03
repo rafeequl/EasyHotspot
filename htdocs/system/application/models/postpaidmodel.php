@@ -136,7 +136,13 @@ class Postpaidmodel extends model {
 			$this->db->insert($this->_table_radcheck,$data);
 			
 			//radreply
-			$this->db->insert($this->_table_radreply,$data);
+			$date_radreply = mktime(0,0,0, date('m'), $day+$_POST['valid_until'], $year);
+			$date_radreply = date("Y-n-j", $date_radreply)."T".$time;
+
+			$radreply = array('username' => $data['username'], 'attribute' => 'WISPr-Session-Terminate-Time', 'op' => ':=', 'value' => $date_radreply);
+			$this->db->insert($this->_table_radreply, $radreply);
+			// $this->db->insert($this->_table_radreply,$data);
+			
 			
 		}
 		
@@ -193,26 +199,27 @@ class Postpaidmodel extends model {
 		//field on radcheck table
 		$password = array('value' => $_POST['password']); 
 		$this->db->where('username',$_POST['username']);
+		$this->db->where('attribute','Cleartext-Password');
 		$this->db->update($this->_table_radcheck,$password);
 		
 		//field on radreply table
 		//Dowloadrate
-		$bw_download = array('value' => $_POST['bw_download']);
-		$this->db->where('username',$_POST['username']);
-		$this->db->where('attribute','WISPr-Bandwidth-Max-Down');
-		$this->db->update($this->_table_radreply,$bw_download);
-		
-		//Uploadrate
-		$bw_upload = array('value' => $_POST['bw_upload']);
-		$this->db->where('username',$_POST['username']);
-		$this->db->where('attribute','WISPr-Bandwidth-Max-Up');
-		$this->db->update($this->_table_radreply,$bw_upload);
+		// $bw_download = array('value' => $_POST['bw_download']);
+		// 		$this->db->where('username',$_POST['username']);
+		// 		$this->db->where('attribute','WISPr-Bandwidth-Max-Down');
+		// 		$this->db->update($this->_table_radreply,$bw_download);
+		// 		
+		// 		//Uploadrate
+		// 		$bw_upload = array('value' => $_POST['bw_upload']);
+		// 		$this->db->where('username',$_POST['username']);
+		// 		$this->db->where('attribute','WISPr-Bandwidth-Max-Up');
+		// 		$this->db->update($this->_table_radreply,$bw_upload);
 		
 		//Accounting interval
 		if($ci->config->item('postpaid_acct_interim_interval')){
 		$this->db->where('username',$_POST['username']);
 		$this->db->where('attribute','Acct-Interim-Interval');
-		$this->db->update($this->_table_radreply,$ci->config->item('postpaid_acct_interim_interval'));
+		$this->db->update($this->_table_radreply, array('value' => $ci->config->item('postpaid_acct_interim_interval')));
 		}
 		$this->db->trans_complete();
 	}
