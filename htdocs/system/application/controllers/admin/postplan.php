@@ -42,8 +42,9 @@ Class Postplan extends Controller{
 		else
 		{
 			$this->postplanmodel->save();
-			$data['notice'] = 'Postpaid Settings Saved !';
-			$this->load->view('admin/postplan/postplan_view',$data);
+			// $data['notice'] = 'Postpaid Settings Saved !';
+			flashMsg('Postpaid Settings Saved !');
+			redirect('/admin/postplan');
 		}
 		
 	}
