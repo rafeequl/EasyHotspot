@@ -193,6 +193,7 @@ class Postpaidmodel extends model {
 		//field on radcheck table
 		$password = array('value' => $_POST['password']); 
 		$this->db->where('username',$_POST['username']);
+		$this->db->where('attribute','Cleartext-Password');
 		$this->db->update($this->_table_radcheck,$password);
 		
 		//field on radreply table
