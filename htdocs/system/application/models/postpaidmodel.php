@@ -187,8 +187,8 @@ class Postpaidmodel extends model {
 		$this->db->trans_start();
 		
 		//fields on postpaid_account table	
-		$this->db->where('username',$_POST['username']);
-		$this->db->update($this->_table,$_POST);
+		// $this->db->where('username',$_POST['username']);
+		// $this->db->update($this->_table,$_POST);
 		
 		//field on radcheck table
 		$password = array('value' => $_POST['password']); 
