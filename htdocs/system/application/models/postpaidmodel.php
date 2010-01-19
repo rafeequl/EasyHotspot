@@ -132,7 +132,6 @@ class Postpaidmodel extends model {
 			$data['value'] = $date;
 			
 			//radcheck
-			$_POST['valid_until'] = $date;
 			$this->db->insert($this->_table_radcheck,$data);
 			
 			//radreply
@@ -142,6 +141,10 @@ class Postpaidmodel extends model {
 			$radreply = array('username' => $data['username'], 'attribute' => 'WISPr-Session-Terminate-Time', 'op' => ':=', 'value' => $date_radreply);
 			$this->db->insert($this->_table_radreply, $radreply);
 			// $this->db->insert($this->_table_radreply,$data);
+			
+			//echo $day;
+			// echo $x;
+			// exit();
 			
 			
 		}
