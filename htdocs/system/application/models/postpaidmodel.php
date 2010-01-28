@@ -164,7 +164,7 @@ class Postpaidmodel extends model {
 			$data['value'] = $ci->config->item('postpaid_acct_interim_interval');	
 			$this->db->insert($this->_table_radreply,$data); // insert into radreply account table		
 		}
-		$_POST['valid_until'] = $date;
+		$_POST['valid_until'] = $date; // so we have date format instead of valid until duration (days)
 		$this->db->insert($this->_table,$_POST); //insert into postpaid account table
 		$this->db->insert($this->_table_radcheck,$radcheck_value);		//insert into radcheck account table
 		$this->db->trans_complete();
