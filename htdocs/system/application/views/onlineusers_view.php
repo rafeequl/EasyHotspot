@@ -21,7 +21,7 @@
 		<td><?=$row->username;?></td>
 		<td><?=$row->start;?></td>
 		<td><?=$row->time;?></td>
-		<td><?=$row->packet;?></td>
+		<td><?=$row->packet;?> MB</td>
 		<td><?=anchor('onlineuser/disconnect/'.$row->username,'disconnect','class="disconnect" ')?></td>
 	</tr>
 	<?php endforeach;?>
